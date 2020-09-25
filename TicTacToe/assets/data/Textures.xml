@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<textures>
+  <texture symbol="X" location="assets/textures/symbols/x.png"></texture>
+</textures>
