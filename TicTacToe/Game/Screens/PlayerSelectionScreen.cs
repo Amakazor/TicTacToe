@@ -36,6 +36,8 @@ namespace TicTacToe.Game.Screens
             }
         }
 
+        public override void Dispose() {}
+
         public override List<IRenderObject> GetRenderData()
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>();

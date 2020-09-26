@@ -108,5 +108,6 @@ namespace TicTacToe.Game.Screens
                         }));
             }
         }
+        public override void Dispose(){}
     }
 }

@@ -82,7 +82,7 @@ namespace TicTacToe.Game
             if (eventArgs is ChangeScreenEventArgs)
             {
                 Gamestate.PreviousScreen = Gamestate.CurrentScreen.GetEScreen();
-                ShouldRecalculateRenderObjects = true;
+                Gamestate.CurrentScreen.Dispose();
 
                 switch (((ChangeScreenEventArgs)eventArgs).Screen)
                 {
@@ -99,9 +99,14 @@ namespace TicTacToe.Game
                     case ScreenType.MenuScreen:
                         Gamestate.CurrentScreen = new MenuScreen(Gamestate);
                         break;
+                    case ScreenType.Results:
+                        Gamestate.CurrentScreen = new ResultsScreen(Gamestate);
+                        break;
                     default:
                         throw new Exception();
                 }
+
+                ShouldRecalculateRenderObjects = true;
             }
         }
 

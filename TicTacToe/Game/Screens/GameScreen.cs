@@ -4,6 +4,7 @@ using TicTacToe.Game.GUI.RenderObjects;
 using System;
 using TicTacToe.Utility;
 using TicTacToe.Game.Data;
+using TicTacToe.Game.Events;
 
 namespace TicTacToe.Game.Screens
 {
@@ -14,6 +15,7 @@ namespace TicTacToe.Game.Screens
         public GameScreen(Gamestate gamestate) : base(gamestate, ScreenType.Game)
         {
             MessageBus.Instance.Register(MessageType.FieldChanged, OnFieldChange);
+            Gamestate.boardstate = Boardstate.NotResolved;
 
             Board = new Board(gamestate.BoardSize, new Position(0, 0, 1000, 1000), gamestate);
         }
@@ -24,24 +26,25 @@ namespace TicTacToe.Game.Screens
 
             if (boardState == Boardstate.NotResolved)
             {
-                ChangePlayer();
+                Gamestate.ChangePlayer();
+                MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+
             }
             else
             {
                 Gamestate.boardstate = boardState;
+                MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.Results });
             }
-
-            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
-        }
-
-        private void ChangePlayer()
-        {
-            Gamestate.SetCurrentPlayer(Gamestate.CurrentPlayer == Gamestate.PlayersInGame[0] ? Gamestate.PlayersInGame[1] : Gamestate.PlayersInGame[0]);
         }
 
         public override List<IRenderObject> GetRenderData()
         {
             return Board.GetRenderObjects();
+        }
+
+        public override void Dispose()
+        {
+            MessageBus.Instance.Unregister(MessageType.FieldChanged, OnFieldChange);
         }
     }
 }

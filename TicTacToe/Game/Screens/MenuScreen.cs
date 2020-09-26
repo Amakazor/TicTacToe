@@ -13,10 +13,14 @@ namespace TicTacToe.Game.Screens
         private List<Button> Buttons;
         public MenuScreen(Gamestate gamestate) : base(gamestate, ScreenType.MenuScreen)
         {
+            Gamestate.Clear();
+
             Buttons = new List<Button>();
             Buttons.Add(new ScreenChangeButton(new Position(200, 0, 600, 100), new Position(100, 25, 0, 40), Gamestate, "New Game", ScreenType.Pregame));
             Buttons.Add(new MessageButton(new Position(200, 120, 600, 100), new Position(100, 25, 0, 40), Gamestate, "Quit", MessageType.Quit));
         }
+
+        public override void Dispose(){}
 
         public override List<IRenderObject> GetRenderData()
         {

@@ -6,7 +6,7 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
-   abstract class Screen : IScreen
+   abstract class Screen : IScreen, IDisposable
     {
         public Gamestate Gamestate { get; protected set; }
         public ScreenType EScreen { get; protected set; }
@@ -25,5 +25,7 @@ namespace TicTacToe.Game.Screens
         {
             return EScreen;
         }
+
+        public abstract void Dispose();
     }
 }

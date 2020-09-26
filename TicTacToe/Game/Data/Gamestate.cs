@@ -20,7 +20,7 @@ namespace TicTacToe.Game.Data
         public Boardstate boardstate { get; set; }
 
         public int CurrentPlayer { get; private set; }
-        public IScreen CurrentScreen { get; set; }
+        public Screen CurrentScreen { get; set; }
         public ScreenType PreviousScreen { get; set; }
 
         public Gamestate()
@@ -55,22 +55,14 @@ namespace TicTacToe.Game.Data
             }
         }
 
-        public Symbol GetPlayersSymbolByPlayerID(int PlayerID)
+        public Symbol GetPlayersSymbolByPlayerID(int playerID)
         {
-            if (Players.ContainsKey(PlayerID))
-            {
-                return Players[PlayerID].GetSymbol();
-            }
-            else throw new ArgumentException("Player with id " + PlayerID + " doesn't exist", "id");
+            return GetPlayerByID(playerID).GetSymbol();
         }
         
-        public Symbol GetPlayersSymbolByPlayerID(int PlayerID, Position position)
+        public Symbol GetPlayersSymbolByPlayerID(int playerID, Position position)
         {
-            if (Players.ContainsKey(PlayerID))
-            {
-                return Players[PlayerID].GetSymbol(position);
-            }
-            else throw new ArgumentException("Player with id " + PlayerID + " doesn't exist", "id");
+            return GetPlayerByID(playerID).GetSymbol(position);
         }
 
         public Symbol GetCurrentPlayersSymbol()
@@ -81,6 +73,20 @@ namespace TicTacToe.Game.Data
         public Symbol GetCurrentPlayersSymbol(Position position)
         {
             return GetPlayersSymbolByPlayerID(CurrentPlayer, position);
+        }
+
+        public Player GetPlayerByID(int playerID)
+        {
+            if (Players.ContainsKey(playerID))
+            {
+                return Players[playerID];
+            }
+            else throw new ArgumentException("Player with id " + playerID + " doesn't exist", "id");
+        }
+
+        public Player GetCurrentPlayer()
+        {
+            return GetPlayerByID(CurrentPlayer);
         }
 
         public void ClearPlayersInGame()
@@ -139,6 +145,19 @@ namespace TicTacToe.Game.Data
             ScreenSize = new ScreenSize(newWidth, newHeight, newMarginTop, newMarginLeft, newTotalWidth, newTotalHeight);
 
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+        }
+
+        public void ChangePlayer()
+        { 
+            SetCurrentPlayer(CurrentPlayer == PlayersInGame[0] ? PlayersInGame[1] : PlayersInGame[0]);
+        }
+
+        public void Clear()
+        {
+            CurrentPlayer = 0;
+            PlayersInGame.Clear();
+            boardstate = Boardstate.NotResolved;
+            BoardSize = 0;
         }
     }
 }
