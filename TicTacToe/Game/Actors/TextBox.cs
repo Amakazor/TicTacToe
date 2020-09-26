@@ -8,11 +8,11 @@ namespace TicTacToe.Game.Actors
     class TextBox : Actor, IRenderable
     {
         private string Text;
-        private Position TextPosition;
+        private Position RelativeTextPosition;
 
-        public TextBox(Position position, Position textPosition, Gamestate gamestate, string text) : base(position, gamestate)
+        public TextBox(Position position, Position relativeTextPosition, Gamestate gamestate, string text) : base(position, gamestate)
         {
-            TextPosition = textPosition;
+            RelativeTextPosition = relativeTextPosition;
             Text = text;
         }
 
@@ -25,10 +25,15 @@ namespace TicTacToe.Game.Actors
 
             if (Text.Length > 0)
             {
-                renderObjects.Add(new RenderText(TextPosition, this, Text));
+                renderObjects.Add(new RenderText(CalculateTextPosition(), this, Text));
             }
 
             return renderObjects;
+        }
+
+        private Position CalculateTextPosition()
+        {
+            return new Position(Position.X + RelativeTextPosition.X, Position.Y + RelativeTextPosition.Y, 0, RelativeTextPosition.Height);
         }
     }
 }

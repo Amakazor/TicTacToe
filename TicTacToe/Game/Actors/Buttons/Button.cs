@@ -1,42 +1,14 @@
-﻿using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using SFML.Window;
 using TicTacToe.Game.Data;
-using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Buttons
 {
-    class Button : Actor, IRenderable, IClickable
+    abstract class Button : TextBox, IClickable
     {
-        private Action<MouseButtonEventArgs> Action;
-        private string Text;
+        public Button(Position position, Position relativeTextPosition, Gamestate gamestate, string text) : base(position, relativeTextPosition, gamestate, text){}
 
-        public Button(Position position, Gamestate gamestate, Action<MouseButtonEventArgs> action, string text) : base(position, gamestate)
-        {
-            Action = action;
-            Text = text;
-        }
-
-        public List<IRenderObject> GetRenderObjects()
-        {
-            List<IRenderObject> renderObjects = new List<IRenderObject>
-            {
-                new RenderRectangle(Position, this)
-            };
-
-            if (Text.Length > 0)
-            {
-                renderObjects.Add(new RenderText(Position, this, Text));
-            }
-
-            return renderObjects;
-        }
-
-        public void OnClick(MouseButtonEventArgs args)
-        {
-            Action.Invoke(args);
-        }
+        public abstract void OnClick(MouseButtonEventArgs args);
     }
 }

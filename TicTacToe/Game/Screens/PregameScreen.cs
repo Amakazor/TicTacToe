@@ -14,7 +14,7 @@ namespace TicTacToe.Game.Screens
     {
         private List<ScreenChangeButton> PlayerButtons { get; set; }
         private List<TextBox> PlayerTextBoxes { get; set; }
-        private List<ButtonInt> BoardSizeButtons { get; set; }
+        private List<ActionButton> BoardSizeButtons { get; set; }
         private ScreenChangeButton StartButton { get; set; }
 
         public PregameScreen(Gamestate gamestate) : base(gamestate, EScreens.Pregame)
@@ -25,10 +25,10 @@ namespace TicTacToe.Game.Screens
             PlayerTextBoxes = new List<TextBox>();
             PreparePlayerTextBoxes();
 
-            BoardSizeButtons = new List<ButtonInt>();
+            BoardSizeButtons = new List<ActionButton>();
             PrepareBoardSizeButtons();
 
-            StartButton = new ScreenChangeButton(new Position(0, 220, 100, 100), gamestate, "S", EScreens.Game);
+            StartButton = new ScreenChangeButton(new Position(0, 220, 100, 100), new Position(20, 20, 0, 60), gamestate, "S", EScreens.Game);
         }
 
         public override List<IRenderObject> GetRenderData()
@@ -47,7 +47,7 @@ namespace TicTacToe.Game.Screens
 
             if (Gamestate.BoardSize == 0)
             {
-                foreach (ButtonInt button in BoardSizeButtons)
+                foreach (ActionButton button in BoardSizeButtons)
                 {
                     renderObjects.AddRange(button.GetRenderObjects());
                 }
@@ -69,7 +69,7 @@ namespace TicTacToe.Game.Screens
             {
                 for (int playersToSelect = selectedPlayersAmount; playersToSelect < 2; playersToSelect++)
                 {
-                    PlayerButtons.Add(new ScreenChangeButton(new Position(0, playersToSelect * 110, 100, 100), Gamestate, "P", EScreens.PlayerSelectionScreen));
+                    PlayerButtons.Add(new ScreenChangeButton(new Position(0, playersToSelect * 110, 100, 100), new Position(30, 10, 0, 60), Gamestate, "P", EScreens.PlayerSelectionScreen));
                 }
             }
         }
@@ -83,8 +83,8 @@ namespace TicTacToe.Game.Screens
                 for (int playerIndex = 0; playerIndex < selectedPlayersAmount; playerIndex++)
                 {
                     PlayerTextBoxes.Add(new TextBox
-                        (new Position(0, playerIndex * 110, 100, 100),
-                        new Position(10, 10 + playerIndex * 110, 0, 16),
+                        (new Position(0, playerIndex * 110, 300, 100),
+                        new Position(30, 10, 0, 60),
                         Gamestate,
                         Gamestate.GetPlayerByPlayersInGameIndex(playerIndex).Nickname));
                 }
@@ -95,11 +95,17 @@ namespace TicTacToe.Game.Screens
         {
             for (int size = 2; size < 8; size++)
             {
-                BoardSizeButtons.Add(new ButtonInt(new Position(((size-2) % 3) * 40, 220 + (int)MathF.Floor((size-2) / 3) * 40, 30, 30), Gamestate, (MouseButtonEventArgs args, int newSize) =>
-                {
-                    Gamestate.BoardSize = newSize;
-                    MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
-                }, size, size.ToString()));
+                int newSize = size;
+                BoardSizeButtons.Add(new ActionButton(
+                    new Position(((size - 2) % 3) * 40, 220 + (int)MathF.Floor((size - 2) / 3) * 40, 30, 30),
+                    new Position(8, 2, 0, 20),
+                    Gamestate,
+                    size.ToString(),
+                    (MouseButtonEventArgs args) =>
+                        {
+                            Gamestate.BoardSize = newSize;
+                            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+                        }));
             }
         }
     }

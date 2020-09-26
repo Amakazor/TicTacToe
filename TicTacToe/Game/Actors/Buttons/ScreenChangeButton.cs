@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using SFML.Window;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
@@ -9,33 +7,16 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Buttons
 {
-    class ScreenChangeButton : Actor, IRenderable, IClickable
+    class ScreenChangeButton : Button, IRenderable, IClickable
     {
-        public string Text { get; }
         public EScreens Screen { get; }
 
-        public ScreenChangeButton(Position position, Gamestate gamestate, string text, EScreens screen) : base(position, gamestate)
+        public ScreenChangeButton(Position position, Position relativeTextPosition, Gamestate gamestate, string text, EScreens screen) : base(position, relativeTextPosition, gamestate, text)
         {
-            Text = text;
             Screen = screen;
         }
 
-        public List<IRenderObject> GetRenderObjects()
-        {
-            List<IRenderObject> renderObjects = new List<IRenderObject>
-            {
-                new RenderRectangle(Position, this)
-            };
-
-            if (Text.Length > 0)
-            {
-                renderObjects.Add(new RenderText(Position, this, Text));
-            }
-
-            return renderObjects;
-        }
-
-        public void OnClick(MouseButtonEventArgs args)
+        public override void OnClick(MouseButtonEventArgs args)
         {
             MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = Screen });
         }

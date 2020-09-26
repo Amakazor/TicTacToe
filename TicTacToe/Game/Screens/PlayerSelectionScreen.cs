@@ -10,20 +10,22 @@ namespace TicTacToe.Game.Screens
 {
     class PlayerSelectionScreen : Screen
     {
-        List<ButtonInt> Buttons;
+        List<ActionButton> Buttons;
 
         public PlayerSelectionScreen(Gamestate gamestate) : base(gamestate, EScreens.PlayerSelectionScreen)
         {
-            Buttons = new List<ButtonInt>();
+            Buttons = new List<ActionButton>();
             int i = 0;
             foreach(int PlayerID in Gamestate.Players.Keys)
             {
                 if (!gamestate.PlayersInGame.Contains(PlayerID))
                 {
-                    Buttons.Add(new ButtonInt(new Position(i * 30, 0, 30, 30), Gamestate, (MouseButtonEventArgs args, int playerID) => {
-                        Gamestate.AddPlayerToGame(playerID);
+                    int newPlayerID = PlayerID;
+                    Buttons.Add(new ActionButton(new Position(i * 30, 0, 30, 30), new Position(8, 2, 0, 20), Gamestate, PlayerID.ToString(), (MouseButtonEventArgs args) =>
+                    {
+                        Gamestate.AddPlayerToGame(newPlayerID);
                         MessageBus.Instance.PostEvent(MessageType.PreviousScreen, this, new EventArgs());
-                    }, PlayerID, PlayerID.ToString()));
+                    }));
                     i++;
                 }
             }
@@ -37,7 +39,7 @@ namespace TicTacToe.Game.Screens
         public override List<IRenderObject> GetRenderData()
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>();
-            foreach(ButtonInt button in Buttons)
+            foreach(ActionButton button in Buttons)
             {
                 renderObjects.AddRange(button.GetRenderObjects());
             }
