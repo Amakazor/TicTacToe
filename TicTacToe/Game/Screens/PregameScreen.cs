@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TicTacToe.Game.Actors;
+using TicTacToe.Game.Actors.Buttons;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;

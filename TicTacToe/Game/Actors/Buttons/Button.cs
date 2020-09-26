@@ -6,7 +6,7 @@ using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
-namespace TicTacToe.Game.Actors
+namespace TicTacToe.Game.Actors.Buttons
 {
     class Button : Actor, IRenderable, IClickable
     {
