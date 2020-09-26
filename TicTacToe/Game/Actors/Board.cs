@@ -52,7 +52,7 @@ namespace TicTacToe.Game.Actors
             return RenderObjects;
         }
 
-        public int CheckBoard()
+        public Boardstate CheckBoard()
         {
             //It is possible to make this cleaner and take less time incrementally building the state of each row, column and diagonal
             //TODO: maybe do this
@@ -83,7 +83,7 @@ namespace TicTacToe.Game.Actors
 
                 if (!isBad)
                 {
-                    return 1;
+                    return Boardstate.Won;
                 }
             }
 
@@ -110,7 +110,7 @@ namespace TicTacToe.Game.Actors
 
                 if (!isBad)
                 {
-                    return 1;
+                    return Boardstate.Won;
                 }
             }
 
@@ -136,7 +136,7 @@ namespace TicTacToe.Game.Actors
                 }
                 if (!isBad)
                 {
-                    return 1;
+                    return Boardstate.Won;
                 }
 
                 isBad = false;
@@ -159,11 +159,11 @@ namespace TicTacToe.Game.Actors
                 }
                 if (!isBad)
                 {
-                    return 1;
+                    return Boardstate.Won;
                 }
             }
 
-            return hasEmptyField ? 0 : -1;
+            return hasEmptyField ? Boardstate.NotResolved : Boardstate.Won;
         }
     }
 }

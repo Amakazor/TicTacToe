@@ -20,17 +20,15 @@ namespace TicTacToe.Game.Screens
 
         private void OnFieldChange(object sender, EventArgs eventArgs)
         {
-            int boardState = Board.CheckBoard();
+            Boardstate boardState = Board.CheckBoard();
 
-            switch (boardState)
+            if (boardState == Boardstate.NotResolved)
             {
-                case -1:
-                    break;
-                case 0:
-                    ChangePlayer();
-                    break;
-                case 1:
-                    break;
+                ChangePlayer();
+            }
+            else
+            {
+                Gamestate.boardstate = boardState;
             }
 
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());

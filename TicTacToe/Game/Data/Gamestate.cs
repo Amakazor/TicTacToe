@@ -14,6 +14,7 @@ namespace TicTacToe.Game.Data
 
         public int BoardSize { get; set; }
         public List<int> PlayersInGame { get; private set; }
+        public Boardstate boardstate { get; set; }
 
         public int CurrentPlayer { get; private set; }
         public IScreen CurrentScreen { get; set; }
