@@ -1,7 +1,6 @@
 ﻿using SFML.Window;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
@@ -9,7 +8,7 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
-    class PlayerSelectionScreen : Screen, IScreen
+    class PlayerSelectionScreen : Screen
     {
         List<ButtonInt> Buttons;
 
@@ -34,12 +33,8 @@ namespace TicTacToe.Game.Screens
                 MessageBus.Instance.PostEvent(MessageType.PreviousScreen, this, new EventArgs());
             }
         }
-        public EScreens GetEScreen()
-        {
-            return EScreen;
-        }
 
-        public List<IRenderObject> GetRenderData()
+        public override List<IRenderObject> GetRenderData()
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>();
             foreach(ButtonInt button in Buttons)

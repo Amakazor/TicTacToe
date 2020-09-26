@@ -1,8 +1,10 @@
-﻿using TicTacToe.Game.Data;
+﻿using System.Collections.Generic;
+using TicTacToe.Game.Data;
+using TicTacToe.Game.GUI.RenderObjects;
 
 namespace TicTacToe.Game.Screens
 {
-    class Screen
+   abstract class Screen : IScreen
     {
         public Gamestate Gamestate { get; protected set; }
         public EScreens EScreen { get; protected set; }
@@ -11,6 +13,13 @@ namespace TicTacToe.Game.Screens
         {
             Gamestate = gamestate;
             EScreen = eScreen;
+        }
+
+        public abstract List<IRenderObject> GetRenderData();
+
+        public EScreens GetEScreen()
+        {
+            return EScreen;
         }
     }
 }

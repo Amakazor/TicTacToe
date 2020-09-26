@@ -9,7 +9,7 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
-    class PregameScreen : Screen, IScreen
+    class PregameScreen : Screen
     {
         private List<Button> PlayerButtons { get; set; }
         private List<TextBox> PlayerTextBoxes { get; set; }
@@ -33,12 +33,7 @@ namespace TicTacToe.Game.Screens
             }, "S");
         }
 
-        public EScreens GetEScreen()
-        {
-            return EScreen;
-        }
-
-        public List<IRenderObject> GetRenderData()
+        public override List<IRenderObject> GetRenderData()
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>();
             

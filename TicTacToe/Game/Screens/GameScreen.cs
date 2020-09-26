@@ -41,14 +41,9 @@ namespace TicTacToe.Game.Screens
             Gamestate.SetCurrentPlayer(Gamestate.CurrentPlayer == Gamestate.PlayersInGame[0] ? Gamestate.PlayersInGame[1] : Gamestate.PlayersInGame[0]);
         }
 
-        public List<IRenderObject> GetRenderData()
+        public override List<IRenderObject> GetRenderData()
         {
             return Board.GetRenderObjects();
-        }
-
-        public EScreens GetEScreen()
-        {
-            return EScreen;
         }
     }
 }
