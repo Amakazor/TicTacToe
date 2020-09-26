@@ -12,14 +12,14 @@ namespace TicTacToe.Game.Screens
 {
     class PregameScreen : Screen
     {
-        private List<Button> PlayerButtons { get; set; }
+        private List<ScreenChangeButton> PlayerButtons { get; set; }
         private List<TextBox> PlayerTextBoxes { get; set; }
         private List<ButtonInt> BoardSizeButtons { get; set; }
-        private Button StartButton { get; set; }
+        private ScreenChangeButton StartButton { get; set; }
 
         public PregameScreen(Gamestate gamestate) : base(gamestate, EScreens.Pregame)
         {
-            PlayerButtons = new List<Button>();
+            PlayerButtons = new List<ScreenChangeButton>();
             PreparePlayerButtons();
 
             PlayerTextBoxes = new List<TextBox>();
@@ -28,17 +28,14 @@ namespace TicTacToe.Game.Screens
             BoardSizeButtons = new List<ButtonInt>();
             PrepareBoardSizeButtons();
 
-            StartButton = new Button(new Position(0, 220, 100, 100), Gamestate, (_) =>
-            {
-                MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = EScreens.Game });
-            }, "S");
+            StartButton = new ScreenChangeButton(new Position(0, 220, 100, 100), gamestate, "S", EScreens.Game);
         }
 
         public override List<IRenderObject> GetRenderData()
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>();
             
-            foreach (Button button in PlayerButtons)
+            foreach (ScreenChangeButton button in PlayerButtons)
             {
                 renderObjects.AddRange(button.GetRenderObjects());
             }
@@ -72,10 +69,7 @@ namespace TicTacToe.Game.Screens
             {
                 for (int playersToSelect = selectedPlayersAmount; playersToSelect < 2; playersToSelect++)
                 {
-                    PlayerButtons.Add(new Button(new Position(0, playersToSelect * 110, 100, 100), Gamestate, (MouseButtonEventArgs args) =>
-                    {
-                        MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = EScreens.PlayerSelectionScreen });
-                    }, "P"));
+                    PlayerButtons.Add(new ScreenChangeButton(new Position(0, playersToSelect * 110, 100, 100), Gamestate, "P", EScreens.PlayerSelectionScreen));
                 }
             }
         }
