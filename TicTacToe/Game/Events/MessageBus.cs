@@ -16,35 +16,49 @@ namespace TicTacToe.Utility
     public class MessageBus
     {
         private static MessageBus instance;
-        private Dictionary<MessageType, List<Action<object, EventArgs>>> listeners = new Dictionary<MessageType, List<Action<object, EventArgs>>>();
-
+        private Dictionary<MessageType, List<Action<object, EventArgs>>> Listeners = new Dictionary<MessageType, List<Action<object, EventArgs>>>();
+        private List<Tuple<MessageType, Action<object, EventArgs>>> ToUnregister = new List<Tuple<MessageType, Action<object, EventArgs>>>();
         private MessageBus() { }
 
         public static MessageBus Instance { get { return instance ?? (instance = new MessageBus()); } }
 
         public void Register(MessageType messageType, Action<object, EventArgs> listener)
         {
-            if (!listeners.ContainsKey(messageType))
+            if (!Listeners.ContainsKey(messageType))
             {
-                listeners[messageType] = new List<Action<object, EventArgs>>();
+                Listeners[messageType] = new List<Action<object, EventArgs>>();
             }
 
-            listeners[messageType].Add(listener);
+            Listeners[messageType].Add(listener);
         }
 
         public void Unregister(MessageType messageType, Action<object, EventArgs> listener)
         {
-            if (listeners.ContainsKey(messageType) && listeners[messageType].Contains(listener))
+            ToUnregister.Add(new Tuple<MessageType, Action<object, EventArgs>>(messageType, listener));
+        }
+
+        private void Unregister()
+        {
+            foreach(Tuple<MessageType, Action<object, EventArgs>> dataToUnregister in ToUnregister) 
             {
-                listeners[messageType].Remove(listener);
+                if (Listeners.ContainsKey(dataToUnregister.Item1) && Listeners[dataToUnregister.Item1].Contains(dataToUnregister.Item2))
+                {
+                    Listeners[dataToUnregister.Item1].Remove(dataToUnregister.Item2);
+                }
+                if (Listeners.ContainsKey(dataToUnregister.Item1) && Listeners[dataToUnregister.Item1].Contains(dataToUnregister.Item2))
+                {
+                    Listeners[dataToUnregister.Item1].Remove(dataToUnregister.Item2);
+                }
             }
         }
 
         public void PostEvent(MessageType messageType, object sender, EventArgs eventArgs)
         {
-            if (listeners.ContainsKey(messageType))
+            Unregister();
+
+            if (Listeners.ContainsKey(messageType))
             {
-                listeners[messageType].ForEach((Action<object, EventArgs> listener) => {
+                Listeners[messageType].ForEach((Action<object, EventArgs> listener) => {
                     listener.Invoke(sender, eventArgs);
                 });
             }
