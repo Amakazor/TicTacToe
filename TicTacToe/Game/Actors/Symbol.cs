@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using System.Collections.Generic;
+using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
@@ -11,21 +12,25 @@ namespace TicTacToe.Game.Actors
         public Color color;
     }
 
-    class Symbol : IRenderable
+    class Symbol : Actor
     {
-        RenderSymbol renderSymbol;
+        public Texture Texture { get; }
+        public Color Color { get; }
 
-        public Symbol(SymbolData symbolData) : this(symbolData.texture, symbolData.color) { }
-        public Symbol(SymbolData symbolData, Position position) : this(symbolData.texture, symbolData.color, position) { }
-        public Symbol(Texture texture, Color color) : this(texture, color, new Position(0, 0, 0, 0)) { }
-        public Symbol(Texture texture, Color color, Position position)
+        public Symbol(SymbolData symbolData, Gamestate gamestate) : this(symbolData.texture, symbolData.color, gamestate) { }
+        public Symbol(SymbolData symbolData, Position position, Gamestate gamestate) : this(symbolData.texture, symbolData.color, position, gamestate) { }
+        public Symbol(Texture texture, Color color, Gamestate gamestate) : this(texture, color, new Position(0, 0, 0, 0), gamestate) { }
+        public Symbol(Texture texture, Color color, Position position, Gamestate gamestate) : base(position, gamestate)
         {
-            renderSymbol = new RenderSymbol(position, this, texture, color);
+            Texture = texture;
+            Color = color;
         }
 
-        public List<IRenderObject> GetRenderObjects()
+        
+
+        public override List<IRenderObject> GetRenderObjects()
         {
-            return new List<IRenderObject> { renderSymbol };
+            return new List<IRenderObject> { new RenderSymbol(CalculatePosition(Position), this, Texture, Color) };
         }
     }
 }

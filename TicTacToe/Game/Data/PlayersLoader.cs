@@ -8,7 +8,7 @@ namespace TicTacToe.Game.Data
 {
     static class PlayersLoader
     {
-        public static Dictionary<int, Player> LoadPlayers(Textures textureAtlas)
+        public static Dictionary<int, Player> LoadPlayers(Textures textureAtlas, Gamestate gamestate)
         {
             Dictionary<int, Player> Players = new Dictionary<int, Player>();
 
@@ -37,7 +37,7 @@ namespace TicTacToe.Game.Data
                         symbolData.color = color;
                         symbolData.texture = texture;
 
-                        Player player = new Player(playerData.Attributes.GetNamedItem("name").Value, symbolData);
+                        Player player = new Player(playerData.Attributes.GetNamedItem("name").Value, symbolData, gamestate);
 
                         Players.Add(int.Parse(playerData.Attributes.GetNamedItem("id").Value), player);
                     }

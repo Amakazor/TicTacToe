@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SFML.Window;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.Screens;
 using TicTacToe.Utility;
@@ -9,6 +10,8 @@ namespace TicTacToe.Game.Data
 {
     class Gamestate
     {
+        public ScreenSize ScreenSize { get; private set; }
+
         public Textures TextureAtlas { get; private set; }
         public Dictionary<int, Player> Players { get; private set; }
 
@@ -23,7 +26,7 @@ namespace TicTacToe.Game.Data
         public Gamestate()
         {
             TextureAtlas = new Textures();
-            Players = PlayersLoader.LoadPlayers(this.TextureAtlas);
+            Players = PlayersLoader.LoadPlayers(TextureAtlas, this);
 
             BoardSize = 0;
             PlayersInGame = new List<int>();
@@ -32,6 +35,7 @@ namespace TicTacToe.Game.Data
             CurrentScreen = null;
             PreviousScreen = EScreens.Pregame;
 
+            MessageBus.Instance.Register(MessageType.ScreenResized, OnResize);
         }
 
         public void SetCurrentPlayer(int newPlayer)
@@ -109,6 +113,32 @@ namespace TicTacToe.Game.Data
         public bool CanStartGame()
         {
             return PlayersInGame.Count == 2 && IntBetweenInclusive(BoardSize, 2, int.MaxValue);
+        }
+
+        public void OnResize(object sender, EventArgs sizeEventArgs)
+        {
+            if (sizeEventArgs is SizeEventArgs)
+            {
+                RecalculateScreenSize(((SizeEventArgs)sizeEventArgs).Width, ((SizeEventArgs)sizeEventArgs).Height);
+            }
+            else throw new ArgumentException("Wrong EventArgs given", "sizeEventArgs");
+        }
+
+        public void RecalculateScreenSize(uint width, uint height)
+        {
+            const double marginPercentage = 0.1D;
+            uint smallerSize = width > height ? height : width;
+
+            uint newWidth = (uint)Math.Floor(smallerSize * (1.0D - 2.0D * marginPercentage));
+            uint newHeight = newWidth;
+            uint newMarginTop = (uint)Math.Floor((height - newHeight) / 2.0D);
+            uint newMarginLeft = (uint)Math.Floor((width - newWidth) / 2.0D);
+            uint newTotalHeight = newHeight + newMarginTop * 2;
+            uint newTotalWidth = newWidth + newMarginLeft * 2;
+
+            ScreenSize = new ScreenSize(newWidth, newHeight, newMarginTop, newMarginLeft, newTotalWidth, newTotalHeight);
+
+            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
     }
 }

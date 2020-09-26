@@ -36,10 +36,12 @@ namespace TicTacToe.Game.Actors
             }
         }
 
-        public List<IRenderObject> GetRenderObjects()
+        public override List<IRenderObject> GetRenderObjects()
         {
-            List<IRenderObject> RenderObjects = new List<IRenderObject>();
-            RenderObjects.Add(new RenderRectangle(0, 0, 300, 300, this));
+            List<IRenderObject> RenderObjects = new List<IRenderObject>
+            {
+                new RenderRectangle(CalculatePosition(Position), this)
+            };
 
             for (int column = 0; column < Size; column++)
             {

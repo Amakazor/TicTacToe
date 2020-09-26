@@ -8,11 +8,13 @@ namespace TicTacToe.Game.Data
     class Player
     {
         public string Nickname { get; private set; }
+        public Gamestate Gamestate { get; private set; }
         public SymbolData SymbolData;
 
-        public Player(string nickname, Texture texture, Color color)
+        public Player(string nickname, Texture texture, Color color, Gamestate gamestate)
         {
             Nickname = nickname;
+            Gamestate = gamestate;
             SymbolData = new SymbolData
             {
                 texture = texture,
@@ -20,20 +22,21 @@ namespace TicTacToe.Game.Data
             };
         }
 
-        public Player(string nickname, SymbolData symbolData)
+        public Player(string nickname, SymbolData symbolData, Gamestate gamestate)
         {
             Nickname = nickname;
             SymbolData = symbolData;
+            Gamestate = gamestate;
         }
 
         public Symbol GetSymbol()
         {
-            return new Symbol(SymbolData);
+            return new Symbol(SymbolData, Gamestate);
         }
 
         public Symbol GetSymbol(Position position)
         {
-            return new Symbol(SymbolData, position);
+            return new Symbol(SymbolData, position, Gamestate);
         }
     }
 }

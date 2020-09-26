@@ -6,7 +6,6 @@ using TicTacToe.Game.Events;
 using TicTacToe.Utility;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Screens;
-using System.Linq;
 
 namespace TicTacToe.Game
 {
@@ -17,8 +16,6 @@ namespace TicTacToe.Game
         public bool ShouldRecalculateRenderObjects { get; set; }
 
         public Gamestate Gamestate { get; private set; }
-        //public Game Game { get; private set; }
-        //public Screens CurrentScreen { get; private set; }
         public Gui Gui { get; private set; }
         public InputHandler InputHandler { get; private set; }
 
@@ -26,30 +23,28 @@ namespace TicTacToe.Game
 
         public Engine()
         {
+            uint width = 600;
+            uint height = 600;
+
             GameTitle = "TicTacToe with SFML";
             ShouldQuit = false;
             ShouldRecalculateRenderObjects = true;
 
             Gamestate = new Gamestate();
-            //Gamestate.BoardSize = 3;
-            //Gamestate.SetPlayersInGame(new List<int> { 1, 2 });
-            //Gamestate.SetCurrentPlayer(1);
-
-            //Gamestate.CurrentScreen = new GameScreen(Gamestate);
-            //Gamestate.CurrentScreen = new PregameScreen(Gamestate);
-            //Gamestate.CurrentScreen = new PlayerSelectionScreen(Gamestate);
-
             Gamestate.CurrentScreen = new PregameScreen(Gamestate);
+            Gamestate.RecalculateScreenSize(width, height);
 
             RenderObjects = new List<IRenderObject>();
             InputHandler = new InputHandler(RenderObjects);
 
-            Gui = new Gui(GameTitle);
+            Gui = new Gui(GameTitle, width, height);
             Gui.SetInputHandlers(InputHandler.OnClick);
+            Gui.SetResizeHandler(InputHandler.OnResize);
 
             MessageBus.Instance.Register(MessageType.Recalculate, OnRecalculate);
             MessageBus.Instance.Register(MessageType.PreviousScreen, OnPreviousScreen);
             MessageBus.Instance.Register(MessageType.ChangeScreen, OnChangeScreen);
+            MessageBus.Instance.Register(MessageType.Quit, OnQuit);
         }
 
         public void Loop()
@@ -110,6 +105,11 @@ namespace TicTacToe.Game
         public void OnPreviousScreen(object sender, EventArgs eventArgs)
         {
             OnChangeScreen(sender, new ChangeScreenEventArgs { Screen = Gamestate.PreviousScreen });
+        }
+
+        public void OnQuit(object sender, EventArgs eventArgs)
+        {
+            ShouldQuit = true;
         }
     }
 }

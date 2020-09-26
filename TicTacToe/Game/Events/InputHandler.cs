@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.GUI.RenderObjects;
+using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Events
 {
@@ -28,6 +29,11 @@ namespace TicTacToe.Game.Events
                     ((IClickable)renderObject.GetActor()).OnClick(e);
                 }
             }
+        }
+
+        public void OnResize(object sender, SizeEventArgs e)
+        {
+            MessageBus.Instance.PostEvent(MessageType.ScreenResized, sender, e);
         }
     }
 }

@@ -9,7 +9,8 @@ namespace TicTacToe.Utility
         Quit,
         FieldChanged,
         ChangeScreen,
-        PreviousScreen
+        PreviousScreen,
+        ScreenResized,
     }
 
     public class MessageBus

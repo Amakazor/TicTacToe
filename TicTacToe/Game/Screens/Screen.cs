@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
+using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
@@ -8,6 +10,8 @@ namespace TicTacToe.Game.Screens
     {
         public Gamestate Gamestate { get; protected set; }
         public EScreens EScreen { get; protected set; }
+        public int ScreenWidth { get; protected set; }
+        public int ScreenHeight { get; protected set; }
 
         public Screen(Gamestate gamestate, EScreens eScreen)
         {

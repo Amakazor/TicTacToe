@@ -16,16 +16,16 @@ namespace TicTacToe.Game.Actors
             Text = text;
         }
 
-        public List<IRenderObject> GetRenderObjects()
+        public override List<IRenderObject> GetRenderObjects()
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>
             {
-                new RenderRectangle(Position, this)
+                new RenderRectangle(CalculatePosition(Position), this)
             };
 
             if (Text.Length > 0)
             {
-                renderObjects.Add(new RenderText(CalculateTextPosition(), this, Text));
+                renderObjects.Add(new RenderText(CalculatePosition(CalculateTextPosition()), this, Text));
             }
 
             return renderObjects;

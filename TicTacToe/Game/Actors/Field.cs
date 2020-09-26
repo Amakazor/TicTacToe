@@ -39,9 +39,9 @@ namespace TicTacToe.Game.Actors
             }
         }
 
-        public List<IRenderObject> GetRenderObjects()
+        public override List<IRenderObject> GetRenderObjects()
         {
-            List<IRenderObject> RenderObjects = new List<IRenderObject>{new RenderRectangle(Position, this, Color.White)};
+            List<IRenderObject> RenderObjects = new List<IRenderObject>{new RenderRectangle(CalculatePosition(Position), this, Color.White)};
 
             if (PlayerID != 0)
             {

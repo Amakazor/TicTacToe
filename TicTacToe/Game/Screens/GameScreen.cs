@@ -15,7 +15,7 @@ namespace TicTacToe.Game.Screens
         {
             MessageBus.Instance.Register(MessageType.FieldChanged, OnFieldChange);
 
-            Board = new Board(gamestate.BoardSize, new Position(0, 0, 600, 600), gamestate);
+            Board = new Board(gamestate.BoardSize, new Position(0, 0, 1000, 1000), gamestate);
         }
 
         private void OnFieldChange(object sender, EventArgs eventArgs)
