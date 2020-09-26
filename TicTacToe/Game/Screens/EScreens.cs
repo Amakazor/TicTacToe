@@ -2,5 +2,6 @@
 {
     Game,
     Pregame,
-    PlayerSelectionScreen
+    PlayerSelectionScreen,
+    MenuScreen,
 }

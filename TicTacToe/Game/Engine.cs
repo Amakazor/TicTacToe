@@ -31,7 +31,7 @@ namespace TicTacToe.Game
             ShouldRecalculateRenderObjects = true;
 
             Gamestate = new Gamestate();
-            Gamestate.CurrentScreen = new PregameScreen(Gamestate);
+            Gamestate.CurrentScreen = new MenuScreen(Gamestate);
             Gamestate.RecalculateScreenSize(width, height);
 
             RenderObjects = new List<IRenderObject>();
@@ -95,6 +95,9 @@ namespace TicTacToe.Game
                         break;
                     case EScreens.PlayerSelectionScreen:
                         Gamestate.CurrentScreen = new PlayerSelectionScreen(Gamestate);
+                        break;
+                    case EScreens.MenuScreen:
+                        Gamestate.CurrentScreen = new MenuScreen(Gamestate);
                         break;
                     default:
                         throw new Exception();
