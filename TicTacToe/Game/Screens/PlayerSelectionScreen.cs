@@ -12,7 +12,7 @@ namespace TicTacToe.Game.Screens
     {
         List<ActionButton> Buttons;
 
-        public PlayerSelectionScreen(Gamestate gamestate) : base(gamestate, EScreens.PlayerSelectionScreen)
+        public PlayerSelectionScreen(Gamestate gamestate) : base(gamestate, ScreenType.PlayerSelectionScreen)
         {
             Buttons = new List<ActionButton>();
             int i = 0;

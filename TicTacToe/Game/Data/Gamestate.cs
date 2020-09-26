@@ -21,7 +21,7 @@ namespace TicTacToe.Game.Data
 
         public int CurrentPlayer { get; private set; }
         public IScreen CurrentScreen { get; set; }
-        public EScreens PreviousScreen { get; set; }
+        public ScreenType PreviousScreen { get; set; }
 
         public Gamestate()
         {
@@ -33,7 +33,7 @@ namespace TicTacToe.Game.Data
 
             CurrentPlayer = 0;
             CurrentScreen = null;
-            PreviousScreen = EScreens.Pregame;
+            PreviousScreen = ScreenType.Pregame;
 
             MessageBus.Instance.Register(MessageType.ScreenResized, OnResize);
         }

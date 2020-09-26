@@ -9,11 +9,11 @@ namespace TicTacToe.Game.Screens
    abstract class Screen : IScreen
     {
         public Gamestate Gamestate { get; protected set; }
-        public EScreens EScreen { get; protected set; }
+        public ScreenType EScreen { get; protected set; }
         public int ScreenWidth { get; protected set; }
         public int ScreenHeight { get; protected set; }
 
-        public Screen(Gamestate gamestate, EScreens eScreen)
+        public Screen(Gamestate gamestate, ScreenType eScreen)
         {
             Gamestate = gamestate;
             EScreen = eScreen;
@@ -21,7 +21,7 @@ namespace TicTacToe.Game.Screens
 
         public abstract List<IRenderObject> GetRenderData();
 
-        public EScreens GetEScreen()
+        public ScreenType GetEScreen()
         {
             return EScreen;
         }

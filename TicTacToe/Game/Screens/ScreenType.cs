@@ -1,4 +1,4 @@
-﻿public enum EScreens
+﻿public enum ScreenType
 {
     Game,
     Pregame,

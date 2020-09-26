@@ -86,17 +86,17 @@ namespace TicTacToe.Game
 
                 switch (((ChangeScreenEventArgs)eventArgs).Screen)
                 {
-                    case EScreens.Game:
+                    case ScreenType.Game:
                         Gamestate.SetCurrentPlayerToFirstEntry();
                         Gamestate.CurrentScreen = new GameScreen(Gamestate);
                         break;
-                    case EScreens.Pregame:
+                    case ScreenType.Pregame:
                         Gamestate.CurrentScreen = new PregameScreen(Gamestate);
                         break;
-                    case EScreens.PlayerSelectionScreen:
+                    case ScreenType.PlayerSelectionScreen:
                         Gamestate.CurrentScreen = new PlayerSelectionScreen(Gamestate);
                         break;
-                    case EScreens.MenuScreen:
+                    case ScreenType.MenuScreen:
                         Gamestate.CurrentScreen = new MenuScreen(Gamestate);
                         break;
                     default:

@@ -11,7 +11,7 @@ namespace TicTacToe.Game.Screens
     {
         public Board Board { get; private set; }
 
-        public GameScreen(Gamestate gamestate) : base(gamestate, EScreens.Game)
+        public GameScreen(Gamestate gamestate) : base(gamestate, ScreenType.Game)
         {
             MessageBus.Instance.Register(MessageType.FieldChanged, OnFieldChange);
 

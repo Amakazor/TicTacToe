@@ -9,9 +9,9 @@ namespace TicTacToe.Game.Actors.Buttons
 {
     class ScreenChangeButton : Button, IRenderable, IClickable
     {
-        public EScreens Screen { get; }
+        public ScreenType Screen { get; }
 
-        public ScreenChangeButton(Position position, Position relativeTextPosition, Gamestate gamestate, string text, EScreens screen) : base(position, relativeTextPosition, gamestate, text)
+        public ScreenChangeButton(Position position, Position relativeTextPosition, Gamestate gamestate, string text, ScreenType screen) : base(position, relativeTextPosition, gamestate, text)
         {
             Screen = screen;
         }

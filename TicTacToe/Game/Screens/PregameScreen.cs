@@ -17,7 +17,7 @@ namespace TicTacToe.Game.Screens
         private List<ActionButton> BoardSizeButtons { get; set; }
         private ScreenChangeButton StartButton { get; set; }
 
-        public PregameScreen(Gamestate gamestate) : base(gamestate, EScreens.Pregame)
+        public PregameScreen(Gamestate gamestate) : base(gamestate, ScreenType.Pregame)
         {
             PlayerButtons = new List<ScreenChangeButton>();
             PreparePlayerButtons();
@@ -28,7 +28,7 @@ namespace TicTacToe.Game.Screens
             BoardSizeButtons = new List<ActionButton>();
             PrepareBoardSizeButtons();
 
-            StartButton = new ScreenChangeButton(new Position(0, 220, 100, 100), new Position(20, 20, 0, 60), gamestate, "S", EScreens.Game);
+            StartButton = new ScreenChangeButton(new Position(0, 220, 100, 100), new Position(20, 20, 0, 60), gamestate, "S", ScreenType.Game);
         }
 
         public override List<IRenderObject> GetRenderData()
@@ -69,7 +69,7 @@ namespace TicTacToe.Game.Screens
             {
                 for (int playersToSelect = selectedPlayersAmount; playersToSelect < 2; playersToSelect++)
                 {
-                    PlayerButtons.Add(new ScreenChangeButton(new Position(0, playersToSelect * 110, 100, 100), new Position(30, 10, 0, 60), Gamestate, "P", EScreens.PlayerSelectionScreen));
+                    PlayerButtons.Add(new ScreenChangeButton(new Position(0, playersToSelect * 110, 100, 100), new Position(30, 10, 0, 60), Gamestate, "P", ScreenType.PlayerSelectionScreen));
                 }
             }
         }

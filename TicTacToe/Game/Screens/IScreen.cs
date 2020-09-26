@@ -8,6 +8,6 @@ namespace TicTacToe.Game.Screens
     public interface IScreen
     {
         public List<IRenderObject> GetRenderData();
-        public EScreens GetEScreen();
+        public ScreenType GetEScreen();
     }
 }
