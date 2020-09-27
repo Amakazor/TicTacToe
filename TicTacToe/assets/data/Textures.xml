@@ -2,4 +2,5 @@
 <textures>
   <texture symbol="X" location="assets/textures/symbols/x.png"></texture>
   <texture symbol="O" location="assets/textures/symbols/o.png"></texture>
+  <texture symbol="BG" location="assets/textures/background/bg.png"></texture>
 </textures>

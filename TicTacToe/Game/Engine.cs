@@ -37,7 +37,7 @@ namespace TicTacToe.Game
             RenderObjects = new List<IRenderObject>();
             InputHandler = new InputHandler(RenderObjects);
 
-            Gui = new Gui(GameTitle, width, height);
+            Gui = new Gui(GameTitle, width, height, Gamestate);
             Gui.SetInputHandlers(InputHandler.OnClick);
             Gui.SetResizeHandler(InputHandler.OnResize);
 
@@ -49,13 +49,19 @@ namespace TicTacToe.Game
 
         public void Loop()
         {
+            DateTime time1 = DateTime.Now;
+            DateTime time2 = DateTime.Now;
+
             while (Gui.Window.IsOpen && !ShouldQuit)
             {
-                Tick();
+                time2 = DateTime.Now;
+                float deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
+                Tick(deltaTime);
+                time1 = time2;
             }
         }
 
-        public void Tick()
+        public void Tick(float deltaTime)
         {
             if (ShouldRecalculateRenderObjects)
             {
@@ -64,12 +70,12 @@ namespace TicTacToe.Game
                 ShouldRecalculateRenderObjects = false;
             }
 
-            Render(RenderObjects);
+            Render(RenderObjects, deltaTime);
         }
 
-        public void Render(List<IRenderObject> RenderObjects)
+        public void Render(List<IRenderObject> RenderObjects, float deltaTime)
         {
-            Gui.Render(RenderObjects);
+            Gui.Render(RenderObjects, deltaTime);
         }
 
         public void OnRecalculate(object sender, EventArgs eventArgs)
