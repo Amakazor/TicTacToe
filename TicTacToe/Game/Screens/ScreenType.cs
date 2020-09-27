@@ -4,5 +4,6 @@
     Pregame,
     PlayerSelectionScreen,
     MenuScreen,
-    Results
+    Results,
+    Players
 }

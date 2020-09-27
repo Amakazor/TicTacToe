@@ -102,6 +102,14 @@ namespace TicTacToe.Game.Data
             }
         }
 
+        public void RemovePlayerFromGame(int Index)
+        {
+            if (PlayersInGame.Count >= Index+1)
+            {
+                PlayersInGame.RemoveAt(Index);
+            }
+        }
+
         public Player GetPlayerByPlayersInGameIndex(int index)
         {
             return Players[PlayersInGame[index]];

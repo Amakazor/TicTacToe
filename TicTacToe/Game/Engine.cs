@@ -108,6 +108,9 @@ namespace TicTacToe.Game
                     case ScreenType.Results:
                         Gamestate.CurrentScreen = new ResultsScreen(Gamestate);
                         break;
+                    case ScreenType.Players:
+                        Gamestate.CurrentScreen = new PlayersScreen(Gamestate);
+                        break;
                     default:
                         throw new Exception();
                 }
