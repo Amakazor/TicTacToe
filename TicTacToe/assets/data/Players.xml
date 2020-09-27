@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <players>
-  <player id="1" name="Arek" symbol="X" r="255" g="0" b="0"></player>
-  <player id="2" name="Arek" symbol="X" r="0" g="255" b="255"></player>
+  <player id="1" name="Guest1" symbol="X" r="255" g="0" b="0"></player>
+  <player id="2" name="Guest2" symbol="O" r="0" g="255" b="255"></player>
 </players>
