@@ -79,7 +79,7 @@ namespace TicTacToe.Game.Actors
                     if (!Fields[column][row].Equals(Fields[column][0]))
                     {
                         isBad = true;
-                        break;
+                        continue;
                     }
                 }
 
@@ -106,7 +106,7 @@ namespace TicTacToe.Game.Actors
                     if (!Fields[column][row].Equals(Fields[0][row]))
                     {
                         isBad = true;
-                        break;
+                        continue;
                     }
                 }
 
@@ -165,7 +165,7 @@ namespace TicTacToe.Game.Actors
                 }
             }
 
-            return hasEmptyField ? Boardstate.NotResolved : Boardstate.Won;
+            return hasEmptyField ? Boardstate.NotResolved : Boardstate.Draw;
         }
     }
 }
