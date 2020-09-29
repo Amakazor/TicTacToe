@@ -7,8 +7,8 @@ namespace TicTacToe.Game.Actors
 {
     class TextBox : Actor, IRenderable
     {
-        private string Text;
-        private Position RelativeTextPosition;
+        protected string Text;
+        protected Position RelativeTextPosition;
 
         public TextBox(Position position, Position relativeTextPosition, Gamestate gamestate, string text) : base(position, gamestate)
         {
