@@ -1,6 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <textures>
-  <texture symbol="X" location="assets/textures/symbols/x.png"></texture>
-  <texture symbol="O" location="assets/textures/symbols/o.png"></texture>
-  <texture symbol="BG" location="assets/textures/background/bg.png"></texture>
+  <texture type="symbol" name="X" location="assets/textures/symbols/x.png"></texture>
+  <texture type="symbol" name="O" location="assets/textures/symbols/o.png"></texture>
+  <texture type="symbol" name="S" location="assets/textures/symbols/s.png"></texture>
+  <texture type="symbol" name="T" location="assets/textures/symbols/t.png"></texture>
+  <texture type="symbol" name="U" location="assets/textures/symbols/u.png"></texture>
+  <texture type="symbol" name="H" location="assets/textures/symbols/h.png"></texture>
+  <texture type="symbol" name="N" location="assets/textures/symbols/n.png"></texture>
+  <texture type="symbol" name="R" location="assets/textures/symbols/r.png"></texture>
+
+  <texture type="background" name="BG" location="assets/textures/background/bg.png"></texture>
 </textures>
