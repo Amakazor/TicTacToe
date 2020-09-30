@@ -20,7 +20,7 @@ namespace TicTacToe.Game.Screens
             {
                 case 0:
                     Actors.Add(new ScreenChangeButton(new Position(25, 50, 450, 100), new Position(50, 30, 0, 30), Gamestate, "Select player", ScreenType.PlayerSelectionScreen));
-                    Actors.Add(new ScreenChangeButton(new Position(525, 50, 450, 100), new Position(50, 30, 0, 30), Gamestate, "Create player", ScreenType.PlayerSelectionScreen));
+                    Actors.Add(new ScreenChangeButton(new Position(525, 50, 450, 100), new Position(50, 30, 0, 30), Gamestate, "Create player", ScreenType.NewPlayer));
                     break;
                 case 1:
                     Actors.Add(new ActionButton(new Position(25, 50, 450, 100), new Position(50, 30, 0, 30), Gamestate, Gamestate.GetPlayerByPlayersInGameIndex(0).Nickname, (_) => { Gamestate.RemovePlayerFromGame(0); MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.PlayerSelectionScreen }); }));

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TicTacToe.Utility
+namespace TicTacToe.Game.Events
 {
     public enum MessageType
     {
@@ -11,6 +11,8 @@ namespace TicTacToe.Utility
         ChangeScreen,
         PreviousScreen,
         ScreenResized,
+        LoseFocus,
+        Input
     }
 
     public class MessageBus
@@ -50,6 +52,8 @@ namespace TicTacToe.Utility
                     Listeners[dataToUnregister.Item1].Remove(dataToUnregister.Item2);
                 }
             }
+
+            ToUnregister.Clear();
         }
 
         public void PostEvent(MessageType messageType, object sender, EventArgs eventArgs)

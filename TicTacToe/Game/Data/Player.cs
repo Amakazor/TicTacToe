@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using System;
+using System.Text;
 using TicTacToe.Game.Actors;
 using TicTacToe.Utility;
 
@@ -7,8 +8,8 @@ namespace TicTacToe.Game.Data
 {
     class Player
     {
-        public string Nickname { get; private set; }
-        public Gamestate Gamestate { get; private set; }
+        public string Nickname { get; set; }
+        public Gamestate Gamestate { get; set; }
         public SymbolData SymbolData;
 
         public Player(string nickname, Texture texture, Color color, Gamestate gamestate)
@@ -29,6 +30,8 @@ namespace TicTacToe.Game.Data
             Gamestate = gamestate;
         }
 
+        public Player() {}
+
         public Symbol GetSymbol()
         {
             return new Symbol(SymbolData, Gamestate);
@@ -37,6 +40,23 @@ namespace TicTacToe.Game.Data
         public Symbol GetSymbol(Position position)
         {
             return new Symbol(SymbolData, position, Gamestate);
+        }
+
+        public string SerializeToXML(int id)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("\t" + " <player>" + '\n');
+                sb.Append("\t\t" + "<id>" + id + "</id>" + '\n');
+                sb.Append("\t\t" + "<name>" + Nickname + "</name>" + '\n');
+                sb.Append("\t\t" + "<symbol>" + Gamestate.TextureAtlas.GetNameFromTexture(TextureType.Symbol, SymbolData.texture) + "</symbol>" + '\n');
+                sb.Append("\t\t" + "<color>" + '\n');
+                    sb.Append("\t\t\t" + "<r>" + SymbolData.color.R + "</r>" + '\n');
+                    sb.Append("\t\t\t" + "<g>" + SymbolData.color.G + "</g>" + '\n');
+                    sb.Append("\t\t\t" + "<b>" + SymbolData.color.B + "</b>" + '\n');
+                sb.Append("\t\t" + "</color>" + '\n');
+            sb.Append("\t" + "</player>" + '\n');
+
+            return sb.ToString();
         }
     }
 }

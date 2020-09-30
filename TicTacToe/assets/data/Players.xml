@@ -1,5 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <players>
-  <player id="1" name="Guest1" symbol="X" r="255" g="0" b="0"></player>
-  <player id="2" name="Guest2" symbol="O" r="0" g="255" b="255"></player>
+  <player>
+    <id>1</id>
+    <name>Guest1</name>
+    <symbol>X</symbol>
+    <color>
+      <r>255</r>
+      <g>0</g>
+      <b>0</b>
+    </color>
+  </player>
+  <player>
+    <id>2</id>
+    <name>Guest2</name>
+    <symbol>O</symbol>
+    <color>
+      <r>0</r>
+      <g>255</g>
+      <b>255</b>
+    </color>
+  </player>
 </players>

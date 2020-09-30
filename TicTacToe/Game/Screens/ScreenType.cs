@@ -5,5 +5,6 @@
     PlayerSelectionScreen,
     MenuScreen,
     Results,
-    Players
+    Players,
+    NewPlayer
 }

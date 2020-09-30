@@ -22,6 +22,7 @@ namespace TicTacToe.Game.Events
 
         public void OnClick(object sender, MouseButtonEventArgs e)
         {
+            MessageBus.Instance.PostEvent(MessageType.LoseFocus, sender, e);
             foreach(IRenderObject renderObject in RenderObjects)
             {
                 if (renderObject.GetActor() is IClickable && renderObject.IsPointInside(e.X, e.Y))
@@ -34,6 +35,11 @@ namespace TicTacToe.Game.Events
         public void OnResize(object sender, SizeEventArgs e)
         {
             MessageBus.Instance.PostEvent(MessageType.ScreenResized, sender, e);
+        }
+
+        public void OnInput(object sender, TextEventArgs e)
+        {
+            MessageBus.Instance.PostEvent(MessageType.Input, sender, e);
         }
     }
 }

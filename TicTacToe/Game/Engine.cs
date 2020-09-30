@@ -40,6 +40,7 @@ namespace TicTacToe.Game
             Gui = new Gui(GameTitle, width, height, Gamestate);
             Gui.SetInputHandlers(InputHandler.OnClick);
             Gui.SetResizeHandler(InputHandler.OnResize);
+            Gui.SetInputHandlers(InputHandler.OnInput);
 
             MessageBus.Instance.Register(MessageType.Recalculate, OnRecalculate);
             MessageBus.Instance.Register(MessageType.PreviousScreen, OnPreviousScreen);
@@ -110,6 +111,9 @@ namespace TicTacToe.Game
                         break;
                     case ScreenType.Players:
                         Gamestate.CurrentScreen = new PlayersScreen(Gamestate);
+                        break;
+                    case ScreenType.NewPlayer:
+                        Gamestate.CurrentScreen = new NewPlayerScreen(Gamestate);
                         break;
                     default:
                         throw new Exception();

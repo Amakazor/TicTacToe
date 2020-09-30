@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SFML.Window;
 using TicTacToe.Game.Data;
+using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 

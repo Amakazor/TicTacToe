@@ -15,7 +15,7 @@ namespace TicTacToe.Game.Actors
     class Symbol : Actor
     {
         public Texture Texture { get; }
-        public Color Color { get; }
+        public Color Color { get; set; }
 
         public Symbol(SymbolData symbolData, Gamestate gamestate) : this(symbolData.texture, symbolData.color, gamestate) { }
         public Symbol(SymbolData symbolData, Position position, Gamestate gamestate) : this(symbolData.texture, symbolData.color, position, gamestate) { }

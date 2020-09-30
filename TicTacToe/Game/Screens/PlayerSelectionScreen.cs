@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using TicTacToe.Game.Actors.Buttons;
 using TicTacToe.Game.Data;
+using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
@@ -16,7 +17,7 @@ namespace TicTacToe.Game.Screens
         {
             Buttons = new List<ActionButton>();
             int i = 0;
-            foreach(int PlayerID in Gamestate.Players.Keys)
+            foreach(int PlayerID in Gamestate.PlayersManager.Players.Keys)
             {
                 if (!gamestate.PlayersInGame.Contains(PlayerID))
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SFML.Window;
 using TicTacToe.Game.Data;
+using TicTacToe.Game.Events;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Buttons
@@ -18,6 +19,7 @@ namespace TicTacToe.Game.Actors.Buttons
         public override void OnClick(MouseButtonEventArgs args)
         {
             Gamestate.NewPlayer.SymbolData.texture = Symbol.Texture;
+            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
     }
 }

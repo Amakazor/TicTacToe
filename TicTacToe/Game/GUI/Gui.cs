@@ -4,6 +4,7 @@ using SFML.Graphics;
 using SFML.Graphics.Glsl;
 using SFML.Window;
 using TicTacToe.Game.Data;
+using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
@@ -39,7 +40,7 @@ namespace TicTacToe.Game.GUI
         {
             Window.DispatchEvents();
             Window.Clear(Color.White);
-            Time = Time + deltaTime > 32 ? Time - 32 + deltaTime : Time + deltaTime;
+            Time = Time + deltaTime > 320 ? Time - 320 + deltaTime : Time + deltaTime;
 
             Shader shader = new Shader(null, null, "assets/shaders/scroll.glsl");
             shader.SetUniform("texture", Shader.CurrentTexture);
@@ -65,6 +66,11 @@ namespace TicTacToe.Game.GUI
             Window.Resized += resizeHandler;
         }
 
+        public void SetInputHandlers(EventHandler<TextEventArgs> textHandler)
+        {
+            Window.TextEntered += textHandler;
+        }
+
         private void ResizeWindow(object sender, EventArgs sizeEventArgs)
         {
             if (sizeEventArgs is SizeEventArgs)
@@ -81,7 +87,7 @@ namespace TicTacToe.Game.GUI
 
         private void AddBackground(uint width, uint height)
         {
-            Background = new RenderBackground(0, 0, (int)width, (int)height, Gamestate.TextureAtlas.TexturesDictionary["BG"]);
+            Background = new RenderBackground(0, 0, (int)width, (int)height, Gamestate.TextureAtlas.TexturesDictionary[TextureType.Background]["BG"]);
         }
     }
 }

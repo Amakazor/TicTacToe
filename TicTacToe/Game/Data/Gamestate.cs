@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SFML.Window;
 using TicTacToe.Game.Actors;
+using TicTacToe.Game.Events;
 using TicTacToe.Game.Screens;
 using TicTacToe.Utility;
 using static TicTacToe.Utility.Utility;
@@ -13,7 +14,7 @@ namespace TicTacToe.Game.Data
         public ScreenSize ScreenSize { get; private set; }
 
         public Textures TextureAtlas { get; private set; }
-        public Dictionary<int, Player> Players { get; private set; }
+        public PlayersManager PlayersManager { get; private set; }
 
         public int BoardSize { get; set; }
         public List<int> PlayersInGame { get; private set; }
@@ -23,10 +24,12 @@ namespace TicTacToe.Game.Data
         public Screen CurrentScreen { get; set; }
         public ScreenType PreviousScreen { get; set; }
 
+        public Player NewPlayer { get; set; }
+
         public Gamestate()
         {
             TextureAtlas = new Textures();
-            Players = PlayersLoader.LoadPlayers(TextureAtlas, this);
+            PlayersManager = new PlayersManager(TextureAtlas, this);
 
             BoardSize = 0;
             PlayersInGame = new List<int>();
@@ -49,7 +52,7 @@ namespace TicTacToe.Game.Data
 
         public void SetPlayersInGame(List<int> playerIDs)
         {
-            if (playerIDs.Count == 2 && Players.ContainsKey(playerIDs[0]) && Players.ContainsKey(playerIDs[1]))
+            if (playerIDs.Count == 2 && PlayersManager.Players.ContainsKey(playerIDs[0]) && PlayersManager.Players.ContainsKey(playerIDs[1]))
             {
                 PlayersInGame = playerIDs;
             }
@@ -77,9 +80,9 @@ namespace TicTacToe.Game.Data
 
         public Player GetPlayerByID(int playerID)
         {
-            if (Players.ContainsKey(playerID))
+            if (PlayersManager.Players.ContainsKey(playerID))
             {
-                return Players[playerID];
+                return PlayersManager.Players[playerID];
             }
             else throw new ArgumentException("Player with id " + playerID + " doesn't exist", "id");
         }
@@ -96,7 +99,7 @@ namespace TicTacToe.Game.Data
 
         public void AddPlayerToGame(int PlayerID)
         {
-            if (Players.ContainsKey(PlayerID))
+            if (PlayersManager.Players.ContainsKey(PlayerID))
             {
                 PlayersInGame.Add(PlayerID);
             }
@@ -112,7 +115,7 @@ namespace TicTacToe.Game.Data
 
         public Player GetPlayerByPlayersInGameIndex(int index)
         {
-            return Players[PlayersInGame[index]];
+            return PlayersManager.Players[PlayersInGame[index]];
         }
 
         public void SetCurrentPlayerToFirstEntry()
@@ -163,9 +166,18 @@ namespace TicTacToe.Game.Data
         public void Clear()
         {
             CurrentPlayer = 0;
-            PlayersInGame.Clear();
+            ClearPlayersInGame();
             boardstate = Boardstate.NotResolved;
             BoardSize = 0;
+        }
+        public bool ValidateNewPlayer()
+        {
+            return (NewPlayer.SymbolData.texture != null && NewPlayer.Nickname.Length >= 4 && NewPlayer.Nickname.Length <= 30);
+        }
+
+        public int SaveNewPlayer()
+        {
+            return PlayersManager.AddAndSavePlayer(NewPlayer);
         }
     }
 }
