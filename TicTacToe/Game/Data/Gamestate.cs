@@ -13,7 +13,7 @@ namespace TicTacToe.Game.Data
     {
         public ScreenSize ScreenSize { get; private set; }
 
-        public Textures TextureAtlas { get; private set; }
+        public TextureManager TextureAtlas { get; private set; }
         public PlayersManager PlayersManager { get; private set; }
 
         public int BoardSize { get; set; }
@@ -28,7 +28,7 @@ namespace TicTacToe.Game.Data
 
         public Gamestate()
         {
-            TextureAtlas = new Textures();
+            TextureAtlas = new TextureManager();
             PlayersManager = new PlayersManager(TextureAtlas, this);
 
             BoardSize = 0;

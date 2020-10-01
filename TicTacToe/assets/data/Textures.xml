@@ -1,13 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <textures>
-  <texture type="symbol" name="X" location="assets/textures/symbols/x.png"></texture>
-  <texture type="symbol" name="O" location="assets/textures/symbols/o.png"></texture>
-  <texture type="symbol" name="S" location="assets/textures/symbols/s.png"></texture>
-  <texture type="symbol" name="T" location="assets/textures/symbols/t.png"></texture>
-  <texture type="symbol" name="U" location="assets/textures/symbols/u.png"></texture>
-  <texture type="symbol" name="H" location="assets/textures/symbols/h.png"></texture>
-  <texture type="symbol" name="N" location="assets/textures/symbols/n.png"></texture>
-  <texture type="symbol" name="R" location="assets/textures/symbols/r.png"></texture>
-
-  <texture type="background" name="BG" location="assets/textures/background/bg.png"></texture>
+  <texture>
+    <type>symbol</type>
+    <name>X</name>
+    <location>assets/textures/symbols/x.png</location>
+  </texture>
+  <texture>
+    <type>symbol</type>
+    <name>O</name>
+    <location>assets/textures/symbols/o.png</location>
+  </texture>
+  <texture>
+    <type>symbol</type>
+    <name>S</name>
+    <location>assets/textures/symbols/s.png</location>
+  </texture>
+  <texture>
+    <type>symbol</type>
+    <name>T</name>
+    <location>assets/textures/symbols/t.png</location>
+  </texture>
+  <texture>
+    <type>symbol</type>
+    <name>U</name>
+    <location>assets/textures/symbols/u.png</location>
+  </texture>
+  <texture>
+    <type>symbol</type>
+    <name>H</name>
+    <location>assets/textures/symbols/h.png</location>
+  </texture>
+  <texture>
+    <type>symbol</type>
+    <name>N</name>
+    <location>assets/textures/symbols/n.png</location>
+  </texture>
+  <texture>
+    <type>symbol</type>
+    <name>R</name>
+    <location>assets/textures/symbols/r.png</location>
+  </texture>
+  
+  <texture>
+    <type>background</type>
+    <name>BG</name>
+    <location>assets/textures/background/bg.png</location>
+  </texture>
 </textures>

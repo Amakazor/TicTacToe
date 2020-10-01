@@ -14,10 +14,10 @@ namespace TicTacToe.Game.Data
     {
         public Dictionary<int, Player> Players { get; private set; }
 
-        private Textures TextureAtlas { get; }
+        private TextureManager TextureAtlas { get; }
         private Gamestate Gamestate { get; }
 
-        public PlayersManager(Textures textureAtlas, Gamestate gamestate)
+        public PlayersManager(TextureManager textureAtlas, Gamestate gamestate)
         {
             TextureAtlas = textureAtlas;
             Gamestate = gamestate;
