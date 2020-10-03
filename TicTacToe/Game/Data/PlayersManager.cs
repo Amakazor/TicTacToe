@@ -38,8 +38,8 @@ namespace TicTacToe.Game.Data
                            Texture = TextureAtlas.TexturesDictionary[TextureType.Symbol][player.Element("symbol").Value],
                            Color = new Color(
                                byte.Parse(player.Element("color").Element("r").Value), 
-                               byte.Parse(player.Element("color").Element("r").Value), 
-                               byte.Parse(player.Element("color").Element("r").Value)
+                               byte.Parse(player.Element("color").Element("g").Value), 
+                               byte.Parse(player.Element("color").Element("b").Value)
                             )
                        }).ToDictionary( o => o.Id, o => new Player(o.Name, o.Texture, o.Color, Gamestate));
         }
