@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statistics>
+  <match>
+    <player1>1</player1>
+    <player2>2</player2>
+    <result>1</result>
+  </match>
+  <match>
+    <player1>1</player1>
+    <player2>2</player2>
+    <result>2</result>
+  </match>
+  <match>
+    <player1>1</player1>
+    <player2>2</player2>
+    <result>2</result>
+  </match>
+  <match>
+    <player1>1</player1>
+    <player2>2</player2>
+    <result>2</result>
+  </match>
+  <match>
+    <player1>1</player1>
+    <player2>2</player2>
+    <result>0</result>
+  </match>
+</statistics>
