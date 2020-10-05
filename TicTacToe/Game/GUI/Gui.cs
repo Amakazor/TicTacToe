@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.Graphics.Glsl;
 using SFML.Window;
+using TicTacToe.Game.Actors;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;
@@ -17,8 +18,8 @@ namespace TicTacToe.Game.GUI
         public uint Width { get; set; }
         public uint Height { get; set; }
         public Gamestate Gamestate { get; private set; }
-
         public float Time;
+        public Frame Frame { get; private set; }
 
         public Gui(string gameTitle, uint width, uint height, Gamestate gamestate)
         {
@@ -34,6 +35,8 @@ namespace TicTacToe.Game.GUI
             MessageBus.Instance.Register(MessageType.ScreenResized, ResizeWindow);
 
             AddBackground(width, height);
+
+            Frame = new Frame(Gamestate.TextureAtlas.TexturesDictionary[TextureType.Background]["FR"], new Position(0, 0, 1000, 1000), Gamestate);
         }
 
         public void Render(List<IRenderObject> RenderObjects, float deltaTime)
@@ -48,6 +51,9 @@ namespace TicTacToe.Game.GUI
             shader.SetUniform("time", Time);
 
             Window.Draw((Drawable)Background.GetShape(), new RenderStates(shader));
+            Frame.GetRenderObjects().ForEach(renderObject => { 
+                Window.Draw((Drawable)renderObject.GetShape()); 
+            });
 
             RenderObjects.ForEach((IRenderObject renderObject) => {
                 Window.Draw((Drawable)renderObject.GetShape());
@@ -79,7 +85,6 @@ namespace TicTacToe.Game.GUI
                 Width = ((SizeEventArgs)sizeEventArgs).Width;
                 Height = ((SizeEventArgs)sizeEventArgs).Height;
 
-                uint smallerSize = ((SizeEventArgs)sizeEventArgs).Width > ((SizeEventArgs)sizeEventArgs).Height ? ((SizeEventArgs)sizeEventArgs).Height : ((SizeEventArgs)sizeEventArgs).Width;
                 Background.SetSize(0, 0, (int)((SizeEventArgs)sizeEventArgs).Width, (int)((SizeEventArgs)sizeEventArgs).Height);
             }
             else throw new ArgumentException("Wrong EventArgs given", "sizeEventArgs");

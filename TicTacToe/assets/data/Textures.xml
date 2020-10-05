@@ -46,4 +46,10 @@
     <name>BG</name>
     <location>assets/textures/background/bg.png</location>
   </texture>
+  
+  <texture>
+    <type>background</type>
+    <name>FR</name>
+    <location>assets/textures/background/frame.png</location>
+  </texture>
 </textures>
