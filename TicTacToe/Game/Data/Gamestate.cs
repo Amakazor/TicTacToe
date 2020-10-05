@@ -15,6 +15,7 @@ namespace TicTacToe.Game.Data
 
         public TextureManager TextureAtlas { get; private set; }
         public PlayersManager PlayersManager { get; private set; }
+        public StatisticsManager StatisticsManager { get; private set; }
 
         public int BoardSize { get; set; }
         public List<int> PlayersInGame { get; private set; }
@@ -30,6 +31,7 @@ namespace TicTacToe.Game.Data
         {
             TextureAtlas = new TextureManager();
             PlayersManager = new PlayersManager(TextureAtlas, this);
+            StatisticsManager = new StatisticsManager();
 
             BoardSize = 0;
             PlayersInGame = new List<int>();
