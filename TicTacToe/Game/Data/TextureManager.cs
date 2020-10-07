@@ -37,7 +37,7 @@ namespace TicTacToe.Game.Data
                                                    select new {
                                                        symbol = texture.Element("name").Value,
                                                        location = texture.Element("location").Value
-                                                   }).ToDictionary(o => o.symbol, o => new Texture(o.location));
+                                                   }).ToDictionary(o => o.symbol, o => new Texture(o.location) {Smooth = true });
             }
 
         }

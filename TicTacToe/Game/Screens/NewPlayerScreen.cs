@@ -24,11 +24,11 @@ namespace TicTacToe.Game.Screens
             Gamestate.NewPlayer = new Player("", null, new Color(127, 127, 127), Gamestate);
 
             Actors = new List<Actor>();
-            Actors.Add(new Input(new Position(25, 25, 950, 100), new Position(50, 30, 0, 30), Gamestate, "Enter players name (4 to 30 characters):", HandleNameChange, 0));
-            Actors.Add(new Input(new Position(775, 140, 200, 50), new Position(50, 5, 0, 30), Gamestate, Gamestate.NewPlayer.SymbolData.color.R.ToString(), HandleColorChange, 1));
-            Actors.Add(new Input(new Position(775, 205, 200, 50), new Position(50, 5, 0, 30), Gamestate, Gamestate.NewPlayer.SymbolData.color.G.ToString(), HandleColorChange, 2));
-            Actors.Add(new Input(new Position(775, 270, 200, 50), new Position(50, 5, 0, 30), Gamestate, Gamestate.NewPlayer.SymbolData.color.B.ToString(), HandleColorChange, 3));
-            
+            Actors.Add(new TextInput(new Position(25, 25, 950, 100), new Position(50, 30, 0, 30), Gamestate, "Enter players name (4 to 30 characters):", HandleNameChange, 0));
+            Actors.Add(new RangeInput(new Position(50, 140, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.R, byte.MinValue, byte.MaxValue, Color.Red, HandleColorChange, 1));
+            Actors.Add(new RangeInput(new Position(50, 205, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.G, byte.MinValue, byte.MaxValue, Color.Green, HandleColorChange, 2));
+            Actors.Add(new RangeInput(new Position(50, 270, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.B, byte.MinValue, byte.MaxValue, Color.Blue, HandleColorChange, 3));
+
             Symbols = new List<Symbol>();
             if (Gamestate.TextureAtlas.TexturesDictionary.ContainsKey(TextureType.Symbol))
             {
@@ -73,7 +73,7 @@ namespace TicTacToe.Game.Screens
             return renderObjects;
         }
 
-        private void HandleNameChange(Input input, TextEventArgs textEventArgs)
+        private void HandleNameChange(TextInput input, TextEventArgs textEventArgs)
         {
             if (textEventArgs.Unicode == "\b" && Gamestate.NewPlayer.Nickname.Length != 0)
             {
@@ -87,25 +87,19 @@ namespace TicTacToe.Game.Screens
             input.ChangeText(Gamestate.NewPlayer.Nickname);
         }
 
-        private void HandleColorChange(Input input, TextEventArgs textEventArgs)
+        private void HandleColorChange(RangeInput input, int value)
         {
             Color currentColor = Gamestate.NewPlayer.SymbolData.color;
             switch (input.Id)
             {
                 case 1:
-                    currentColor = new Color(HandleColorComponentChange(currentColor.R, textEventArgs.Unicode), currentColor.G, currentColor.B);
-                    Gamestate.NewPlayer.SymbolData.color = currentColor;
-                    input.ChangeText(Gamestate.NewPlayer.SymbolData.color.R.ToString());
+                    currentColor = new Color((byte)value, currentColor.G, currentColor.B);
                     break;
                 case 2:
-                    currentColor = new Color(currentColor.R, HandleColorComponentChange(currentColor.G, textEventArgs.Unicode), currentColor.B);
-                    Gamestate.NewPlayer.SymbolData.color = currentColor;
-                    input.ChangeText(Gamestate.NewPlayer.SymbolData.color.G.ToString());
+                    currentColor = new Color(currentColor.R, (byte)value, currentColor.B);
                     break;
                 case 3:
-                    currentColor = new Color(currentColor.R, currentColor.G, HandleColorComponentChange(currentColor.B, textEventArgs.Unicode));
-                    Gamestate.NewPlayer.SymbolData.color = currentColor;
-                    input.ChangeText(Gamestate.NewPlayer.SymbolData.color.B.ToString());
+                    currentColor = new Color(currentColor.R, currentColor.G, (byte)value);
                     break;
             }
 
@@ -113,24 +107,9 @@ namespace TicTacToe.Game.Screens
             {
                 symbol.Color = currentColor;
             }
-            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
-        }
 
-        private byte HandleColorComponentChange(byte currentValue, string characterInput)
-        {
-            if (new Regex("^[0-9]$", RegexOptions.Compiled).IsMatch(characterInput) && currentValue < 100)
-            {
-                int newValue = currentValue * 10 + int.Parse(characterInput);
-                return newValue <= 255 ? (byte)newValue : (byte)255;
-            }
-            else if (characterInput == "\b" && currentValue > 0)
-            {
-                return (byte)(currentValue / 10);
-            }
-            else
-            {
-                return currentValue;
-            }
+            Gamestate.NewPlayer.SymbolData.color = currentColor;
+            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
 
         private void SaveNewPlayer (MouseButtonEventArgs mouseButtonEventArgs)

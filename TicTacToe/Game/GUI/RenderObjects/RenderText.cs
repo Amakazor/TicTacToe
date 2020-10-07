@@ -10,10 +10,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
 {
     class RenderText : IRenderObject
     {
-        public int PositionX { get; protected set; }
-        public int PositionY { get; protected set; }
-        public float ScaleX { get; protected set; }
-        public float FontSize { get; protected set; }
+        protected Position Position;
         public string Text { get; protected set; }
         protected IRenderable Actor { get; set; }
 
@@ -21,35 +18,26 @@ namespace TicTacToe.Game.GUI.RenderObjects
 
         private Color Color { get; set; }
 
-        public RenderText(Position position, IRenderable actor, String text) : this(position, actor, Color.Black, text) { }
-
-        public RenderText(Position position, IRenderable actor, Color color, String text) : this(position.X, position.Y, position.Width, position.Height, actor, color, text) { }
-
-        public RenderText(IRenderable actor, Color color, String text) : this(0, 0, 0, 0, actor, color, text) { }
-
-        public RenderText(int positionX, int positionY, int width, int fontHeight, IRenderable actor, Color color, string text)
+        public RenderText(Position position, IRenderable actor, string text) : this(position, actor, Color.Black, text) { }
+        public RenderText(IRenderable actor, Color color, string text) : this(new Position(), actor, color, text) { }
+        public RenderText(Position position, IRenderable actor, Color color, string text)
         {
-            PositionX = positionX;
-            PositionY = positionY;
+            Position = position;
             Actor = actor;
             Color = color;
             Text = text;
             Font = new Font("assets/fonts/Lato-Regular.ttf");
 
-            if (fontHeight != 0)
+            if (Position.Height <= 1)
             {
-                SetFontSize(fontHeight);
-            }
-            else
-            {
-                FontSize = 1;
+                Position.Height = 1;
             }
         }
 
 
         public void SetFontSize(int height)
         {
-            FontSize = (float)height;
+            
         }
 
         public IRenderable GetActor()
@@ -59,9 +47,9 @@ namespace TicTacToe.Game.GUI.RenderObjects
 
         public Transformable GetShape()
         {
-            Text text = new Text(Text, Font, (uint)FontSize)
+            Text text = new Text(Text, Font, (uint)Position.Height)
             {
-                Position = new Vector2f(PositionX, PositionY),
+                Position = new Vector2f(Position.X, Position.Y),
                 FillColor = Color,
             };
             return text;
@@ -72,11 +60,14 @@ namespace TicTacToe.Game.GUI.RenderObjects
             return false;
         }
 
-        public void SetSize(int positionX, int positionY, int width, int height)
+        public void SetSize(int width, int height)
         {
-            PositionX = positionX;
-            PositionY = positionY;
             SetFontSize(height);
+        }
+
+        public void SetPosition(Position position)
+        {
+            Position = position;
         }
     }
 }

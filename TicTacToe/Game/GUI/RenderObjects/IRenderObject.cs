@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using TicTacToe.Game.Actors;
+using TicTacToe.Utility;
 
 namespace TicTacToe.Game.GUI.RenderObjects
 {
@@ -9,7 +10,9 @@ namespace TicTacToe.Game.GUI.RenderObjects
 
         public Transformable GetShape();
 
-        public void SetSize(int positionX, int positionY, int width, int height);
+        public void SetSize(int width, int height);
+
+        public void SetPosition(Position position);
 
         public bool IsPointInside(int x, int y);
     }

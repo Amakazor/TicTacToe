@@ -5,7 +5,7 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors
 {
-    class TextBox : Actor, IRenderable
+    class TextBox : Actor, IRenderable, ITextContainer
     {
         protected string Text;
         protected Position RelativeTextPosition;
@@ -20,20 +20,15 @@ namespace TicTacToe.Game.Actors
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>
             {
-                new RenderRectangle(CalculatePosition(Position), this)
+                new RenderRectangle(CalculateScreenSpacePosition(Position), this)
             };
 
             if (Text.Length > 0)
             {
-                renderObjects.Add(new RenderText(CalculatePosition(CalculateTextPosition()), this, Text));
+                renderObjects.Add(new RenderText(CalculateScreenSpacePosition(((ITextContainer)this).CalculateTextPosition(Position, RelativeTextPosition)), this, Text));
             }
 
             return renderObjects;
-        }
-
-        private Position CalculateTextPosition()
-        {
-            return new Position(Position.X + RelativeTextPosition.X, Position.Y + RelativeTextPosition.Y, 0, RelativeTextPosition.Height);
         }
     }
 }

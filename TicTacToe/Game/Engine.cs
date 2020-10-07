@@ -35,10 +35,12 @@ namespace TicTacToe.Game
             Gamestate.RecalculateScreenSize(width, height);
 
             RenderObjects = new List<IRenderObject>();
-            InputHandler = new InputHandler(RenderObjects);
 
             Gui = new Gui(GameTitle, width, height, Gamestate);
-            Gui.SetInputHandlers(InputHandler.OnClick);
+
+            InputHandler = new InputHandler(RenderObjects, Gui.Window);
+            Gui.SetMouseClickHandler(InputHandler.OnClick);
+            Gui.SetMouseReleaseHandler(InputHandler.OnRelease);
             Gui.SetResizeHandler(InputHandler.OnResize);
             Gui.SetInputHandlers(InputHandler.OnInput);
 
@@ -64,6 +66,8 @@ namespace TicTacToe.Game
 
         public void Tick(float deltaTime)
         {
+            InputHandler.Tick();
+
             if (ShouldRecalculateRenderObjects)
             {
                 RenderObjects = Gamestate.CurrentScreen.GetRenderData();

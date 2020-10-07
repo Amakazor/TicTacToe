@@ -10,27 +10,36 @@ namespace TicTacToe.Game.GUI.RenderObjects
 {
     class RenderFrame : IRenderObject
     {
-        public int PositionX { get; protected set; }
-        public int PositionY { get; protected set; }
-        public float ScaleX { get; protected set; }
-        public float ScaleY { get; protected set; }
+        public Position Position;
+        private float ScaleX;
+        private float ScaleY;
         protected IRenderable Actor { get; set; }
-
         private Texture Texture { get; set; }
-        private Color Color { get; set; }
 
-        public RenderFrame(Position position, IRenderable actor, Texture texture) : this(position.X, position.Y, position.Width, position.Height, actor, texture) { }
-
-        public RenderFrame(int positionX, int positionY, int width, int height, IRenderable actor, Texture texture)
+        public RenderFrame(Position position, IRenderable actor, Texture texture)
         {
-            PositionX = positionX;
-            PositionY = positionY;
+            Position = position;
             Actor = actor;
             Texture = texture;
 
-            if (width != 0 && height != 0)
+            SetScaleFromSize();
+        }
+
+        public Transformable GetShape()
+        {
+            Sprite sprite = new Sprite(Texture);
+            sprite.Position = new Vector2f(Position.X, Position.Y);
+            sprite.Scale = new Vector2f(ScaleX, ScaleY);
+
+            return sprite;
+        }
+
+        public void SetScaleFromSize()
+        {
+            if (Position.Width != 0 && Position.Height != 0)
             {
-                SetScaleFromSize(width, height);
+                ScaleX = (float)Position.Width / 2048;
+                ScaleY = (float)Position.Height / 2048;
             }
             else
             {
@@ -39,37 +48,26 @@ namespace TicTacToe.Game.GUI.RenderObjects
             }
         }
 
-        public Transformable GetShape()
-        {
-            Sprite sprite = new Sprite(this.Texture);
-            sprite.Position = new Vector2f(this.PositionX, this.PositionY);
-            sprite.Scale = new Vector2f(this.ScaleX, this.ScaleY);
-
-            return sprite;
-        }
-
-        public void SetScaleFromSize(int width, int height)
-        {
-            this.ScaleX = (float)width / 2048;
-            this.ScaleY = (float)height / 2048;
-        }
-
-
         public bool IsPointInside(int x, int y)
         {
             return false;
         }
-
-        public void SetSize(int positionX, int positionY, int width, int height)
-        {
-            this.PositionX = positionX;
-            this.PositionY = positionY;
-            this.SetScaleFromSize(width, height);
-        }
-
         public IRenderable GetActor()
         {
-            return this.Actor;
+            return Actor;
+        }
+
+        public void SetSize(int width, int height)
+        {
+            Position.Width = width;
+            Position.Height = height;
+            SetScaleFromSize();
+        }
+
+        public void SetPosition(Position position)
+        {
+            Position = position;
+            SetScaleFromSize();
         }
     }
 }

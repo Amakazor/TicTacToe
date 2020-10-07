@@ -9,6 +9,10 @@ namespace TicTacToe.Game.Actors
 {
     abstract class Actor : IRenderable
     {
+
+        private const double BaseWidth = 1000.0D;
+        private const double BaseHeight = 1000.0D;
+
         public  Gamestate Gamestate { get; protected set; }
         public  Position Position { get; protected set; }
 
@@ -17,20 +21,25 @@ namespace TicTacToe.Game.Actors
             Position = position;
             Gamestate = gamestate;
         }
-        public Position CalculatePosition(Position basePosition)
+        public Position CalculateScreenSpacePosition(Position basePosition)
         {
-            const double baseWidth = 1000.0D;
-            const double baseHeight = 1000.0D;
             ScreenSize screenSize = Gamestate.ScreenSize;
 
             return new Position
             {
-                X = (int)(screenSize.MarginLeft + (uint)Math.Floor(screenSize.Width / baseWidth * basePosition.X)),
-                Y = (int)(screenSize.MarginTop + (uint)Math.Floor(screenSize.Height / baseHeight * basePosition.Y)),
-                Width = (int)Math.Floor(screenSize.Width / baseWidth * basePosition.Width),
-                Height = (int)Math.Floor(screenSize.Height / baseHeight * basePosition.Height),
+                X = (int)(screenSize.MarginLeft + (uint)Math.Floor(screenSize.Width / BaseWidth * basePosition.X)),
+                Y = (int)(screenSize.MarginTop + (uint)Math.Floor(screenSize.Height / BaseHeight * basePosition.Y)),
+                Width = (int)Math.Floor(screenSize.Width / BaseWidth * basePosition.Width),
+                Height = (int)Math.Floor(screenSize.Height / BaseHeight * basePosition.Height),
             };
         }
         public abstract List<IRenderObject> GetRenderObjects();
+
+        public int CalculateScreenSpaceHeight(int baseHeight)
+        {
+            ScreenSize screenSize = Gamestate.ScreenSize;
+
+            return (int)Math.Floor(screenSize.Height / BaseHeight * baseHeight);
+        }
     }
 }

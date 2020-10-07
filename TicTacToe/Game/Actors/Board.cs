@@ -40,7 +40,7 @@ namespace TicTacToe.Game.Actors
         {
             List<IRenderObject> RenderObjects = new List<IRenderObject>
             {
-                new RenderRectangle(CalculatePosition(Position), this)
+                new RenderRectangle(CalculateScreenSpacePosition(Position), this)
             };
 
             for (int column = 0; column < Size; column++)

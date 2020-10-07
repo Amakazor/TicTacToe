@@ -7,6 +7,7 @@ namespace TicTacToe.Game.Actors
     public interface IRenderable
     {
         List<IRenderObject> GetRenderObjects();
-        Position CalculatePosition(Position basePosition);
+        Position CalculateScreenSpacePosition(Position basePosition);
+        int CalculateScreenSpaceHeight(int baseHeight);
     }
 }

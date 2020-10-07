@@ -30,7 +30,7 @@ namespace TicTacToe.Game.Actors
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            return new List<IRenderObject> { new RenderSymbol(CalculatePosition(Position), this, Texture, Color) };
+            return new List<IRenderObject> { new RenderSymbol(CalculateScreenSpacePosition(Position), this, Texture, Color) };
         }
     }
 }

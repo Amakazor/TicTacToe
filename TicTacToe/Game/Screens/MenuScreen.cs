@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using SFML.Graphics;
 using SFML.Window;
 using TicTacToe.Game.Actors.Buttons;
+using TicTacToe.Game.Actors.Inputs;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;

@@ -4,23 +4,18 @@ using System.Text;
 using SFML.Graphics;
 using SFML.System;
 using TicTacToe.Game.Actors;
+using TicTacToe.Utility;
 
 namespace TicTacToe.Game.GUI.RenderObjects
 {
     class RenderBackground : IRenderObject
     {
-        public int PositionX { get; protected set; }
-        public int PositionY { get; protected set; }
-        public int Width { get; protected set; }
-        public int Height { get; protected set; }
+        public Position Position;
         public Texture Texture { get; set; }
 
-        public RenderBackground(int positionX, int positionY, int width, int height, Texture texture)
+        public RenderBackground(Position position, Texture texture)
         {
-            PositionX = positionX;
-            PositionY = positionY;
-            Width = width;
-            Height = height;
+            Position = position;
             Texture = texture;
         }
 
@@ -35,7 +30,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
             Texture.Repeated = true;
 
             Sprite sprite = new Sprite(Texture);
-            sprite.TextureRect = new IntRect(0, 0, Width, Height);
+            sprite.TextureRect = new IntRect(0, 0, Position.Width, Position.Height);
 
             return sprite;
         }
@@ -45,12 +40,15 @@ namespace TicTacToe.Game.GUI.RenderObjects
             return false;
         }
 
-        public void SetSize(int positionX, int positionY, int width, int height)
+        public void SetSize(int width, int height)
         {
-            PositionX = positionX;
-            PositionY = positionY;
-            Width = width;
-            Height = height;
+            Position.Width = width;
+            Position.Height = height;
+        }
+
+        public void SetPosition(Position position)
+        {
+            Position = position;
         }
     }
 }

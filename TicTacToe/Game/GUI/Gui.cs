@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.Graphics.Glsl;
 using SFML.Window;
+using System;
+using System.Collections.Generic;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
@@ -28,7 +28,7 @@ namespace TicTacToe.Game.GUI
             Gamestate = gamestate;
             Time = 0;
 
-            Window = new RenderWindow(new VideoMode(width, height), gameTitle);
+            Window = new RenderWindow(new VideoMode(width, height), gameTitle, Styles.Default, new ContextSettings() {AntialiasingLevel = 8});
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (_, __) => Window.Close();
 
@@ -62,9 +62,14 @@ namespace TicTacToe.Game.GUI
             Window.Display();
         }
 
-        public void SetInputHandlers(EventHandler<MouseButtonEventArgs> mouseClickHandler)
+        public void SetMouseClickHandler(EventHandler<MouseButtonEventArgs> mouseClickHandler)
         {
             Window.MouseButtonPressed += mouseClickHandler;
+        }
+        
+        public void SetMouseReleaseHandler(EventHandler<MouseButtonEventArgs> mouseReleaseHandler)
+        {
+            Window.MouseButtonReleased += mouseReleaseHandler;
         }
 
         public void SetResizeHandler(EventHandler<SizeEventArgs> resizeHandler)
@@ -85,14 +90,14 @@ namespace TicTacToe.Game.GUI
                 Width = ((SizeEventArgs)sizeEventArgs).Width;
                 Height = ((SizeEventArgs)sizeEventArgs).Height;
 
-                Background.SetSize(0, 0, (int)((SizeEventArgs)sizeEventArgs).Width, (int)((SizeEventArgs)sizeEventArgs).Height);
+                Background.SetSize((int)((SizeEventArgs)sizeEventArgs).Width, (int)((SizeEventArgs)sizeEventArgs).Height);
             }
             else throw new ArgumentException("Wrong EventArgs given", "sizeEventArgs");
         }
 
         private void AddBackground(uint width, uint height)
         {
-            Background = new RenderBackground(0, 0, (int)width, (int)height, Gamestate.TextureAtlas.TexturesDictionary[TextureType.Background]["BG"]);
+            Background = new RenderBackground(new Position(0, 0, (int)width, (int)height), Gamestate.TextureAtlas.TexturesDictionary[TextureType.Background]["BG"]);
         }
     }
 }
