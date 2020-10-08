@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SFML.Graphics;
-using SFML.System;
+﻿using SFML.Graphics;
 using TicTacToe.Game.Actors;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.GUI.RenderObjects
 {
-    class RenderBackground : IRenderObject
+    internal class RenderBackground : IRenderObject
     {
         public Position Position;
         public Texture Texture { get; set; }
@@ -18,7 +14,6 @@ namespace TicTacToe.Game.GUI.RenderObjects
             Position = position;
             Texture = texture;
         }
-
 
         public IRenderable GetActor()
         {

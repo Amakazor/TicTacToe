@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace TicTacToe.Game.Data
@@ -12,6 +11,7 @@ namespace TicTacToe.Game.Data
     {
         public const string Symbol = "symbol";
         public const string Background = "background";
+        public const string Icon = "icon";
     }
 
     public class TextureManager
@@ -26,7 +26,7 @@ namespace TicTacToe.Game.Data
         private void LoadTextures()
         {
             TexturesDictionary = new Dictionary<string, Dictionary<string, Texture>>();
-            
+
             XDocument textureConfig = XDocument.Load("assets/data/textures.xml");
 
             foreach (FieldInfo fieldInfo in typeof(TextureType).GetFields(BindingFlags.Static | BindingFlags.Public))
@@ -34,12 +34,12 @@ namespace TicTacToe.Game.Data
                 string textureType = fieldInfo.GetValue(null).ToString();
                 TexturesDictionary[textureType] = (from texture in textureConfig.Descendants("texture")
                                                    where texture.Element("type").Value == textureType
-                                                   select new {
+                                                   select new
+                                                   {
                                                        symbol = texture.Element("name").Value,
                                                        location = texture.Element("location").Value
-                                                   }).ToDictionary(o => o.symbol, o => new Texture(o.location) {Smooth = true });
+                                                   }).ToDictionary(o => o.symbol, o => new Texture(o.location) { Smooth = true });
             }
-
         }
 
         public string GetNameFromTexture(string textureType, Texture texture)

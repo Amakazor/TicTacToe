@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SFML.Graphics;
 using SFML.Window;
+using System;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Buttons
 {
-    class SelectSymbolButton : Button
+    internal class SelectSymbolButton : IconButton
     {
-        public Symbol Symbol { get; private set; }
-        public SelectSymbolButton(Position position, Position relativeTextPosition, Gamestate gamestate, string text, Symbol symbol) : base(position, relativeTextPosition, gamestate, text)
-        {
-            Symbol = symbol;
-        }
+        public SelectSymbolButton(Position position, Gamestate gamestate, Texture symbolTexture, float scale, Color symbolColor) : base(position, gamestate, symbolTexture, scale, symbolColor) { }
 
         public override void OnClick(MouseButtonEventArgs args)
         {
-            Gamestate.NewPlayer.SymbolData.texture = Symbol.Texture;
+            Gamestate.NewPlayer.SymbolData.texture = IconTexture;
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
     }

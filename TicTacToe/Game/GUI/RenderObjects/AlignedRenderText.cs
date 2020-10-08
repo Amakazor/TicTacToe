@@ -1,10 +1,6 @@
 ﻿using SFML.Graphics;
-using SFML.Graphics.Glsl;
 using SFML.System;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using TicTacToe.Game.Actors;
 using TicTacToe.Utility;
 
@@ -17,13 +13,13 @@ namespace TicTacToe.Game.GUI.RenderObjects
         End
     }
 
-    class AlignedRenderText : IRenderObject
+    internal class AlignedRenderText : IRenderObject
     {
         public Position ContainerPosition;
         public Vector2f Margins;
 
-        TextPosition HorizontalPosition;
-        TextPosition VerticalPosition;
+        private TextPosition HorizontalPosition;
+        private TextPosition VerticalPosition;
 
         public float FontSize { get; protected set; }
         public string Text { get; set; }
@@ -76,7 +72,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
             return text;
         }
 
-        public void SetSize(int width, int height) 
+        public void SetSize(int width, int height)
         {
             SetFontSize(height);
         }
@@ -101,9 +97,11 @@ namespace TicTacToe.Game.GUI.RenderObjects
                 case TextPosition.Start:
                     x = ContainerPosition.X + Margins.X;
                     break;
+
                 case TextPosition.Middle:
                     x = ContainerPosition.X + ContainerPosition.Width / 2 - textElement.GetGlobalBounds().Width / 2;
                     break;
+
                 case TextPosition.End:
                     x = ContainerPosition.X + ContainerPosition.Width - textElement.GetGlobalBounds().Width - Margins.X;
                     break;
@@ -114,9 +112,11 @@ namespace TicTacToe.Game.GUI.RenderObjects
                 case TextPosition.Start:
                     y = ContainerPosition.Y + Margins.Y;
                     break;
+
                 case TextPosition.Middle:
                     y = ContainerPosition.Y + ContainerPosition.Height / 2 - textElement.CharacterSize / 1.5F;
                     break;
+
                 case TextPosition.End:
                     y = ContainerPosition.Y + ContainerPosition.Height - textElement.GetGlobalBounds().Height - Margins.Y;
                     break;

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using TicTacToe.Game.GUI.RenderObjects;
-using static TicTacToe.Utility.Utility;
-using TicTacToe.Utility;
 using TicTacToe.Game.Data;
+using TicTacToe.Game.GUI.RenderObjects;
+using TicTacToe.Utility;
+using static TicTacToe.Utility.Utility;
 
 namespace TicTacToe.Game.Actors
 {
-    class Board : Actor, IRenderable
+    internal class Board : Actor
     {
         public int Size { get; private set; }
         private List<List<Field>> Fields { get; set; }
+        private RenderRectangle BoardRectangle;
 
         public Board(int newSize, Position position, Gamestate gamestate) : base(position, gamestate)
         {
@@ -23,6 +24,8 @@ namespace TicTacToe.Game.Actors
                 throw new ArgumentException("Size of the board must be bigger than 1", "newSize");
             }
 
+            BoardRectangle = new RenderRectangle(new Position(), this);
+
             Fields = new List<List<Field>>();
 
             for (int column = 0; column < Size; column++)
@@ -31,22 +34,23 @@ namespace TicTacToe.Game.Actors
 
                 for (int row = 0; row < Size; row++)
                 {
-                    Fields[column].Add(new Field(new Position(column*position.Width/Size, row*position.Height/Size, position.Width/Size, position.Height/Size), Gamestate));
+                    Fields[column].Add(new Field(new Position(column * position.Width / Size + position.X, row * position.Height / Size + position.Y, position.Width / Size, position.Height / Size), Gamestate));
                 }
             }
+
+            RecalculateComponentsPositions();
         }
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            List<IRenderObject> RenderObjects = new List<IRenderObject>
-            {
-                new RenderRectangle(CalculateScreenSpacePosition(Position), this)
-            };
+            RecalculateComponentsPositions();
+            List<IRenderObject> RenderObjects = new List<IRenderObject> { BoardRectangle };
 
             for (int column = 0; column < Size; column++)
             {
                 for (int row = 0; row < Size; row++)
                 {
+                    Fields[column][row].RecalculateComponentsPositions();
                     RenderObjects.AddRange(Fields[column][row].GetRenderObjects());
                 }
             }
@@ -166,6 +170,11 @@ namespace TicTacToe.Game.Actors
             }
 
             return hasEmptyField ? Boardstate.NotResolved : Boardstate.Draw;
+        }
+
+        public override void RecalculateComponentsPositions()
+        {
+            BoardRectangle.SetPosition(CalculateScreenSpacePosition(Position));
         }
     }
 }

@@ -1,20 +1,19 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
 using TicTacToe.Game.Actors;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.GUI.RenderObjects
 {
-    class RenderSymbol : IRenderObject
+    internal class RenderSymbol : IRenderObject
     {
-        public Position Position;
+        public Position Position { get; protected set; }
         public float ScaleX { get; protected set; }
         public float ScaleY { get; protected set; }
         protected IRenderable Actor { get; set; }
 
         private Texture Texture { get; set; }
-        private Color Color { get; set; }
+        public Color Color { get; set; }
 
         public RenderSymbol(Position position, IRenderable actor, Texture texture) : this(position, actor, texture, Color.White) { }
         public RenderSymbol(IRenderable actor, Texture texture, Color color) : this(new Position(), actor, texture, color) { }
@@ -54,13 +53,12 @@ namespace TicTacToe.Game.GUI.RenderObjects
 
         public bool IsPointInside(int x, int y)
         {
-            return false;
+            return (Position.X <= x) && (Position.X + Position.Width >= x) && (Position.Y <= y) && (Position.Y + Position.Height >= y);
         }
 
         public void SetSize(int width, int height)
         {
-            Position.Width = width;
-            Position.Height = height;
+            Position = new Position(Position.X, Position.Y, width, height);
             SetScaleFromSize();
         }
 

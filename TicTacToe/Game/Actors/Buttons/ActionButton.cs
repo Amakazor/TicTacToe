@@ -1,15 +1,17 @@
-﻿using System;
+﻿using SFML.System;
 using SFML.Window;
+using System;
 using TicTacToe.Game.Data;
+using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Buttons
 {
-    class ActionButton : Button
+    internal class ActionButton : TextButton
     {
         private Action<MouseButtonEventArgs> Action;
 
-        public ActionButton(Position position, Position relativeTextPosition, Gamestate gamestate, string text, Action<MouseButtonEventArgs> action) : base(position, relativeTextPosition, gamestate, text)
+        public ActionButton(Position position, Gamestate gamestate, Vector2f margins, int fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, string text, Action<MouseButtonEventArgs> action) : base(position, gamestate, margins, fontSize, horizontalPosition, verticalPosition, text)
         {
             Action = action;
         }

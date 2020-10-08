@@ -2,11 +2,6 @@
 {
     public struct Statistic
     {
-        public int Total;
-        public int Won;
-        public int Lost;
-        public int Draws;
-
         public Statistic(int total, int won, int lost, int draws)
         {
             Total = total;
@@ -14,5 +9,10 @@
             Lost = lost;
             Draws = draws;
         }
+
+        public int Total;
+        public int Won;
+        public int Lost;
+        public int Draws;
     }
 }

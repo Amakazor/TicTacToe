@@ -15,7 +15,6 @@ namespace TicTacToe.Game.Actors.Inputs
         public int Value;
         public int MinValue;
         public int MaxValue;
-        public Color Color;
 
         private RenderRectangle CollisionBox;
         private RenderRectangle Bar;
@@ -31,20 +30,18 @@ namespace TicTacToe.Game.Actors.Inputs
             Value = startValue;
             MinValue = minValue;
             MaxValue = maxValue;
-            Color = color;
             Action = action;
 
             LeftOffset = CalculateLeftOffset();
 
             CollisionBox = new RenderRectangle(CalculateScreenSpacePosition(new Position(Position.X, Position.Y, Position.Width, Position.Height)), this, new Color(0, 0, 0, 0));
-            Bar = new RenderRectangle(CalculateScreenSpacePosition(new Position(Position.X, Position.Y + Position.Height / 3, Position.Width, Position.Height / 3)), this, Color);
-            Circle = new RenderCircle(CalculateScreenSpacePosition(new Position(Position.X + LeftOffset, Position.Y, 0, Position.Height / 2)), this, Color.White, Color, Position.Height / 16);
-            Text = new AlignedRenderText(CalculateScreenSpacePosition(new Position(Position.X + LeftOffset, Position.Y, Position.Height, Position.Height)), new Vector2f(0, 0), CalculateScreenSpaceHeight(Position.Height / 2), TextPosition.Middle, TextPosition.Middle, this, Color.Black, Value.ToString());
+            Bar = new RenderRectangle(CalculateScreenSpacePosition(new Position(Position.X, Position.Y + Position.Height / 3, Position.Width, Position.Height / 3)), this, color);
+            Circle = new RenderCircle(CalculateScreenSpacePosition(new Position(Position.X + LeftOffset, Position.Y, 0, Position.Height / 2)), this, Color.White, color, Position.Height / 16);
+            Text = new AlignedRenderText(CalculateScreenSpacePosition(new Position(Position.X + LeftOffset, Position.Y, Position.Height, Position.Height)), new Vector2f(0, 0), CalculateScreenSpaceHeight((int)(Position.Height * 0.4F)), TextPosition.Middle, TextPosition.Middle, this, Color.Black, Value.ToString());
         }
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            RecalculateComponentsPositions();
             return new List<IRenderObject> { CollisionBox, Bar, Circle, Text };
         }
 
@@ -60,8 +57,6 @@ namespace TicTacToe.Game.Actors.Inputs
             RecalculateComponentsPositions();
 
             Action.Invoke(this, Value);
-
-            Console.WriteLine(args.X);
         }
 
         private int CalculateLeftOffset()
@@ -69,7 +64,7 @@ namespace TicTacToe.Game.Actors.Inputs
             return (int)((double)(Value - MinValue) / (double)(MaxValue - MinValue) * (double)Position.Width) - Position.Height / 2;
         }
 
-        private void RecalculateComponentsPositions()
+        public override void RecalculateComponentsPositions()
         {
             LeftOffset = CalculateLeftOffset();
 
@@ -77,6 +72,7 @@ namespace TicTacToe.Game.Actors.Inputs
             Bar.SetPosition(CalculateScreenSpacePosition(new Position(Position.X, Position.Y + Position.Height / 3, Position.Width, Position.Height / 3)));
             Circle.SetPosition(CalculateScreenSpacePosition(new Position(Position.X + LeftOffset, Position.Y, 0, Position.Height / 2)));
             Text.SetPosition(CalculateScreenSpacePosition(new Position(Position.X + LeftOffset, Position.Y, Position.Height, Position.Height)));
+            Text.SetFontSize(CalculateScreenSpaceHeight((int)(Position.Height * 0.4F)));
         }
     }
 }

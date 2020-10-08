@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using SFML.Graphics;
+﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
+using System;
+using System.Collections.Generic;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.Actors.Buttons;
 using TicTacToe.Game.Actors.Inputs;
@@ -14,22 +13,22 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
-    class NewPlayerScreen : Screen
+    internal class NewPlayerScreen : Screen
     {
-        List<Actor> Actors;
-        List<Symbol> Symbols;
-        ActionButton CreatePlayerButton;
+        private List<Actor> Actors;
+        private ActionButton CreatePlayerButton;
+        private List<SelectSymbolButton> SymbolButtons;
+
         public NewPlayerScreen(Gamestate gamestate) : base(gamestate, ScreenType.NewPlayer)
         {
             Gamestate.NewPlayer = new Player("", null, new Color(127, 127, 127), Gamestate);
 
             Actors = new List<Actor>();
-            Actors.Add(new TextInput(new Position(25, 25, 950, 100), new Position(50, 30, 0, 30), Gamestate, "Enter players name (4 to 30 characters):", HandleNameChange, 0));
+            Actors.Add(new TextInput(new Position(25, 25, 950, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Enter players name (4 to 30 characters):", HandleNameChange, 0));
             Actors.Add(new RangeInput(new Position(50, 140, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.R, byte.MinValue, byte.MaxValue, Color.Red, HandleColorChange, 1));
             Actors.Add(new RangeInput(new Position(50, 205, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.G, byte.MinValue, byte.MaxValue, Color.Green, HandleColorChange, 2));
             Actors.Add(new RangeInput(new Position(50, 270, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.B, byte.MinValue, byte.MaxValue, Color.Blue, HandleColorChange, 3));
 
-            Symbols = new List<Symbol>();
             if (Gamestate.TextureAtlas.TexturesDictionary.ContainsKey(TextureType.Symbol))
             {
                 int size = 200;
@@ -37,19 +36,20 @@ namespace TicTacToe.Game.Screens
                 int marginInner = ((1000 - 2 * marginOuter) - (size * 4)) / 3;
 
                 int i = 0;
+                SymbolButtons = new List<SelectSymbolButton>();
                 foreach (KeyValuePair<string, Texture> rawSymbol in Gamestate.TextureAtlas.TexturesDictionary[TextureType.Symbol])
                 {
                     Position curentPosition = new Position(marginOuter + i % 4 * (size + marginInner), 335 + (i / 4) * (size + marginInner), size, size);
-                    Symbols.Add(new Symbol(new SymbolData { color = Gamestate.NewPlayer.SymbolData.color , texture = rawSymbol.Value}, curentPosition, Gamestate));
-                    Actors.Add(new SelectSymbolButton(curentPosition, new Position(0, 0, 0, 0), Gamestate, "", Symbols[Symbols.Count-1]));
+                    SymbolButtons.Add(new SelectSymbolButton(curentPosition, Gamestate, rawSymbol.Value, 0.8F, Gamestate.NewPlayer.SymbolData.color));
                     i++;
                 }
-            } else throw new Exception();
+            }
+            else throw new Exception();
 
-            CreatePlayerButton = new ActionButton(new Position(25, 845, 950, 130), new Position(50, 30, 0, 40), Gamestate, "Save Player", SaveNewPlayer);
+            CreatePlayerButton = new ActionButton(new Position(25, 845, 950, 130), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Save Player", SaveNewPlayer);
         }
 
-        public override void Dispose() {}
+        public override void Dispose() { }
 
         public override List<IRenderObject> GetRenderData()
         {
@@ -57,16 +57,19 @@ namespace TicTacToe.Game.Screens
 
             foreach (Actor actor in Actors)
             {
+                actor.RecalculateComponentsPositions();
                 renderObjects.AddRange(actor.GetRenderObjects());
             }
 
-            foreach (Actor actor in Symbols)
+            foreach (Actor actor in SymbolButtons)
             {
+                actor.RecalculateComponentsPositions();
                 renderObjects.AddRange(actor.GetRenderObjects());
             }
 
             if (Gamestate.ValidateNewPlayer())
             {
+                CreatePlayerButton.RecalculateComponentsPositions();
                 renderObjects.AddRange(CreatePlayerButton.GetRenderObjects());
             }
 
@@ -95,24 +98,23 @@ namespace TicTacToe.Game.Screens
                 case 1:
                     currentColor = new Color((byte)value, currentColor.G, currentColor.B);
                     break;
+
                 case 2:
                     currentColor = new Color(currentColor.R, (byte)value, currentColor.B);
                     break;
+
                 case 3:
                     currentColor = new Color(currentColor.R, currentColor.G, (byte)value);
                     break;
             }
 
-            foreach (Symbol symbol in Symbols)
-            {
-                symbol.Color = currentColor;
-            }
+            SymbolButtons.ForEach((button) => { button.ChangeColor(currentColor); });
 
             Gamestate.NewPlayer.SymbolData.color = currentColor;
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
 
-        private void SaveNewPlayer (MouseButtonEventArgs mouseButtonEventArgs)
+        private void SaveNewPlayer(MouseButtonEventArgs mouseButtonEventArgs)
         {
             int id = Gamestate.SaveNewPlayer();
             Gamestate.ClearPlayersInGame();

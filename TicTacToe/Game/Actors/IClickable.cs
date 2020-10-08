@@ -2,7 +2,7 @@
 
 namespace TicTacToe.Game.Actors
 {
-    interface IClickable
+    internal interface IClickable
     {
         public void OnClick(MouseButtonEventArgs args);
     }

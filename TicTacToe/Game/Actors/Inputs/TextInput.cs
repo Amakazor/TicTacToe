@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
+using System;
+using System.Collections.Generic;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;
@@ -9,21 +10,28 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Inputs
 {
-    class TextInput : Input, IDisposable, ITextContainer
+    internal class TextInput : Input, IDisposable, ITextContainer
     {
         protected string Text;
-        protected Position RelativeTextPosition;
         public bool HasFocus { get; private set; }
         private Action<TextInput, TextEventArgs> Action;
+        public int FontSize { get; }
 
-        public TextInput(Position position, Position relativeTextPosition, Gamestate gamestate, string text, Action<TextInput, TextEventArgs> action, int id) : base(position, gamestate, id)
+        private RenderRectangle InputRectangle;
+        private AlignedRenderText InputText;
+
+        public TextInput(Position position, Gamestate gamestate, Vector2f margins, int fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, string text, Action<TextInput, TextEventArgs> action, int id) : base(position, gamestate, id)
         {
-
             MessageBus.Instance.Register(MessageType.LoseFocus, OnLostFocus);
             MessageBus.Instance.Register(MessageType.Input, OnInput);
             Action = action;
-            RelativeTextPosition = relativeTextPosition;
+            FontSize = fontSize;
             Text = text;
+
+            InputRectangle = new RenderRectangle(new Position(), this);
+            InputText = new AlignedRenderText(new Position(), margins, 0, horizontalPosition, verticalPosition, this, Color.Black, Text);
+
+            RecalculateComponentsPositions();
         }
 
         public void Dispose()
@@ -41,19 +49,17 @@ namespace TicTacToe.Game.Actors.Inputs
         public void ChangeText(string text)
         {
             Text = text;
+            InputText.Text = Text;
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            List<IRenderObject> renderObjects = new List<IRenderObject>
-            {
-                new RenderRectangle(CalculateScreenSpacePosition(Position), this)
-            };
+            List<IRenderObject> renderObjects = new List<IRenderObject> { InputRectangle };
 
             if (Text.Length > 0)
             {
-                renderObjects.Add(new RenderText(CalculateScreenSpacePosition(((ITextContainer)this).CalculateTextPosition(Position, RelativeTextPosition)), this, Text));
+                renderObjects.Add(InputText);
             }
 
             return renderObjects;
@@ -73,6 +79,13 @@ namespace TicTacToe.Game.Actors.Inputs
             {
                 Action.Invoke(this, (TextEventArgs)args);
             }
+        }
+
+        public override void RecalculateComponentsPositions()
+        {
+            InputRectangle.SetPosition(CalculateScreenSpacePosition(Position));
+            InputText.SetPosition(CalculateScreenSpacePosition(Position));
+            InputText.SetFontSize(CalculateScreenSpaceHeight(FontSize));
         }
     }
 }

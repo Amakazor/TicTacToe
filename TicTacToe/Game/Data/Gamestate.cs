@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SFML.Window;
+using System;
 using System.Collections.Generic;
-using SFML.Window;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.Events;
 using TicTacToe.Game.Screens;
@@ -9,7 +9,7 @@ using static TicTacToe.Utility.Utility;
 
 namespace TicTacToe.Game.Data
 {
-    class Gamestate
+    internal class Gamestate
     {
         public ScreenSize ScreenSize { get; private set; }
 
@@ -64,7 +64,7 @@ namespace TicTacToe.Game.Data
         {
             return GetPlayerByID(playerID).GetSymbol();
         }
-        
+
         public Symbol GetPlayersSymbolByPlayerID(int playerID, Position position)
         {
             return GetPlayerByID(playerID).GetSymbol(position);
@@ -74,7 +74,7 @@ namespace TicTacToe.Game.Data
         {
             return GetPlayersSymbolByPlayerID(CurrentPlayer);
         }
-        
+
         public Symbol GetCurrentPlayersSymbol(Position position)
         {
             return GetPlayersSymbolByPlayerID(CurrentPlayer, position);
@@ -109,7 +109,7 @@ namespace TicTacToe.Game.Data
 
         public void RemovePlayerFromGame(int Index)
         {
-            if (PlayersInGame.Count >= Index+1)
+            if (PlayersInGame.Count >= Index + 1)
             {
                 PlayersInGame.RemoveAt(Index);
             }
@@ -161,7 +161,7 @@ namespace TicTacToe.Game.Data
         }
 
         public void ChangePlayer()
-        { 
+        {
             SetCurrentPlayer(CurrentPlayer == PlayersInGame[0] ? PlayersInGame[1] : PlayersInGame[0]);
         }
 
@@ -172,6 +172,7 @@ namespace TicTacToe.Game.Data
             boardstate = Boardstate.NotResolved;
             BoardSize = 0;
         }
+
         public bool ValidateNewPlayer()
         {
             return (NewPlayer.SymbolData.texture != null && NewPlayer.Nickname.Length >= 4 && NewPlayer.Nickname.Length <= 30);

@@ -1,25 +1,29 @@
 ﻿using SFML.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors
 {
-    class Frame : Actor
+    internal class Frame : Actor
     {
-        public Texture Texture { get; }
+        private RenderFrame FrameFrame;
 
         public Frame(Texture texture, Position position, Gamestate gamestate) : base(position, gamestate)
         {
-            Texture = texture;
+            FrameFrame = new RenderFrame(new Position(), this, texture);
+            RecalculateComponentsPositions();
         }
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            return new List<IRenderObject> { new RenderFrame(CalculateScreenSpacePosition(Position), this, Texture) };
+            return new List<IRenderObject> { FrameFrame };
+        }
+
+        public override void RecalculateComponentsPositions()
+        {
+            FrameFrame.SetPosition(CalculateScreenSpacePosition(Position));
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using TicTacToe.Game.Data;
+using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI;
 using TicTacToe.Game.GUI.RenderObjects;
-using TicTacToe.Game.Events;
-using TicTacToe.Utility;
-using TicTacToe.Game.Data;
 using TicTacToe.Game.Screens;
 
 namespace TicTacToe.Game
 {
-    class Engine
+    internal class Engine
     {
         public string GameTitle { get; private set; }
         public bool ShouldQuit { get; private set; }
@@ -31,8 +30,9 @@ namespace TicTacToe.Game
             ShouldRecalculateRenderObjects = true;
 
             Gamestate = new Gamestate();
-            Gamestate.CurrentScreen = new MenuScreen(Gamestate);
             Gamestate.RecalculateScreenSize(width, height);
+
+            Gamestate.CurrentScreen = new MenuScreen(Gamestate);
 
             RenderObjects = new List<IRenderObject>();
 
@@ -101,24 +101,31 @@ namespace TicTacToe.Game
                         Gamestate.SetCurrentPlayerToFirstEntry();
                         Gamestate.CurrentScreen = new GameScreen(Gamestate);
                         break;
+
                     case ScreenType.Pregame:
                         Gamestate.CurrentScreen = new PregameScreen(Gamestate);
                         break;
+
                     case ScreenType.PlayerSelectionScreen:
                         Gamestate.CurrentScreen = new PlayerSelectionScreen(Gamestate);
                         break;
+
                     case ScreenType.MenuScreen:
                         Gamestate.CurrentScreen = new MenuScreen(Gamestate);
                         break;
+
                     case ScreenType.Results:
                         Gamestate.CurrentScreen = new ResultsScreen(Gamestate);
                         break;
+
                     case ScreenType.Players:
                         Gamestate.CurrentScreen = new PlayersScreen(Gamestate);
                         break;
+
                     case ScreenType.NewPlayer:
                         Gamestate.CurrentScreen = new NewPlayerScreen(Gamestate);
                         break;
+
                     default:
                         throw new Exception();
                 }

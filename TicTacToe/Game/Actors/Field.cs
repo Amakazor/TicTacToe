@@ -9,18 +9,23 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors
 {
-    class Field : Actor, IRenderable, IEquatable<Field>, IClickable
+    internal class Field : Actor, IRenderable, IEquatable<Field>, IClickable
     {
         public int PlayerID { get; private set; }
         public bool IsClickable { get; private set; }
 
-        public Field (Position position, Gamestate gamestate) : base(position, gamestate)
+        private RenderRectangle FieldRectangle;
+
+        public Field(Position position, Gamestate gamestate) : base(position, gamestate)
         {
             PlayerID = 0;
             IsClickable = true;
+
+            FieldRectangle = new RenderRectangle(new Position(), this, new Color(), Color.Black, 2);
+            RecalculateComponentsPositions();
         }
 
-        public void SetValue (int newPlayer)
+        public void SetValue(int newPlayer)
         {
             PlayerID = newPlayer;
         }
@@ -29,7 +34,7 @@ namespace TicTacToe.Game.Actors
         {
             return PlayerID == other.PlayerID;
         }
- 
+
         public void OnClick(MouseButtonEventArgs args)
         {
             if (IsClickable)
@@ -42,7 +47,8 @@ namespace TicTacToe.Game.Actors
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            List<IRenderObject> RenderObjects = new List<IRenderObject>{new RenderRectangle(CalculateScreenSpacePosition(Position), this, Color.White)};
+            RecalculateComponentsPositions();
+            List<IRenderObject> RenderObjects = new List<IRenderObject> { FieldRectangle };
 
             if (PlayerID != 0)
             {
@@ -50,6 +56,11 @@ namespace TicTacToe.Game.Actors
             }
 
             return RenderObjects;
+        }
+
+        public override void RecalculateComponentsPositions()
+        {
+            FieldRectangle.SetPosition(CalculateScreenSpacePosition(Position));
         }
     }
 }

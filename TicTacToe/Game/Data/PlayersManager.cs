@@ -1,16 +1,13 @@
 ﻿using SFML.Graphics;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
-using TicTacToe.Game.Actors;
 
 namespace TicTacToe.Game.Data
 {
-    class PlayersManager
+    internal class PlayersManager
     {
         public Dictionary<int, Player> Players { get; private set; }
 
@@ -32,16 +29,17 @@ namespace TicTacToe.Game.Data
             XDocument playersConfig = XDocument.Load("assets/data/Players.xml");
 
             Players = (from player in playersConfig.Descendants("player")
-                       select new {
+                       select new
+                       {
                            Id = int.Parse(player.Element("id").Value),
                            Name = player.Element("name").Value,
                            Texture = TextureAtlas.TexturesDictionary[TextureType.Symbol][player.Element("symbol").Value],
                            Color = new Color(
-                               byte.Parse(player.Element("color").Element("r").Value), 
-                               byte.Parse(player.Element("color").Element("g").Value), 
+                               byte.Parse(player.Element("color").Element("r").Value),
+                               byte.Parse(player.Element("color").Element("g").Value),
                                byte.Parse(player.Element("color").Element("b").Value)
                             )
-                       }).ToDictionary( o => o.Id, o => new Player(o.Name, o.Texture, o.Color, Gamestate));
+                       }).ToDictionary(o => o.Id, o => new Player(o.Name, o.Texture, o.Color, Gamestate));
         }
 
         private void SavePlayers()

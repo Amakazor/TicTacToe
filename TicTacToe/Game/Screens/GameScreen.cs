@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TicTacToe.Game.Actors;
-using TicTacToe.Game.GUI.RenderObjects;
-using System;
-using TicTacToe.Utility;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
+using TicTacToe.Game.GUI.RenderObjects;
+using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
-    class GameScreen : Screen, IScreen
+    internal class GameScreen : Screen, IScreen
     {
         public Board Board { get; private set; }
 
@@ -17,7 +17,7 @@ namespace TicTacToe.Game.Screens
             MessageBus.Instance.Register(MessageType.FieldChanged, OnFieldChange);
             Gamestate.boardstate = Boardstate.NotResolved;
 
-            Board = new Board(gamestate.BoardSize, new Position(0, 0, 1000, 1000), gamestate);
+            Board = new Board(gamestate.BoardSize, new Position(25, 25, 950, 950), gamestate);
         }
 
         private void OnFieldChange(object sender, EventArgs eventArgs)
@@ -28,7 +28,6 @@ namespace TicTacToe.Game.Screens
             {
                 Gamestate.ChangePlayer();
                 MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
-
             }
             else
             {
@@ -39,6 +38,7 @@ namespace TicTacToe.Game.Screens
 
         public override List<IRenderObject> GetRenderData()
         {
+            Board.RecalculateComponentsPositions();
             return Board.GetRenderObjects();
         }
 

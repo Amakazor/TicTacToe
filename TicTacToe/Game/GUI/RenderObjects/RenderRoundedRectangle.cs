@@ -1,31 +1,32 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using TicTacToe.Game.Actors;
+using TicTacToe.Game.GUI.Shapes;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.GUI.RenderObjects
 {
-    internal class RenderRectangle : IRenderObject
+    internal class RenderRoundedRectangle : IRenderObject
     {
         public Position Position;
+        public float Radius { get; set; }
+
         protected IRenderable Actor { get; }
         private Color FillColor { get; }
         private Color OutlineColor { get; }
-        private float OutlineThickness { get; }
+        public float OutlineThickness { get; set; }
 
-        public RenderRectangle(IRenderable actor) : this(new Position(), actor) { }
-
-        public RenderRectangle(Position position, IRenderable actor) : this(position, actor, new Color()) { }
-
-        public RenderRectangle(Position position, IRenderable actor, Color fillColor) : this(position, actor, fillColor, new Color(), 0) { }
-
-        public RenderRectangle(Position position, IRenderable actor, Color fillColor, Color outlineColor, float outlineThickness)
+        public RenderRoundedRectangle(IRenderable actor, float radius) : this(new Position(), actor, radius) { }
+        public RenderRoundedRectangle(Position position, IRenderable actor, float radius) : this(position, actor, new Color(), radius) { }
+        public RenderRoundedRectangle(Position position, IRenderable actor, Color fillColor, float radius) : this(position, actor, fillColor, new Color(), 0, radius) { }
+        public RenderRoundedRectangle(Position position, IRenderable actor, Color fillColor, Color outlineColor, float outlineThickness, float radius)
         {
             Position = position;
             Actor = actor;
             FillColor = fillColor;
             OutlineColor = outlineColor;
             OutlineThickness = outlineThickness;
+            Radius = radius;
         }
 
         public void SetSize(int width, int height)
@@ -36,7 +37,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
 
         public Transformable GetShape()
         {
-            RectangleShape rectangle = new RectangleShape(new Vector2f(Position.Width, Position.Height));
+            RoundedRectangleShape rectangle = new RoundedRectangleShape(new Vector2f(Position.Width, Position.Height), Radius);
             rectangle.Position = new Vector2f(Position.X, Position.Y);
             rectangle.FillColor = FillColor;
             rectangle.OutlineColor = OutlineColor;

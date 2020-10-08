@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace TicTacToe.Game.Data
 {
-    class StatisticsManager
+    internal class StatisticsManager
     {
         public StatisticsManager() { }
 
@@ -15,13 +15,13 @@ namespace TicTacToe.Game.Data
             int total = (from match in statisticsData.Descendants("match")
                          where int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID
                          select match).Count();
-            
+
             int won = (from match in statisticsData.Descendants("match")
                        where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) == playerID
                        select match).Count();
-            
+
             int lost = (from match in statisticsData.Descendants("match")
-                        where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) != playerID  && int.Parse(match.Element("result").Value) != 0
+                        where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) != playerID && int.Parse(match.Element("result").Value) != 0
                         select match).Count();
 
             int draws = (from match in statisticsData.Descendants("match")
@@ -42,17 +42,17 @@ namespace TicTacToe.Game.Data
                                 (int.Parse(match.Element("player1").Value) == secondPlayerID || int.Parse(match.Element("player2").Value) == secondPlayerID)
                                )
                          select match).Count();
-            
+
             int won = (from match in statisticsData.Descendants("match")
                        where (
                               (int.Parse(match.Element("player1").Value) == firstPlayerID || int.Parse(match.Element("player2").Value) == firstPlayerID)
                               &&
                               (int.Parse(match.Element("player1").Value) == secondPlayerID || int.Parse(match.Element("player2").Value) == secondPlayerID)
-                              && 
+                              &&
                               int.Parse(match.Element("result").Value) == firstPlayerID
                              )
                        select match).Count();
-            
+
             int lost = (from match in statisticsData.Descendants("match")
                         where (
                                (int.Parse(match.Element("player1").Value) == firstPlayerID || int.Parse(match.Element("player2").Value) == firstPlayerID)
@@ -60,7 +60,7 @@ namespace TicTacToe.Game.Data
                                (int.Parse(match.Element("player1").Value) == secondPlayerID || int.Parse(match.Element("player2").Value) == secondPlayerID)
                                &&
                                int.Parse(match.Element("result").Value) != firstPlayerID
-                               && 
+                               &&
                                int.Parse(match.Element("result").Value) != 0
                               )
                         select match).Count();
@@ -89,11 +89,11 @@ namespace TicTacToe.Game.Data
             XmlElement newPlayer1 = statisticsData.CreateElement("player1");
             newPlayer1.InnerText = firstPlayerId.ToString();
             newMatch.AppendChild(newPlayer1);
-            
+
             XmlElement newPlayer2 = statisticsData.CreateElement("player2");
             newPlayer2.InnerText = secondPlayerId.ToString();
             newMatch.AppendChild(newPlayer2);
-            
+
             XmlElement resultNode = statisticsData.CreateElement("result");
             resultNode.InnerText = result.ToString();
             newMatch.AppendChild(resultNode);

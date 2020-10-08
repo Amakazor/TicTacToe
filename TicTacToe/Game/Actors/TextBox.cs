@@ -1,34 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using SFML.Graphics;
+using SFML.System;
+using System;
+using System.Collections.Generic;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors
 {
-    class TextBox : Actor, IRenderable, ITextContainer
+    internal class TextBox : Actor, IRenderable, ITextContainer
     {
-        protected string Text;
-        protected Position RelativeTextPosition;
+        private RenderRectangle TextBoxRectangle;
+        private AlignedRenderText TextBoxText;
+        public int FontSize { get; }
 
-        public TextBox(Position position, Position relativeTextPosition, Gamestate gamestate, string text) : base(position, gamestate)
+        public TextBox(Position position, Gamestate gamestate, Vector2f margins, int fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, string text) : base(position, gamestate)
         {
-            RelativeTextPosition = relativeTextPosition;
-            Text = text;
+            if (text.Length == 0) throw new ArgumentException("Text cannot be empty", "text");
+
+            FontSize = fontSize;
+
+            TextBoxRectangle = new RenderRectangle(new Position(), this);
+            TextBoxText = new AlignedRenderText(new Position(), margins, 0, horizontalPosition, verticalPosition, this, Color.Black, text);
+
+            RecalculateComponentsPositions();
         }
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            List<IRenderObject> renderObjects = new List<IRenderObject>
-            {
-                new RenderRectangle(CalculateScreenSpacePosition(Position), this)
-            };
+            return new List<IRenderObject> { TextBoxRectangle, TextBoxText };
+        }
 
-            if (Text.Length > 0)
-            {
-                renderObjects.Add(new RenderText(CalculateScreenSpacePosition(((ITextContainer)this).CalculateTextPosition(Position, RelativeTextPosition)), this, Text));
-            }
-
-            return renderObjects;
+        public override void RecalculateComponentsPositions()
+        {
+            TextBoxRectangle.SetPosition(CalculateScreenSpacePosition(Position));
+            TextBoxText.SetPosition(CalculateScreenSpacePosition(Position));
+            TextBoxText.SetFontSize(CalculateScreenSpaceHeight(FontSize));
         }
     }
 }

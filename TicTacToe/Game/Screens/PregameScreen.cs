@@ -1,4 +1,4 @@
-﻿using SFML.Window;
+﻿using SFML.System;
 using System;
 using System.Collections.Generic;
 using TicTacToe.Game.Actors;
@@ -10,7 +10,7 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
-    class PregameScreen : Screen
+    internal class PregameScreen : Screen
     {
         private List<ScreenChangeButton> PlayerButtons { get; set; }
         private List<TextBox> PlayerTextBoxes { get; set; }
@@ -28,20 +28,22 @@ namespace TicTacToe.Game.Screens
             BoardSizeButtons = new List<ActionButton>();
             PrepareBoardSizeButtons();
 
-            StartButton = new ScreenChangeButton(new Position(0, 220, 100, 100), new Position(20, 20, 0, 60), gamestate, "S", ScreenType.Game);
+            StartButton = new ScreenChangeButton(new Position(0, 220, 100, 100), Gamestate, new Vector2f(), 60, TextPosition.Middle, TextPosition.Middle, "S", ScreenType.Game);
         }
 
         public override List<IRenderObject> GetRenderData()
         {
             List<IRenderObject> renderObjects = new List<IRenderObject>();
-            
+
             foreach (ScreenChangeButton button in PlayerButtons)
             {
+                button.RecalculateComponentsPositions();
                 renderObjects.AddRange(button.GetRenderObjects());
             }
 
             foreach (TextBox textBox in PlayerTextBoxes)
             {
+                textBox.RecalculateComponentsPositions();
                 renderObjects.AddRange(textBox.GetRenderObjects());
             }
 
@@ -49,12 +51,14 @@ namespace TicTacToe.Game.Screens
             {
                 foreach (ActionButton button in BoardSizeButtons)
                 {
+                    button.RecalculateComponentsPositions();
                     renderObjects.AddRange(button.GetRenderObjects());
                 }
             }
 
             if (Gamestate.CanStartGame())
             {
+                StartButton.RecalculateComponentsPositions();
                 renderObjects.AddRange(StartButton.GetRenderObjects());
             }
 
@@ -69,7 +73,7 @@ namespace TicTacToe.Game.Screens
             {
                 for (int playersToSelect = selectedPlayersAmount; playersToSelect < 2; playersToSelect++)
                 {
-                    PlayerButtons.Add(new ScreenChangeButton(new Position(0, playersToSelect * 110, 100, 100), new Position(30, 10, 0, 60), Gamestate, "P", ScreenType.PlayerSelectionScreen));
+                    PlayerButtons.Add(new ScreenChangeButton(new Position(0, playersToSelect * 110, 100, 100), Gamestate, new Vector2f(), 60, TextPosition.Middle, TextPosition.Middle, "P", ScreenType.PlayerSelectionScreen));
                 }
             }
         }
@@ -82,11 +86,7 @@ namespace TicTacToe.Game.Screens
             {
                 for (int playerIndex = 0; playerIndex < selectedPlayersAmount; playerIndex++)
                 {
-                    PlayerTextBoxes.Add(new TextBox
-                        (new Position(0, playerIndex * 110, 300, 100),
-                        new Position(30, 10, 0, 60),
-                        Gamestate,
-                        Gamestate.GetPlayerByPlayersInGameIndex(playerIndex).Nickname));
+                    PlayerTextBoxes.Add(new TextBox(new Position(0, playerIndex * 110, 300, 100), Gamestate, new Vector2f(), 60, TextPosition.Middle, TextPosition.Middle, Gamestate.GetPlayerByPlayersInGameIndex(playerIndex).Nickname));
                 }
             }
         }
@@ -96,18 +96,21 @@ namespace TicTacToe.Game.Screens
             for (int size = 2; size < 8; size++)
             {
                 int newSize = size;
+
                 BoardSizeButtons.Add(new ActionButton(
                     new Position(((size - 2) % 3) * 40, 220 + (int)MathF.Floor((size - 2) / 3) * 40, 30, 30),
-                    new Position(8, 2, 0, 20),
-                    Gamestate,
-                    size.ToString(),
-                    (MouseButtonEventArgs args) =>
-                        {
-                            Gamestate.BoardSize = newSize;
-                            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
-                        }));
+                    Gamestate, new Vector2f(), 20, TextPosition.Middle, TextPosition.Middle, size.ToString(), (_) => { SetBoardSize(newSize); }));
             }
         }
-        public override void Dispose(){}
+
+        private void SetBoardSize(int newSize)
+        {
+            Gamestate.BoardSize = newSize;
+            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+        }
+
+        public override void Dispose()
+        {
+        }
     }
 }

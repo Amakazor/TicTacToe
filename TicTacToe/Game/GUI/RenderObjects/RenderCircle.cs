@@ -1,14 +1,11 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TicTacToe.Game.Actors;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.GUI.RenderObjects
 {
-    class RenderCircle : IRenderObject
+    internal class RenderCircle : IRenderObject
     {
         public Position Position;
         protected IRenderable Actor { get; set; }

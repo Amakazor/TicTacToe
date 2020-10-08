@@ -1,12 +1,11 @@
 ﻿using SFML.Graphics;
-using System;
 using System.Text;
 using TicTacToe.Game.Actors;
 using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Data
 {
-    class Player
+    internal class Player
     {
         public string Nickname { get; set; }
         public Gamestate Gamestate { get; set; }
@@ -30,7 +29,7 @@ namespace TicTacToe.Game.Data
             Gamestate = gamestate;
         }
 
-        public Player() {}
+        public Player() { }
 
         public Symbol GetSymbol()
         {
@@ -46,14 +45,14 @@ namespace TicTacToe.Game.Data
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("\t" + " <player>" + '\n');
-                sb.Append("\t\t" + "<id>" + id + "</id>" + '\n');
-                sb.Append("\t\t" + "<name>" + Nickname + "</name>" + '\n');
-                sb.Append("\t\t" + "<symbol>" + Gamestate.TextureAtlas.GetNameFromTexture(TextureType.Symbol, SymbolData.texture) + "</symbol>" + '\n');
-                sb.Append("\t\t" + "<color>" + '\n');
-                    sb.Append("\t\t\t" + "<r>" + SymbolData.color.R + "</r>" + '\n');
-                    sb.Append("\t\t\t" + "<g>" + SymbolData.color.G + "</g>" + '\n');
-                    sb.Append("\t\t\t" + "<b>" + SymbolData.color.B + "</b>" + '\n');
-                sb.Append("\t\t" + "</color>" + '\n');
+            sb.Append("\t\t" + "<id>" + id + "</id>" + '\n');
+            sb.Append("\t\t" + "<name>" + Nickname + "</name>" + '\n');
+            sb.Append("\t\t" + "<symbol>" + Gamestate.TextureAtlas.GetNameFromTexture(TextureType.Symbol, SymbolData.texture) + "</symbol>" + '\n');
+            sb.Append("\t\t" + "<color>" + '\n');
+            sb.Append("\t\t\t" + "<r>" + SymbolData.color.R + "</r>" + '\n');
+            sb.Append("\t\t\t" + "<g>" + SymbolData.color.G + "</g>" + '\n');
+            sb.Append("\t\t\t" + "<b>" + SymbolData.color.B + "</b>" + '\n');
+            sb.Append("\t\t" + "</color>" + '\n');
             sb.Append("\t" + "</player>" + '\n');
 
             return sb.ToString();

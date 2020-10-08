@@ -11,7 +11,7 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.GUI
 {
-    class Gui
+    internal class Gui
     {
         public RenderWindow Window { get; private set; }
         public RenderBackground Background { get; private set; }
@@ -28,7 +28,7 @@ namespace TicTacToe.Game.GUI
             Gamestate = gamestate;
             Time = 0;
 
-            Window = new RenderWindow(new VideoMode(width, height), gameTitle, Styles.Default, new ContextSettings() {AntialiasingLevel = 8});
+            Window = new RenderWindow(new VideoMode(width, height), gameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (_, __) => Window.Close();
 
@@ -43,19 +43,23 @@ namespace TicTacToe.Game.GUI
         {
             Window.DispatchEvents();
             Window.Clear(Color.White);
+
             Time = Time + deltaTime > 320 ? Time - 320 + deltaTime : Time + deltaTime;
 
             Shader shader = new Shader(null, null, "assets/shaders/scroll.glsl");
             shader.SetUniform("texture", Shader.CurrentTexture);
             shader.SetUniform("resolution", new Vec2(512, 512));
             shader.SetUniform("time", Time);
-
             Window.Draw((Drawable)Background.GetShape(), new RenderStates(shader));
-            Frame.GetRenderObjects().ForEach(renderObject => { 
-                Window.Draw((Drawable)renderObject.GetShape()); 
+
+            Frame.RecalculateComponentsPositions();
+            Frame.GetRenderObjects().ForEach(renderObject =>
+            {
+                Window.Draw((Drawable)renderObject.GetShape());
             });
 
-            RenderObjects.ForEach((IRenderObject renderObject) => {
+            RenderObjects.ForEach((renderObject) =>
+            {
                 Window.Draw((Drawable)renderObject.GetShape());
             });
 
@@ -66,7 +70,7 @@ namespace TicTacToe.Game.GUI
         {
             Window.MouseButtonPressed += mouseClickHandler;
         }
-        
+
         public void SetMouseReleaseHandler(EventHandler<MouseButtonEventArgs> mouseReleaseHandler)
         {
             Window.MouseButtonReleased += mouseReleaseHandler;
