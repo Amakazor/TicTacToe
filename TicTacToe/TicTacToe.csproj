@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="assets\textures\buttons\**" />
+    <EmbeddedResource Remove="assets\textures\buttons\**" />
+    <None Remove="assets\textures\buttons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>
 
@@ -13,10 +19,6 @@
     <None Update="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="assets\textures\buttons\" />
   </ItemGroup>
 
 </Project>
