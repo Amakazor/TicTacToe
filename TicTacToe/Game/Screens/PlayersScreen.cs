@@ -1,4 +1,5 @@
 ﻿using SFML.System;
+using System;
 using System.Collections.Generic;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.Actors.Buttons;
@@ -62,12 +63,12 @@ namespace TicTacToe.Game.Screens
             {
                 case 1:
                     statistic = Gamestate.StatisticsManager.LoadPlayersStatistics(Gamestate.PlayersInGame[0]);
-                    GenerateStatisticsDisplayForOnePlayer(statistic);
+                    DisplayStatistics(GenerateStatisticsDisplayForOnePlayer(statistic));
                     break;
 
                 case 2:
                     statistic = Gamestate.StatisticsManager.LoadPlayersStatistics(Gamestate.PlayersInGame[0], Gamestate.PlayersInGame[1]);
-                    GenerateStatisticsDisplayForTwoPlayers(statistic);
+                    DisplayStatistics(GenerateStatisticsDisplayForTwoPlayers(statistic));
                     break;
 
                 default:
@@ -75,54 +76,61 @@ namespace TicTacToe.Game.Screens
             }
         }
 
-        private void GenerateStatisticsDisplayForOnePlayer(Statistic statistic)
+        private List<List<string>> GenerateStatisticsDisplayForOnePlayer(Statistic statistic)
         {
-            if (Actors != null)
+            return new List<List<string>>
             {
-                Actors.Add(new TextBox(new Position(25, 150, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Total matches:"));
-                Actors.Add(new TextBox(new Position(25, 245, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Total.ToString()));
-
-                Actors.Add(new TextBox(new Position(25, 340, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Won matches:"));
-                Actors.Add(new TextBox(new Position(25, 435, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Won.ToString()));
-
-                Actors.Add(new TextBox(new Position(25, 530, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Lost matches:"));
-                Actors.Add(new TextBox(new Position(25, 625, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Lost.ToString()));
-
-                Actors.Add(new TextBox(new Position(25, 720, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Drawn matches:"));
-                Actors.Add(new TextBox(new Position(25, 815, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Draws.ToString()));
-
-                Actors.Add(new TextBox(new Position(25, 910, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Win Percentage"));
-                Actors.Add(new TextBox(new Position(25, 1000, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Total != 0 ? ((double)statistic.Won / statistic.Total * 100).ToString("n2") + "%" : "00.00%")); ;
-            }
+                new List<string>{ "Total matches:" },
+                new List<string>{ statistic.Total.ToString() },
+                new List<string>{ "Won matches:" },
+                new List<string>{ statistic.Won.ToString() },
+                new List<string>{ "Lost matches:" },
+                new List<string>{ statistic.Lost.ToString() },
+                new List<string>{ "Drawn matches:" },
+                new List<string>{ statistic.Draws.ToString() },
+                new List<string>{ "Win Percentage" },
+                new List<string>{ statistic.Total != 0 ? ((double)statistic.Won / statistic.Total * 100).ToString("n2") + "%" : "00.00%" }
+            };
         }
 
-        private void GenerateStatisticsDisplayForTwoPlayers(Statistic statistic)
+        private List<List<string>> GenerateStatisticsDisplayForTwoPlayers(Statistic statistic)
         {
-            if (Actors != null)
+            return new List<List<string>>
             {
-                Actors.Add(new TextBox(new Position(25, 150, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Total matches:"));
-                Actors.Add(new TextBox(new Position(25, 245, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, statistic.Total.ToString()));
+                new List<string>{ "Total matches:" },
+                new List<string>{ statistic.Total.ToString() },
+                new List<string>{ "Won matches:","Won matches:" },
+                new List<string>{ statistic.Won.ToString(), statistic.Lost.ToString() },
+                new List<string>{ "Lost matches:","Lost matches:" },
+                new List<string>{ statistic.Lost.ToString(), statistic.Won.ToString() },
+                new List<string>{ "Drawn matches:" },
+                new List<string>{ statistic.Draws.ToString() },
+                new List<string>{ "Win Percentage", "Win Percentage" },
+                new List<string>{ statistic.Total != 0 ? ((double)statistic.Won / statistic.Total * 100).ToString("n2") + "%" : "00.00%", statistic.Total != 0 ? ((double)statistic.Lost / statistic.Total * 100).ToString("n2") + "%" : "00.00%" }
+            };
+        }
 
-                Actors.Add(new TextBox(new Position(25, 340, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Won matches:"));
-                Actors.Add(new TextBox(new Position(25, 435, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Won.ToString()));
+        private void DisplayStatistics(List<List<string>> statisticsArray)
+        {
+            int totalHeight = 725;
 
-                Actors.Add(new TextBox(new Position(525, 340, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, "Won matches:"));
-                Actors.Add(new TextBox(new Position(525, 435, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, statistic.Lost.ToString()));
+            int startYMargin = 150;
+            int boxXMargin = 25;
+            int boxWidth = 1000 - boxXMargin * 2;
+            int boxHeight = totalHeight / statisticsArray.Count;
 
-                Actors.Add(new TextBox(new Position(25, 530, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Lost matches:"));
-                Actors.Add(new TextBox(new Position(25, 625, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Lost.ToString()));
-
-                Actors.Add(new TextBox(new Position(525, 530, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, "Lost matches:"));
-                Actors.Add(new TextBox(new Position(525, 625, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, statistic.Won.ToString()));
-
-                Actors.Add(new TextBox(new Position(25, 720, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Drawn matches:"));
-                Actors.Add(new TextBox(new Position(25, 815, 950, 75), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, statistic.Draws.ToString()));
-
-                Actors.Add(new TextBox(new Position(25, 910, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, "Win Percentage"));
-                Actors.Add(new TextBox(new Position(25, 1000, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statistic.Total != 0 ? ((double)statistic.Won / statistic.Total * 100).ToString("n2") + "%" : "00.00%"));
-
-                Actors.Add(new TextBox(new Position(525, 910, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, "Win Percentage"));
-                Actors.Add(new TextBox(new Position(525, 1000, 450, 75), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, statistic.Total != 0 ? ((double)statistic.Lost / statistic.Total * 100).ToString("n2") + "%" : "00.00%"));
+            for (int i = 0; i < statisticsArray.Count; i++)
+            {
+                if (statisticsArray[i].Count == 1)
+                {
+                    Actors.Add(new TextBox(new Position(boxXMargin, startYMargin + boxHeight * i, boxWidth, boxHeight), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, statisticsArray[i][0]));
+                }
+                else if (statisticsArray[i].Count == 2)
+                {
+                    Actors.Add(new TextBox(new Position(boxXMargin, startYMargin + boxHeight * i, boxWidth / 2, boxHeight), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statisticsArray[i][0]));
+                    Actors.Add(new TextBox(new Position(boxXMargin * 2 + boxWidth / 2, startYMargin + boxHeight * i, boxWidth / 2, boxHeight), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, statisticsArray[i][1]));
+                }
+                else throw new ArgumentException("Wrong statstics array size at index " + i, "statisticsArray");
             }
         }
     }
