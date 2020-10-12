@@ -21,7 +21,7 @@ namespace TicTacToe.Game.Screens
             {
                 case 0:
                     Actors.Add(new ScreenChangeButton(new Position(25, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Select player", ScreenType.PlayerSelectionScreen));
-                    Actors.Add(new ScreenChangeButton(new Position(525, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Create player", ScreenType.NewPlayer));
+                    //Actors.Add(new ScreenChangeButton(new Position(525, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Create player", ScreenType.NewPlayer));
                     break;
 
                 case 1:
@@ -112,23 +112,25 @@ namespace TicTacToe.Game.Screens
 
         private void DisplayStatistics(List<List<string>> statisticsArray)
         {
-            int totalHeight = 725;
+            int totalHeight = 650;
 
             int startYMargin = 150;
             int boxXMargin = 25;
             int boxWidth = 1000 - boxXMargin * 2;
             int boxHeight = totalHeight / statisticsArray.Count;
+            Vector2f textMargin = new Vector2f(10, 0);
+            int fontSize = 30;
 
             for (int i = 0; i < statisticsArray.Count; i++)
             {
                 if (statisticsArray[i].Count == 1)
                 {
-                    Actors.Add(new TextBox(new Position(boxXMargin, startYMargin + boxHeight * i, boxWidth, boxHeight), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, statisticsArray[i][0]));
+                    Actors.Add(new TextBox(new Position(boxXMargin, startYMargin + boxHeight * i, boxWidth, boxHeight), Gamestate, textMargin, fontSize, TextPosition.Middle, TextPosition.Middle, statisticsArray[i][0]));
                 }
                 else if (statisticsArray[i].Count == 2)
                 {
-                    Actors.Add(new TextBox(new Position(boxXMargin, startYMargin + boxHeight * i, boxWidth / 2, boxHeight), Gamestate, new Vector2f(), 30, TextPosition.Start, TextPosition.Middle, statisticsArray[i][0]));
-                    Actors.Add(new TextBox(new Position(boxXMargin * 2 + boxWidth / 2, startYMargin + boxHeight * i, boxWidth / 2, boxHeight), Gamestate, new Vector2f(), 30, TextPosition.End, TextPosition.Middle, statisticsArray[i][1]));
+                    Actors.Add(new TextBox(new Position(boxXMargin, startYMargin + boxHeight * i, boxWidth / 2, boxHeight), Gamestate, textMargin, fontSize, TextPosition.Start, TextPosition.Middle, statisticsArray[i][0]));
+                    Actors.Add(new TextBox(new Position(boxXMargin * 2 + boxWidth / 2, startYMargin + boxHeight * i, (boxWidth - (boxXMargin * 2)) / 2, boxHeight), Gamestate, textMargin, fontSize, TextPosition.End, TextPosition.Middle, statisticsArray[i][1]));
                 }
                 else throw new ArgumentException("Wrong statstics array size at index " + i, "statisticsArray");
             }
