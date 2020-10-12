@@ -175,7 +175,7 @@ namespace TicTacToe.Game.Data
 
         public bool ValidateNewPlayer()
         {
-            return (NewPlayer.SymbolData.texture != null && NewPlayer.Nickname.Length >= 4 && NewPlayer.Nickname.Length <= 30);
+            return (NewPlayer.SymbolData.texture != null && NewPlayer.Nickname.Length >= 4 && NewPlayer.Nickname.Length <= 10);
         }
 
         public int SaveNewPlayer()

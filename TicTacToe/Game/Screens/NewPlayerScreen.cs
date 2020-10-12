@@ -24,7 +24,7 @@ namespace TicTacToe.Game.Screens
             Gamestate.NewPlayer = new Player("", null, new Color(127, 127, 127), Gamestate);
 
             Actors = new List<Actor>();
-            Actors.Add(new TextInput(new Position(25, 25, 950, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Enter players name (4 to 30 characters):", HandleNameChange, 0));
+            Actors.Add(new TextInput(new Position(25, 25, 950, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Enter players name (4 to 10 characters):", HandleNameChange, 0));
             Actors.Add(new RangeInput(new Position(50, 140, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.R, byte.MinValue, byte.MaxValue, Color.Red, HandleColorChange, 1));
             Actors.Add(new RangeInput(new Position(50, 205, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.G, byte.MinValue, byte.MaxValue, Color.Green, HandleColorChange, 2));
             Actors.Add(new RangeInput(new Position(50, 270, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.B, byte.MinValue, byte.MaxValue, Color.Blue, HandleColorChange, 3));
@@ -91,7 +91,7 @@ namespace TicTacToe.Game.Screens
             {
                 Gamestate.NewPlayer.Nickname = Gamestate.NewPlayer.Nickname.Remove(Gamestate.NewPlayer.Nickname.Length - 1);
             }
-            else if (textEventArgs.Unicode != "\x1B" && textEventArgs.Unicode != "\t" && (Gamestate.NewPlayer.Nickname == null || Gamestate.NewPlayer.Nickname.Length < 30))
+            else if (textEventArgs.Unicode != "\x1B" && textEventArgs.Unicode != "\t" && (Gamestate.NewPlayer.Nickname == null || Gamestate.NewPlayer.Nickname.Length < 10))
             {
                 Gamestate.NewPlayer.Nickname += textEventArgs.Unicode;
             }
