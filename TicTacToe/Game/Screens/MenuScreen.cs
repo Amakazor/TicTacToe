@@ -17,9 +17,10 @@ namespace TicTacToe.Game.Screens
             Gamestate.Clear();
 
             Buttons = new List<TextButton>();
-            Buttons.Add(new ScreenChangeButton(new Position(200, 0, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "New Game", ScreenType.Pregame));
-            Buttons.Add(new ScreenChangeButton(new Position(200, 120, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Players", ScreenType.Statistics));
-            Buttons.Add(new MessageButton(new Position(200, 240, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Quit", MessageType.Quit));
+            Buttons.Add(new ScreenChangeButton(new Position(200, 25, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "New Game", ScreenType.Pregame));
+            Buttons.Add(new ScreenChangeButton(new Position(200, 150, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Statistics", ScreenType.Statistics));
+            Buttons.Add(new ScreenChangeButton(new Position(200, 275, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Players", ScreenType.PlayerSelectionScreen));
+            Buttons.Add(new MessageButton(new Position(200, 875, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Quit", MessageType.Quit));
         }
 
         public override void Dispose() { }
