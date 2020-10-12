@@ -120,7 +120,7 @@ namespace TicTacToe.Game.Screens
             Gamestate.ClearPlayersInGame();
             Gamestate.AddPlayerToGame(id);
 
-            MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.Players });
+            MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.Statistics });
         }
     }
 }

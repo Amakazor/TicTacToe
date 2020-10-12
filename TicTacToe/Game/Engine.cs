@@ -118,8 +118,8 @@ namespace TicTacToe.Game
                         Gamestate.CurrentScreen = new ResultsScreen(Gamestate);
                         break;
 
-                    case ScreenType.Players:
-                        Gamestate.CurrentScreen = new PlayersScreen(Gamestate);
+                    case ScreenType.Statistics:
+                        Gamestate.CurrentScreen = new StatisticsScreen(Gamestate);
                         break;
 
                     case ScreenType.NewPlayer:

@@ -18,7 +18,7 @@ namespace TicTacToe.Game.Screens
 
             Buttons = new List<TextButton>();
             Buttons.Add(new ScreenChangeButton(new Position(200, 0, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "New Game", ScreenType.Pregame));
-            Buttons.Add(new ScreenChangeButton(new Position(200, 120, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Players", ScreenType.Players));
+            Buttons.Add(new ScreenChangeButton(new Position(200, 120, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Players", ScreenType.Statistics));
             Buttons.Add(new MessageButton(new Position(200, 240, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Quit", MessageType.Quit));
         }
 

@@ -10,11 +10,11 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Screens
 {
-    internal class PlayersScreen : Screen
+    internal class StatisticsScreen : Screen
     {
         public List<Actor> Actors { get; set; }
 
-        public PlayersScreen(Gamestate gamestate) : base(gamestate, ScreenType.Players)
+        public StatisticsScreen(Gamestate gamestate) : base(gamestate, ScreenType.Statistics)
         {
             Actors = new List<Actor>();
             switch (Gamestate.PlayersInGame.Count)
