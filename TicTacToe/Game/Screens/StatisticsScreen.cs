@@ -1,6 +1,7 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.Actors.Buttons;
 using TicTacToe.Game.Data;
@@ -21,7 +22,8 @@ namespace TicTacToe.Game.Screens
             {
                 case 0:
                     Actors.Add(new ScreenChangeButton(new Position(25, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Select player", ScreenType.PlayerSelectionScreen));
-                    //Actors.Add(new ScreenChangeButton(new Position(525, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Create player", ScreenType.NewPlayer));
+                    Actors.Add(new ScreenChangeButton(new Position(525, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Select second player", ScreenType.PlayerSelectionScreen));
+                    ((ScreenChangeButton)Actors.Last()).ButtonState = ButtonState.Inactive;
                     break;
 
                 case 1:

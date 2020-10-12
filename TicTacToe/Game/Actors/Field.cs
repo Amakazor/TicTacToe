@@ -35,14 +35,17 @@ namespace TicTacToe.Game.Actors
             return PlayerID == other.PlayerID;
         }
 
-        public void OnClick(MouseButtonEventArgs args)
+        public bool OnClick(MouseButtonEventArgs args)
         {
             if (IsClickable)
             {
                 SetValue(Gamestate.CurrentPlayer);
                 IsClickable = false;
                 MessageBus.Instance.PostEvent(MessageType.FieldChanged, this, new EventArgs());
+                return true;
             }
+
+            return false;
         }
 
         public override List<IRenderObject> GetRenderObjects()

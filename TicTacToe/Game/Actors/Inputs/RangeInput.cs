@@ -45,7 +45,7 @@ namespace TicTacToe.Game.Actors.Inputs
             return new List<IRenderObject> { CollisionBox, Bar, Circle, Text };
         }
 
-        public override void OnClick(MouseButtonEventArgs args)
+        public override bool OnClick(MouseButtonEventArgs args)
         {
             MessageBus.Instance.PostEvent(MessageType.LoseFocus, this, args);
 
@@ -57,6 +57,8 @@ namespace TicTacToe.Game.Actors.Inputs
             RecalculateComponentsPositions();
 
             Action.Invoke(this, Value);
+
+            return true;
         }
 
         private int CalculateLeftOffset()

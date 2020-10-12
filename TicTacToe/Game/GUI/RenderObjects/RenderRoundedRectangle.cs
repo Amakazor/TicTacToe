@@ -12,7 +12,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
         public float Radius { get; set; }
 
         protected IRenderable Actor { get; }
-        private Color FillColor { get; }
+        private Color FillColor { get; set; }
         private Color OutlineColor { get; }
         public float OutlineThickness { get; set; }
 
@@ -59,6 +59,11 @@ namespace TicTacToe.Game.GUI.RenderObjects
         public void SetPosition(Position position)
         {
             Position = position;
+        }
+
+        public void SetColor(Color color)
+        {
+            FillColor = color;
         }
     }
 }

@@ -47,12 +47,15 @@ namespace TicTacToe.Game.Screens
             else throw new Exception();
 
             CreatePlayerButton = new ActionButton(new Position(25, 845, 950, 130), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Save Player", SaveNewPlayer);
+            CreatePlayerButton.ButtonState = ButtonState.Inactive;
         }
 
         public override void Dispose() { }
 
         public override List<IRenderObject> GetRenderData()
         {
+            ChangeButtonStates();
+
             List<IRenderObject> renderObjects = new List<IRenderObject>();
 
             foreach (Actor actor in Actors)
@@ -69,9 +72,15 @@ namespace TicTacToe.Game.Screens
 
             if (Gamestate.ValidateNewPlayer())
             {
-                CreatePlayerButton.RecalculateComponentsPositions();
-                renderObjects.AddRange(CreatePlayerButton.GetRenderObjects());
+                CreatePlayerButton.ButtonState = ButtonState.Active;
             }
+            else
+            {
+                CreatePlayerButton.ButtonState = ButtonState.Inactive;
+            }
+
+            CreatePlayerButton.RecalculateComponentsPositions();
+            renderObjects.AddRange(CreatePlayerButton.GetRenderObjects());
 
             return renderObjects;
         }
@@ -112,6 +121,21 @@ namespace TicTacToe.Game.Screens
 
             Gamestate.NewPlayer.SymbolData.color = currentColor;
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+        }
+
+        private void ChangeButtonStates()
+        {
+            foreach (SelectSymbolButton button in SymbolButtons)
+            {
+                if (button.IconTexture == Gamestate.NewPlayer.SymbolData.texture)
+                {
+                    button.ButtonState = ButtonState.Focused;
+                }
+                else
+                {
+                    button.ButtonState = ButtonState.Active;
+                }
+            }
         }
 
         private void SaveNewPlayer(MouseButtonEventArgs mouseButtonEventArgs)

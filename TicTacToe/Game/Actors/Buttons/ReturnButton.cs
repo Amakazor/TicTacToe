@@ -15,9 +15,14 @@ namespace TicTacToe.Game.Actors.Buttons
             ScreenToReturn = screenToReturn;
         }
 
-        public override void OnClick(MouseButtonEventArgs args)
+        public override bool OnClick(MouseButtonEventArgs args)
         {
-            MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenToReturn });
+            if (base.OnClick(args))
+            {
+                MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenToReturn });
+                return true;
+            }
+            return false;
         }
     }
 }

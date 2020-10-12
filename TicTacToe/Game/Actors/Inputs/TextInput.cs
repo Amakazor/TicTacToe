@@ -17,7 +17,7 @@ namespace TicTacToe.Game.Actors.Inputs
         private Action<TextInput, TextEventArgs> Action;
         public int FontSize { get; }
 
-        private RenderRectangle InputRectangle;
+        private RenderRoundedRectangle InputRectangle;
         private AlignedRenderText InputText;
 
         public TextInput(Position position, Gamestate gamestate, Vector2f margins, int fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, string text, Action<TextInput, TextEventArgs> action, int id) : base(position, gamestate, id)
@@ -28,7 +28,7 @@ namespace TicTacToe.Game.Actors.Inputs
             FontSize = fontSize;
             Text = text;
 
-            InputRectangle = new RenderRectangle(new Position(), this);
+            InputRectangle = new RenderRoundedRectangle(new Position(), this, Color.White, new Color(120, 160, 255), CalculateScreenSpaceHeight(5), CalculateScreenSpaceHeight(20));
             InputText = new AlignedRenderText(new Position(), margins, 0, horizontalPosition, verticalPosition, this, Color.Black, Text);
 
             RecalculateComponentsPositions();
@@ -40,10 +40,11 @@ namespace TicTacToe.Game.Actors.Inputs
             MessageBus.Instance.Unregister(MessageType.Input, OnInput);
         }
 
-        public override void OnClick(MouseButtonEventArgs args)
+        public override bool OnClick(MouseButtonEventArgs args)
         {
             MessageBus.Instance.PostEvent(MessageType.LoseFocus, this, args);
             HasFocus = true;
+            return true;
         }
 
         public void ChangeText(string text)
@@ -84,6 +85,9 @@ namespace TicTacToe.Game.Actors.Inputs
         public override void RecalculateComponentsPositions()
         {
             InputRectangle.SetPosition(CalculateScreenSpacePosition(Position));
+            InputRectangle.Radius = (CalculateScreenSpaceHeight(20));
+            InputRectangle.OutlineThickness = (CalculateScreenSpaceHeight(5));
+
             InputText.SetPosition(CalculateScreenSpacePosition(Position));
             InputText.SetFontSize(CalculateScreenSpaceHeight(FontSize));
         }

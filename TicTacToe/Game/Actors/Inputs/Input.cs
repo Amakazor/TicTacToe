@@ -13,6 +13,6 @@ namespace TicTacToe.Game.Actors.Inputs
             Id = id;
         }
 
-        public abstract void OnClick(MouseButtonEventArgs args);
+        public abstract bool OnClick(MouseButtonEventArgs args);
     }
 }

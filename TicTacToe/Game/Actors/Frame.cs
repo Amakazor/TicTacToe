@@ -8,22 +8,24 @@ namespace TicTacToe.Game.Actors
 {
     internal class Frame : Actor
     {
-        private RenderFrame FrameFrame;
+        private RenderRoundedRectangle FrameRectangle;
 
-        public Frame(Texture texture, Position position, Gamestate gamestate) : base(position, gamestate)
+        public Frame(Gamestate gamestate) : base(new Position(0, 0, 1000, 1000), gamestate)
         {
-            FrameFrame = new RenderFrame(new Position(), this, texture);
+            FrameRectangle = new RenderRoundedRectangle(new Position(), this, new Color(245, 245, 245), new Color(120, 160, 255), CalculateScreenSpaceHeight(10), CalculateScreenSpaceHeight(20));
             RecalculateComponentsPositions();
         }
 
         public override List<IRenderObject> GetRenderObjects()
         {
-            return new List<IRenderObject> { FrameFrame };
+            return new List<IRenderObject> { FrameRectangle };
         }
 
         public override void RecalculateComponentsPositions()
         {
-            FrameFrame.SetPosition(CalculateScreenSpacePosition(Position));
+            FrameRectangle.SetPosition(CalculateScreenSpacePosition(Position));
+            FrameRectangle.Radius = (CalculateScreenSpaceHeight(20));
+            FrameRectangle.OutlineThickness = (CalculateScreenSpaceHeight(10));
         }
     }
 }

@@ -16,9 +16,14 @@ namespace TicTacToe.Game.Actors.Buttons
             MessageType = messageType;
         }
 
-        public override void OnClick(MouseButtonEventArgs args)
+        public override bool OnClick(MouseButtonEventArgs args)
         {
-            MessageBus.Instance.PostEvent(MessageType, this, args);
+            if (base.OnClick(args))
+            {
+                MessageBus.Instance.PostEvent(MessageType, this, args);
+                return true;
+            }
+            return false;
         }
     }
 }

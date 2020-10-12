@@ -4,6 +4,6 @@ namespace TicTacToe.Game.Actors
 {
     internal interface IClickable
     {
-        public void OnClick(MouseButtonEventArgs args);
+        public bool OnClick(MouseButtonEventArgs args);
     }
 }

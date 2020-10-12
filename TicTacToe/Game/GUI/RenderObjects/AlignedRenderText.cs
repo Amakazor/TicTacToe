@@ -82,6 +82,11 @@ namespace TicTacToe.Game.GUI.RenderObjects
             ContainerPosition = position;
         }
 
+        public void SetColor(Color color)
+        {
+            Color = color;
+        }
+
         public bool IsPointInside(int x, int y)
         {
             return false;

@@ -29,6 +29,35 @@ namespace TicTacToe.Game.Actors.Buttons
             return new List<IRenderObject> { ButtonRectangle, ButtonText };
         }
 
+        protected override void OnStateChange(ButtonState buttonState)
+        {
+            if (ButtonText != null && ButtonRectangle != null)
+            {
+                switch (buttonState)
+                {
+                    case ButtonState.Active:
+                        ButtonText.SetColor(Color.Black);
+                        ButtonRectangle.SetColor(Color.White);
+                        break;
+
+                    case ButtonState.Inactive:
+                        ButtonText.SetColor(new Color(125, 125, 125));
+                        ButtonRectangle.SetColor(new Color(220, 220, 220));
+                        break;
+
+                    case ButtonState.Focused:
+                        ButtonText.SetColor(Color.Black);
+                        ButtonRectangle.SetColor(new Color(200, 240, 200));
+                        break;
+                }
+            }
+        }
+
+        public string GetText()
+        {
+            return ButtonText.Text;
+        }
+
         public override void RecalculateComponentsPositions()
         {
             ButtonRectangle.SetPosition(CalculateScreenSpacePosition(Position));

@@ -8,7 +8,7 @@ namespace TicTacToe.Game.Actors.Buttons
 {
     internal abstract class IconButton : Button
     {
-        protected Texture IconTexture { get; }
+        public Texture IconTexture { get; protected set; }
         public float Scale { get; }
         protected RenderSymbol Icon { get; set; }
         protected RenderRoundedRectangle Background { get; set; }
@@ -43,6 +43,27 @@ namespace TicTacToe.Game.Actors.Buttons
         public void ChangeColor(Color newColor)
         {
             Icon.Color = newColor;
+        }
+
+        protected override void OnStateChange(ButtonState buttonState)
+        {
+            if (Background != null)
+            {
+                switch (buttonState)
+                {
+                    case ButtonState.Active:
+                        Background.SetColor(Color.White);
+                        break;
+
+                    case ButtonState.Inactive:
+                        Background.SetColor(Color.White);
+                        break;
+
+                    case ButtonState.Focused:
+                        Background.SetColor(new Color(200, 240, 200));
+                        break;
+                }
+            }
         }
 
         public override void RecalculateComponentsPositions()

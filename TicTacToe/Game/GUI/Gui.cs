@@ -36,7 +36,7 @@ namespace TicTacToe.Game.GUI
 
             AddBackground(width, height);
 
-            Frame = new Frame(Gamestate.TextureAtlas.TexturesDictionary[TextureType.Background]["FR"], new Position(0, 0, 1000, 1000), Gamestate);
+            Frame = new Frame(Gamestate);
         }
 
         public void Render(List<IRenderObject> RenderObjects, float deltaTime)

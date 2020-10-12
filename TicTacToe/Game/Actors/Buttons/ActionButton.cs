@@ -16,9 +16,15 @@ namespace TicTacToe.Game.Actors.Buttons
             Action = action;
         }
 
-        public override void OnClick(MouseButtonEventArgs args)
+        public override bool OnClick(MouseButtonEventArgs args)
         {
-            Action.Invoke(args);
+            if (base.OnClick(args))
+            {
+                Action.Invoke(args);
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -11,10 +11,16 @@ namespace TicTacToe.Game.Actors.Buttons
     {
         public SelectSymbolButton(Position position, Gamestate gamestate, Texture symbolTexture, float scale, Color symbolColor) : base(position, gamestate, symbolTexture, scale, symbolColor) { }
 
-        public override void OnClick(MouseButtonEventArgs args)
+        public override bool OnClick(MouseButtonEventArgs args)
         {
-            Gamestate.NewPlayer.SymbolData.texture = IconTexture;
-            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+            if (base.OnClick(args))
+            {
+                Gamestate.NewPlayer.SymbolData.texture = IconTexture;
+                MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+                return true;
+            }
+
+            return false;
         }
     }
 }
