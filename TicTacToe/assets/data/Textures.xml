@@ -46,15 +46,15 @@
     <name>BG</name>
     <location>assets/textures/background/bg.png</location>
   </texture>
-  <texture>
-    <type>background</type>
-    <name>FR</name>
-    <location>assets/textures/background/frame.png</location>
-  </texture>
 
   <texture>
     <type>icon</type>
     <name>back</name>
     <location>assets/textures/icons/back.png</location>
+  </texture>
+  <texture>
+    <type>icon</type>
+    <name>delete</name>
+    <location>assets/textures/icons/delete.png</location>
   </texture>
 </textures>

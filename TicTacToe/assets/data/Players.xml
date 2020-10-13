@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <players>
+  <highestid>2</highestid>
   <player>
     <id>1</id>
     <name>Guest1</name>

@@ -92,7 +92,12 @@ namespace TicTacToe.Game
         {
             if (eventArgs is ChangeScreenEventArgs)
             {
-                Gamestate.PreviousScreen = Gamestate.CurrentScreen.GetEScreen();
+                if (Gamestate.CurrentScreen.GetEScreen() != ((ChangeScreenEventArgs)eventArgs).Screen && ((ChangeScreenEventArgs)eventArgs).ChangePreviousScreen)
+                {
+                    Gamestate.SecondPreviousScreen = Gamestate.PreviousScreen;
+                    Gamestate.PreviousScreen = Gamestate.CurrentScreen.GetEScreen();
+                }
+
                 Gamestate.CurrentScreen.Dispose();
 
                 switch (((ChangeScreenEventArgs)eventArgs).Screen)

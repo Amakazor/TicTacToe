@@ -141,10 +141,10 @@ namespace TicTacToe.Game.Screens
         private void SaveNewPlayer(MouseButtonEventArgs mouseButtonEventArgs)
         {
             int id = Gamestate.SaveNewPlayer();
-            Gamestate.ClearPlayersInGame();
-            Gamestate.AddPlayerToGame(id);
 
-            MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.Statistics });
+            ScreenType previousScreen = Gamestate.PreviousScreen;
+            Gamestate.PreviousScreen = Gamestate.SecondPreviousScreen;
+            MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = previousScreen, ChangePreviousScreen = false });
         }
     }
 }

@@ -24,6 +24,7 @@ namespace TicTacToe.Game.Data
         public int CurrentPlayer { get; private set; }
         public Screen CurrentScreen { get; set; }
         public ScreenType PreviousScreen { get; set; }
+        public ScreenType SecondPreviousScreen { get; set; }
 
         public Player NewPlayer { get; set; }
 
@@ -47,7 +48,7 @@ namespace TicTacToe.Game.Data
         {
             if (PlayersInGame.Contains(newPlayer) && CurrentPlayer != newPlayer)
             {
-                this.CurrentPlayer = newPlayer;
+                CurrentPlayer = newPlayer;
             }
             else throw new ArgumentException("Wrong player id given", "newPlayer");
         }

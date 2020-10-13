@@ -12,7 +12,7 @@ namespace TicTacToe.Game.Actors
         private const double BaseHeight = 1000.0D;
 
         public Gamestate Gamestate { get; protected set; }
-        public Position Position { get; protected set; }
+        public Position Position;
 
         public Actor(Position position, Gamestate gamestate)
         {

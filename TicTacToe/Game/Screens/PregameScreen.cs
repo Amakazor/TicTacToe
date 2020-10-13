@@ -22,6 +22,8 @@ namespace TicTacToe.Game.Screens
 
         public PregameScreen(Gamestate gamestate) : base(gamestate, ScreenType.Pregame)
         {
+            Gamestate.NewPlayer = null;
+
             PlayerButtons = new List<TextButton>();
             PreparePlayerButtons();
 

@@ -10,6 +10,7 @@ namespace TicTacToe.Game.Data
     internal class PlayersManager
     {
         public Dictionary<int, Player> Players { get; private set; }
+        public int HighestId { get; private set; }
 
         private TextureManager TextureAtlas { get; }
         private Gamestate Gamestate { get; }
@@ -24,8 +25,6 @@ namespace TicTacToe.Game.Data
 
         private void LoadPlayers()
         {
-            //Players = new Dictionary<int, Player>();
-
             XDocument playersConfig = XDocument.Load("assets/data/Players.xml");
 
             Players = (from player in playersConfig.Descendants("player")
@@ -40,12 +39,15 @@ namespace TicTacToe.Game.Data
                                byte.Parse(player.Element("color").Element("b").Value)
                             )
                        }).ToDictionary(o => o.Id, o => new Player(o.Name, o.Texture, o.Color, Gamestate));
+
+            HighestId = int.Parse(playersConfig.Descendants("highestid").First().Value);
         }
 
         private void SavePlayers()
         {
-            StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+            StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + '\n');
             sb.Append("<players>" + '\n');
+            sb.Append("<highestid>" + HighestId + "</highestid>" + '\n');
             foreach (KeyValuePair<int, Player> idPlayerPair in Players)
             {
                 sb.Append(idPlayerPair.Value.SerializeToXML(idPlayerPair.Key));
@@ -57,10 +59,19 @@ namespace TicTacToe.Game.Data
 
         public int AddAndSavePlayer(Player playerToAdd)
         {
-            int newId = Players.Keys.Max() + 1;
-            Players.Add(newId, playerToAdd);
+            HighestId++;
+            Players.Add(HighestId, playerToAdd);
             SavePlayers();
-            return newId;
+            return HighestId;
+        }
+
+        public void DeletePlayer(int playerId)
+        {
+            if (Players.ContainsKey(playerId))
+            {
+                Players.Remove(playerId);
+            }
+            SavePlayers();
         }
     }
 }

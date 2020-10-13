@@ -56,7 +56,8 @@ namespace TicTacToe.Game.Actors.Buttons
                         break;
 
                     case ButtonState.Inactive:
-                        Background.SetColor(Color.White);
+                        Background.SetColor(new Color(220, 220, 220));
+                        Icon.Color = new Color(125, 125, 125);
                         break;
 
                     case ButtonState.Focused:
