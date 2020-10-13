@@ -9,6 +9,14 @@ namespace TicTacToe.Game.Actors.Buttons
     internal class ReturnButton : IconButton
     {
         private ScreenType ScreenToReturn { get; }
+        private ScreenType ScreenToSetAsPrevious { get; }
+        private bool SetPrevious { get; }
+
+        public ReturnButton(Position position, Gamestate gamestate, Texture backgroundTexture, ScreenType screenToReturn, ScreenType screenToSetAsPrevious) : this(position, gamestate, backgroundTexture, screenToReturn)
+        {
+            ScreenToSetAsPrevious = screenToSetAsPrevious;
+            SetPrevious = true;
+        }
 
         public ReturnButton(Position position, Gamestate gamestate, Texture backgroundTexture, ScreenType screenToReturn) : base(position, gamestate, backgroundTexture, 0.6F)
         {
@@ -19,7 +27,12 @@ namespace TicTacToe.Game.Actors.Buttons
         {
             if (base.OnClick(args))
             {
-                MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenToReturn });
+                if (SetPrevious)
+                {
+                    Gamestate.PreviousScreen = ScreenToSetAsPrevious;
+                }
+
+                MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenToReturn, ChangePreviousScreen = !SetPrevious });
                 return true;
             }
             return false;

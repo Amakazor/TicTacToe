@@ -44,6 +44,7 @@ namespace TicTacToe.Game.Actors.Inputs
         {
             MessageBus.Instance.PostEvent(MessageType.LoseFocus, this, args);
             HasFocus = true;
+            InputRectangle.SetColor(new Color(200, 240, 200));
             return true;
         }
 
@@ -70,6 +71,7 @@ namespace TicTacToe.Game.Actors.Inputs
         {
             if (sender != this)
             {
+                InputRectangle.SetColor(Color.White);
                 HasFocus = false;
             }
         }

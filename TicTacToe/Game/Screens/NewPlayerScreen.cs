@@ -18,6 +18,7 @@ namespace TicTacToe.Game.Screens
         private List<Actor> Actors;
         private ActionButton CreatePlayerButton;
         private List<SelectSymbolButton> SymbolButtons;
+        private ReturnButton ReturnButton;
 
         public NewPlayerScreen(Gamestate gamestate) : base(gamestate, ScreenType.NewPlayer)
         {
@@ -46,11 +47,16 @@ namespace TicTacToe.Game.Screens
             }
             else throw new Exception();
 
-            CreatePlayerButton = new ActionButton(new Position(25, 845, 950, 130), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Save Player", SaveNewPlayer);
+            CreatePlayerButton = new ActionButton(new Position(150, 875, 825, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Save Player", SaveNewPlayer);
             CreatePlayerButton.ButtonState = ButtonState.Inactive;
+
+            ReturnButton = new ReturnButton(new Position(25, 875, 100, 100), Gamestate, Gamestate.TextureAtlas.TexturesDictionary[TextureType.Icon]["back"], Gamestate.PreviousScreen, Gamestate.SecondPreviousScreen);
         }
 
-        public override void Dispose() { }
+        public override void Dispose() 
+        {
+            MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
+        }
 
         public override List<IRenderObject> GetRenderData()
         {
@@ -81,6 +87,9 @@ namespace TicTacToe.Game.Screens
 
             CreatePlayerButton.RecalculateComponentsPositions();
             renderObjects.AddRange(CreatePlayerButton.GetRenderObjects());
+
+            ReturnButton.RecalculateComponentsPositions();
+            renderObjects.AddRange(ReturnButton.GetRenderObjects());
 
             return renderObjects;
         }

@@ -56,9 +56,12 @@ namespace TicTacToe.Game.Actors.Inputs
 
             RecalculateComponentsPositions();
 
-            Action.Invoke(this, Value);
-
-            return true;
+            if (Gamestate.NewPlayer != null)
+            {
+                Action.Invoke(this, Value);
+                return true;
+            }
+            else return false;
         }
 
         private int CalculateLeftOffset()
