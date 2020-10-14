@@ -20,7 +20,10 @@ namespace TicTacToe.Game.Events
         private static MessageBus instance;
         private Dictionary<MessageType, List<Action<object, EventArgs>>> Listeners = new Dictionary<MessageType, List<Action<object, EventArgs>>>();
         private List<Tuple<MessageType, Action<object, EventArgs>>> ToUnregister = new List<Tuple<MessageType, Action<object, EventArgs>>>();
-        private MessageBus() { }
+
+        private MessageBus()
+        {
+        }
 
         public static MessageBus Instance { get { return instance ?? (instance = new MessageBus()); } }
 
@@ -41,7 +44,7 @@ namespace TicTacToe.Game.Events
 
         private void Unregister()
         {
-            foreach(Tuple<MessageType, Action<object, EventArgs>> dataToUnregister in ToUnregister) 
+            foreach (Tuple<MessageType, Action<object, EventArgs>> dataToUnregister in ToUnregister)
             {
                 if (Listeners.ContainsKey(dataToUnregister.Item1) && Listeners[dataToUnregister.Item1].Contains(dataToUnregister.Item2))
                 {
@@ -62,7 +65,8 @@ namespace TicTacToe.Game.Events
 
             if (Listeners.ContainsKey(messageType))
             {
-                Listeners[messageType].ForEach((Action<object, EventArgs> listener) => {
+                Listeners[messageType].ForEach((Action<object, EventArgs> listener) =>
+                {
                     listener.Invoke(sender, eventArgs);
                 });
             }

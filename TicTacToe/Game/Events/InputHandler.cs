@@ -4,11 +4,10 @@ using SFML.Window;
 using System.Collections.Generic;
 using TicTacToe.Game.Actors;
 using TicTacToe.Game.GUI.RenderObjects;
-using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Events
 {
-    class InputHandler
+    internal class InputHandler
     {
         private List<IRenderObject> RenderObjects { get; set; }
 
@@ -18,9 +17,8 @@ namespace TicTacToe.Game.Events
         private MouseButtonEventArgs MouseButtonEventArgs;
         private Actor HeldActor { get; set; }
 
-        public InputHandler(List<IRenderObject> renderObjects, RenderWindow window)
+        public InputHandler(RenderWindow window)
         {
-            RenderObjects = renderObjects;
             Window = window;
         }
 
@@ -32,15 +30,19 @@ namespace TicTacToe.Game.Events
         public void OnClick(object sender, MouseButtonEventArgs e)
         {
             MessageBus.Instance.PostEvent(MessageType.LoseFocus, sender, e);
-            foreach(IRenderObject renderObject in RenderObjects)
-            {
-                if (renderObject.GetActor() is IClickable && renderObject.IsPointInside(e.X, e.Y))
-                {
-                    ((IClickable)renderObject.GetActor()).OnClick(e);
 
-                    if (renderObject.GetActor() is IHoldable)
+            if (RenderObjects != null)
+            {
+                foreach (IRenderObject renderObject in RenderObjects)
+                {
+                    if (renderObject.GetActor() is IClickable && renderObject.IsPointInside(e.X, e.Y))
                     {
-                        HeldActor = (Actor)(renderObject.GetActor());
+                        ((IClickable)renderObject.GetActor()).OnClick(e);
+
+                        if (renderObject.GetActor() is IHoldable)
+                        {
+                            HeldActor = (Actor)(renderObject.GetActor());
+                        }
                     }
                 }
             }
@@ -48,7 +50,7 @@ namespace TicTacToe.Game.Events
             MouseButtonEventArgs = e;
             IsMouseButtonHeld = true;
         }
-        
+
         public void OnRelease(object sender, MouseButtonEventArgs e)
         {
             IsMouseButtonHeld = false;

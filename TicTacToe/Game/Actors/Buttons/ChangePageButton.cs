@@ -1,8 +1,6 @@
 ﻿using SFML.System;
 using SFML.Window;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;

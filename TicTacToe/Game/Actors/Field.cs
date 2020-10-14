@@ -13,11 +13,14 @@ namespace TicTacToe.Game.Actors
     {
         public int PlayerID { get; private set; }
         public bool IsClickable { get; private set; }
+        public PlayersManager PlayersManager;
 
         private RenderRectangle FieldRectangle;
 
-        public Field(Position position, Gamestate gamestate) : base(position, gamestate)
+        public Field(Position position, Gamestate gamestate, PlayersManager playersManager) : base(position, gamestate)
         {
+            PlayersManager = playersManager;
+
             PlayerID = 0;
             IsClickable = true;
 
@@ -39,7 +42,7 @@ namespace TicTacToe.Game.Actors
         {
             if (IsClickable)
             {
-                SetValue(Gamestate.CurrentPlayer);
+                SetValue(PlayersManager.CurrentPlayer);
                 IsClickable = false;
                 MessageBus.Instance.PostEvent(MessageType.FieldChanged, this, new EventArgs());
                 return true;
@@ -55,7 +58,7 @@ namespace TicTacToe.Game.Actors
 
             if (PlayerID != 0)
             {
-                RenderObjects.AddRange(Gamestate.GetPlayersSymbolByPlayerID(PlayerID, Position).GetRenderObjects());
+                RenderObjects.AddRange(PlayersManager.GetPlayersSymbolByPlayerID(PlayerID, Position).GetRenderObjects());
             }
 
             return RenderObjects;

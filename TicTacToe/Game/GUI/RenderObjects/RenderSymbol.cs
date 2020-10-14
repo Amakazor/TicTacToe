@@ -15,8 +15,6 @@ namespace TicTacToe.Game.GUI.RenderObjects
         private Texture Texture { get; set; }
         public Color Color { get; set; }
 
-        public RenderSymbol(Position position, IRenderable actor, Texture texture) : this(position, actor, texture, Color.White) { }
-        public RenderSymbol(IRenderable actor, Texture texture, Color color) : this(new Position(), actor, texture, color) { }
         public RenderSymbol(Position position, IRenderable actor, Texture texture, Color color)
         {
             Position = position;

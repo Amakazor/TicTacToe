@@ -13,11 +13,9 @@ namespace TicTacToe.Game.GUI.RenderObjects
         private Color OutlineColor { get; }
         private float OutlineThickness { get; }
 
-        public RenderRectangle(IRenderable actor) : this(new Position(), actor) { }
-
-        public RenderRectangle(Position position, IRenderable actor) : this(position, actor, new Color()) { }
-
-        public RenderRectangle(Position position, IRenderable actor, Color fillColor) : this(position, actor, fillColor, new Color(), 0) { }
+        public RenderRectangle(Position position, IRenderable actor, Color fillColor) : this(position, actor, fillColor, new Color(), 0)
+        {
+        }
 
         public RenderRectangle(Position position, IRenderable actor, Color fillColor, Color outlineColor, float outlineThickness)
         {

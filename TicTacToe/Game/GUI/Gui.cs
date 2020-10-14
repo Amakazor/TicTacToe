@@ -18,14 +18,17 @@ namespace TicTacToe.Game.GUI
         public uint Width { get; set; }
         public uint Height { get; set; }
         public Gamestate Gamestate { get; private set; }
+        private TextureManager TextureManager;
+
         public float Time;
         public Frame Frame { get; private set; }
 
-        public Gui(string gameTitle, uint width, uint height, Gamestate gamestate)
+        public Gui(string gameTitle, uint width, uint height, Gamestate gamestate, TextureManager textureManager)
         {
             Width = width;
             Height = height;
             Gamestate = gamestate;
+            TextureManager = textureManager;
             Time = 0;
 
             Window = new RenderWindow(new VideoMode(width, height), gameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
@@ -101,7 +104,7 @@ namespace TicTacToe.Game.GUI
 
         private void AddBackground(uint width, uint height)
         {
-            Background = new RenderBackground(new Position(0, 0, (int)width, (int)height), Gamestate.TextureAtlas.TexturesDictionary[TextureType.Background]["BG"]);
+            Background = new RenderBackground(new Position(0, 0, (int)width, (int)height), TextureManager.TexturesDictionary[TextureType.Background]["BG"]);
         }
     }
 }

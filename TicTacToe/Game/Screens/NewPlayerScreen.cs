@@ -20,17 +20,17 @@ namespace TicTacToe.Game.Screens
         private List<SelectSymbolButton> SymbolButtons;
         private ReturnButton ReturnButton;
 
-        public NewPlayerScreen(Gamestate gamestate) : base(gamestate, ScreenType.NewPlayer)
+        public NewPlayerScreen(Gamestate gamestate, PlayersManager playersManager, TextureManager textureManager) : base(gamestate, playersManager, ScreenType.NewPlayer)
         {
-            Gamestate.NewPlayer = new Player("", null, new Color(127, 127, 127), Gamestate);
+            PlayersManager.NewPlayer = new Player("", null, new Color(127, 127, 127), Gamestate, textureManager);
 
             Actors = new List<Actor>();
             Actors.Add(new TextInput(new Position(25, 25, 950, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Enter players name (4 to 10 characters):", HandleNameChange, 0));
-            Actors.Add(new RangeInput(new Position(50, 140, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.R, byte.MinValue, byte.MaxValue, Color.Red, HandleColorChange, 1));
-            Actors.Add(new RangeInput(new Position(50, 205, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.G, byte.MinValue, byte.MaxValue, Color.Green, HandleColorChange, 2));
-            Actors.Add(new RangeInput(new Position(50, 270, 900, 50), Gamestate, Gamestate.NewPlayer.SymbolData.color.B, byte.MinValue, byte.MaxValue, Color.Blue, HandleColorChange, 3));
+            Actors.Add(new RangeInput(new Position(50, 140, 900, 50), Gamestate, PlayersManager, PlayersManager.NewPlayer.SymbolData.color.R, byte.MinValue, byte.MaxValue, Color.Red, HandleColorChange, 1));
+            Actors.Add(new RangeInput(new Position(50, 205, 900, 50), Gamestate, PlayersManager, PlayersManager.NewPlayer.SymbolData.color.G, byte.MinValue, byte.MaxValue, Color.Green, HandleColorChange, 2));
+            Actors.Add(new RangeInput(new Position(50, 270, 900, 50), Gamestate, PlayersManager, PlayersManager.NewPlayer.SymbolData.color.B, byte.MinValue, byte.MaxValue, Color.Blue, HandleColorChange, 3));
 
-            if (Gamestate.TextureAtlas.TexturesDictionary.ContainsKey(TextureType.Symbol))
+            if (textureManager.TexturesDictionary.ContainsKey(TextureType.Symbol))
             {
                 int size = 200;
                 int marginOuter = 25;
@@ -38,10 +38,10 @@ namespace TicTacToe.Game.Screens
 
                 int i = 0;
                 SymbolButtons = new List<SelectSymbolButton>();
-                foreach (KeyValuePair<string, Texture> rawSymbol in Gamestate.TextureAtlas.TexturesDictionary[TextureType.Symbol])
+                foreach (KeyValuePair<string, Texture> rawSymbol in textureManager.TexturesDictionary[TextureType.Symbol])
                 {
                     Position curentPosition = new Position(marginOuter + i % 4 * (size + marginInner), 335 + (i / 4) * (size + marginInner), size, size);
-                    SymbolButtons.Add(new SelectSymbolButton(curentPosition, Gamestate, rawSymbol.Value, 0.8F, Gamestate.NewPlayer.SymbolData.color));
+                    SymbolButtons.Add(new SelectSymbolButton(curentPosition, Gamestate, PlayersManager, rawSymbol.Value, 0.8F, PlayersManager.NewPlayer.SymbolData.color));
                     i++;
                 }
             }
@@ -50,10 +50,10 @@ namespace TicTacToe.Game.Screens
             CreatePlayerButton = new ActionButton(new Position(150, 875, 825, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Save Player", SaveNewPlayer);
             CreatePlayerButton.ButtonState = ButtonState.Inactive;
 
-            ReturnButton = new ReturnButton(new Position(25, 875, 100, 100), Gamestate, Gamestate.TextureAtlas.TexturesDictionary[TextureType.Icon]["back"], Gamestate.PreviousScreen, Gamestate.SecondPreviousScreen);
+            ReturnButton = new ReturnButton(new Position(25, 875, 100, 100), Gamestate, textureManager.TexturesDictionary[TextureType.Icon]["back"], Gamestate.PreviousScreen, Gamestate.SecondPreviousScreen);
         }
 
-        public override void Dispose() 
+        public override void Dispose()
         {
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
@@ -76,7 +76,7 @@ namespace TicTacToe.Game.Screens
                 renderObjects.AddRange(actor.GetRenderObjects());
             }
 
-            if (Gamestate.ValidateNewPlayer())
+            if (PlayersManager.ValidateNewPlayer())
             {
                 CreatePlayerButton.ButtonState = ButtonState.Active;
             }
@@ -96,21 +96,21 @@ namespace TicTacToe.Game.Screens
 
         private void HandleNameChange(TextInput input, TextEventArgs textEventArgs)
         {
-            if (textEventArgs.Unicode == "\b" && Gamestate.NewPlayer.Nickname.Length != 0)
+            if (textEventArgs.Unicode == "\b" && PlayersManager.NewPlayer.Nickname.Length != 0)
             {
-                Gamestate.NewPlayer.Nickname = Gamestate.NewPlayer.Nickname.Remove(Gamestate.NewPlayer.Nickname.Length - 1);
+                PlayersManager.NewPlayer.Nickname = PlayersManager.NewPlayer.Nickname.Remove(PlayersManager.NewPlayer.Nickname.Length - 1);
             }
-            else if (textEventArgs.Unicode != "\x1B" && textEventArgs.Unicode != "\t" && (Gamestate.NewPlayer.Nickname == null || Gamestate.NewPlayer.Nickname.Length < 10))
+            else if (textEventArgs.Unicode != "\x1B" && textEventArgs.Unicode != "\t" && (PlayersManager.NewPlayer.Nickname == null || PlayersManager.NewPlayer.Nickname.Length < 10))
             {
-                Gamestate.NewPlayer.Nickname += textEventArgs.Unicode;
+                PlayersManager.NewPlayer.Nickname += textEventArgs.Unicode;
             }
 
-            input.ChangeText(Gamestate.NewPlayer.Nickname);
+            input.ChangeText(PlayersManager.NewPlayer.Nickname);
         }
 
         private void HandleColorChange(RangeInput input, int value)
         {
-            Color currentColor = Gamestate.NewPlayer.SymbolData.color;
+            Color currentColor = PlayersManager.NewPlayer.SymbolData.color;
             switch (input.Id)
             {
                 case 1:
@@ -128,7 +128,7 @@ namespace TicTacToe.Game.Screens
 
             SymbolButtons.ForEach((button) => { button.ChangeColor(currentColor); });
 
-            Gamestate.NewPlayer.SymbolData.color = currentColor;
+            PlayersManager.NewPlayer.SymbolData.color = currentColor;
             MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
         }
 
@@ -136,7 +136,7 @@ namespace TicTacToe.Game.Screens
         {
             foreach (SelectSymbolButton button in SymbolButtons)
             {
-                if (button.IconTexture == Gamestate.NewPlayer.SymbolData.texture)
+                if (button.IconTexture == PlayersManager.NewPlayer.SymbolData.texture)
                 {
                     button.ButtonState = ButtonState.Focused;
                 }
@@ -149,7 +149,7 @@ namespace TicTacToe.Game.Screens
 
         private void SaveNewPlayer(MouseButtonEventArgs mouseButtonEventArgs)
         {
-            int id = Gamestate.SaveNewPlayer();
+            int id = PlayersManager.SaveNewPlayer();
 
             ScreenType previousScreen = Gamestate.PreviousScreen;
             Gamestate.PreviousScreen = Gamestate.SecondPreviousScreen;

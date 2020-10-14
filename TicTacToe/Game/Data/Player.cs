@@ -9,12 +9,15 @@ namespace TicTacToe.Game.Data
     {
         public string Nickname { get; set; }
         public Gamestate Gamestate { get; set; }
+        public TextureManager TextureManager { get; }
+
         public SymbolData SymbolData;
 
-        public Player(string nickname, Texture texture, Color color, Gamestate gamestate)
+        public Player(string nickname, Texture texture, Color color, Gamestate gamestate, TextureManager textureManager)
         {
             Nickname = nickname;
             Gamestate = gamestate;
+            TextureManager = textureManager;
             SymbolData = new SymbolData
             {
                 texture = texture,
@@ -22,14 +25,17 @@ namespace TicTacToe.Game.Data
             };
         }
 
-        public Player(string nickname, SymbolData symbolData, Gamestate gamestate)
+        public Player(string nickname, SymbolData symbolData, Gamestate gamestate, TextureManager textureManager)
         {
             Nickname = nickname;
             SymbolData = symbolData;
             Gamestate = gamestate;
+            TextureManager = textureManager;
         }
 
-        public Player() { }
+        public Player()
+        {
+        }
 
         public Symbol GetSymbol()
         {
@@ -47,7 +53,7 @@ namespace TicTacToe.Game.Data
             sb.Append("\t" + " <player>" + '\n');
             sb.Append("\t\t" + "<id>" + id + "</id>" + '\n');
             sb.Append("\t\t" + "<name>" + Nickname + "</name>" + '\n');
-            sb.Append("\t\t" + "<symbol>" + Gamestate.TextureAtlas.GetNameFromTexture(TextureType.Symbol, SymbolData.texture) + "</symbol>" + '\n');
+            sb.Append("\t\t" + "<symbol>" + TextureManager.GetNameFromTexture(TextureType.Symbol, SymbolData.texture) + "</symbol>" + '\n');
             sb.Append("\t\t" + "<color>" + '\n');
             sb.Append("\t\t\t" + "<r>" + SymbolData.color.R + "</r>" + '\n');
             sb.Append("\t\t\t" + "<g>" + SymbolData.color.G + "</g>" + '\n');

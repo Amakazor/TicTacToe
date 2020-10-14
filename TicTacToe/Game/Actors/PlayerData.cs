@@ -1,9 +1,6 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TicTacToe.Game.Actors.Buttons;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
@@ -11,31 +8,31 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors
 {
-    class PlayerData : Actor
+    internal class PlayerData : Actor
     {
         private SelectPlayerButton SelectPlayerButton { get; set; }
-        private List<TextBox> TextBoxes { get; set; }
+        private List<Text> Texts { get; set; }
 
-        public PlayerData(Position position, Gamestate gamestate, int playerId) : base(position, gamestate)
+        public PlayerData(Position position, Gamestate gamestate, PlayersManager playersManager, StatisticsManager statisticsManager, int playerId) : base(position, gamestate)
         {
-            if (Gamestate.PlayersManager.Players.ContainsKey(playerId))
+            if (playersManager.Players.ContainsKey(playerId))
             {
-                SelectPlayerButton = new SelectPlayerButton(Position, Gamestate, playerId, Gamestate.PreviousScreen == ScreenType.MenuScreen ? ScreenType.Statistics : Gamestate.PreviousScreen);
+                SelectPlayerButton = new SelectPlayerButton(Position, Gamestate, playersManager, playerId, Gamestate.PreviousScreen == ScreenType.MenuScreen ? ScreenType.Statistics : Gamestate.PreviousScreen);
 
-                string nickname = Gamestate.PlayersManager.Players[playerId].Nickname;
+                string nickname = playersManager.Players[playerId].Nickname;
 
-                Statistic statistic = Gamestate.StatisticsManager.LoadPlayersStatistics(playerId);
+                Statistic statistic = statisticsManager.LoadPlayersStatistics(playerId);
                 string total = statistic.Total.ToString();
                 string won = statistic.Won.ToString();
 
-                TextBoxes = new List<TextBox>
+                Texts = new List<Text>
                 {
-                    new TextBox(new Position(Position.X, Position.Y, Position.Width / 2, Position.Height), Gamestate, new Vector2f(10, 0), 30, TextPosition.Start, TextPosition.Middle, nickname),
+                    new Text(new Position(Position.X, Position.Y, Position.Width / 2, Position.Height), Gamestate, new Vector2f(10, 0), 30, TextPosition.Start, TextPosition.Middle, nickname),
 
-                    new TextBox(new Position(Position.X + Position.Width / 2, Position.Y, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, "Total:"),
-                    new TextBox(new Position(Position.X + Position.Width / 2, Position.Y + Position.Height / 2, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, total),
-                    new TextBox(new Position(Position.X + Position.Width / 2 + Position.Width / 4, Position.Y, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, "Won:"),
-                    new TextBox(new Position(Position.X + Position.Width / 2 + Position.Width / 4, Position.Y + Position.Height / 2, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, won)
+                    new Text(new Position(Position.X + Position.Width / 2, Position.Y, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, "Total:"),
+                    new Text(new Position(Position.X + Position.Width / 2, Position.Y + Position.Height / 2, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, total),
+                    new Text(new Position(Position.X + Position.Width / 2 + Position.Width / 4, Position.Y, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, "Won:"),
+                    new Text(new Position(Position.X + Position.Width / 2 + Position.Width / 4, Position.Y + Position.Height / 2, Position.Width / 4, Position.Height / 2), Gamestate, new Vector2f(0, 0), 30, TextPosition.Start, TextPosition.Middle, won)
                 };
 
                 RecalculateComponentsPositions();
@@ -49,9 +46,9 @@ namespace TicTacToe.Game.Actors
 
             renderObjects.AddRange(SelectPlayerButton.GetRenderObjects());
 
-            foreach (TextBox textBox in TextBoxes)
+            foreach (Text text in Texts)
             {
-                renderObjects.AddRange(textBox.GetRenderObjects());
+                renderObjects.AddRange(text.GetRenderObjects());
             }
 
             return renderObjects;
@@ -61,9 +58,9 @@ namespace TicTacToe.Game.Actors
         {
             SelectPlayerButton.RecalculateComponentsPositions();
 
-            foreach ( TextBox textBox in TextBoxes)
+            foreach (Text text in Texts)
             {
-                textBox.RecalculateComponentsPositions();
+                text.RecalculateComponentsPositions();
             }
         }
 

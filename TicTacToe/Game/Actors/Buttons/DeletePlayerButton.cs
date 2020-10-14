@@ -7,13 +7,16 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Buttons
 {
-    class DeletePlayerButton : IconButton
+    internal class DeletePlayerButton : IconButton
     {
         public int PlayerId { get; }
+        public PlayersManager PlayersManager { get; }
 
-        public DeletePlayerButton(Position position, Gamestate gamestate, Texture iconTexture, int playerId) : base(position, gamestate, iconTexture, 0.6F)
+        public DeletePlayerButton(Position position, Gamestate gamestate, PlayersManager playersManager, Texture iconTexture, int playerId) : base(position, gamestate, iconTexture, 0.6F)
         {
-            if (Gamestate.PlayersManager.Players.ContainsKey(playerId))
+            PlayersManager = playersManager;
+
+            if (PlayersManager.Players.ContainsKey(playerId))
             {
                 PlayerId = playerId;
             }
@@ -23,7 +26,7 @@ namespace TicTacToe.Game.Actors.Buttons
         {
             if (base.OnClick(args))
             {
-                Gamestate.PlayersManager.DeletePlayer(PlayerId);
+                PlayersManager.DeletePlayer(PlayerId);
                 MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
                 return true;
             }

@@ -2,7 +2,7 @@
 
 namespace TicTacToe.Game.Events
 {
-    class ChangeScreenEventArgs : EventArgs
+    internal class ChangeScreenEventArgs : EventArgs
     {
         public ScreenType Screen;
         public bool ChangePreviousScreen = true;

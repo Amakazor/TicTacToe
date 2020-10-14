@@ -12,6 +12,7 @@ namespace TicTacToe.Game.Actors.Inputs
 {
     internal class RangeInput : Input, IHoldable
     {
+        private readonly PlayersManager PlayersManager;
         public int Value;
         public int MinValue;
         public int MaxValue;
@@ -25,8 +26,9 @@ namespace TicTacToe.Game.Actors.Inputs
 
         private Action<RangeInput, int> Action;
 
-        public RangeInput(Position position, Gamestate gamestate, int startValue, int minValue, int maxValue, Color color, Action<RangeInput, int> action, int id) : base(position, gamestate, id)
+        public RangeInput(Position position, Gamestate gamestate, PlayersManager playersManager, int startValue, int minValue, int maxValue, Color color, Action<RangeInput, int> action, int id) : base(position, gamestate, id)
         {
+            PlayersManager = playersManager;
             Value = startValue;
             MinValue = minValue;
             MaxValue = maxValue;
@@ -56,7 +58,7 @@ namespace TicTacToe.Game.Actors.Inputs
 
             RecalculateComponentsPositions();
 
-            if (Gamestate.NewPlayer != null)
+            if (PlayersManager.NewPlayer != null)
             {
                 Action.Invoke(this, Value);
                 return true;

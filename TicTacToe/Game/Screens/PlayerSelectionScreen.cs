@@ -14,6 +14,9 @@ namespace TicTacToe.Game.Screens
 {
     internal class PlayerSelectionScreen : Screen
     {
+        private TextureManager TextureManager;
+        private StatisticsManager StatisticsManager;
+
         private ScreenChangeButton CreatePlayerButton;
         private List<PlayerData> Players;
         private List<DeletePlayerButton> DeletePlayers;
@@ -23,9 +26,12 @@ namespace TicTacToe.Game.Screens
 
         private ReturnButton ReturnButton { get; set; }
 
-        public PlayerSelectionScreen(Gamestate gamestate) : base(gamestate, ScreenType.PlayerSelectionScreen)
+        public PlayerSelectionScreen(Gamestate gamestate, PlayersManager playersManager, TextureManager textureManager, StatisticsManager statisticsManager) : base(gamestate, playersManager, ScreenType.PlayerSelectionScreen)
         {
-            Gamestate.NewPlayer = null;
+            TextureManager = textureManager;
+            StatisticsManager = statisticsManager;
+
+            PlayersManager.NewPlayer = null;
 
             CurrentPage = 0;
 
@@ -40,14 +46,16 @@ namespace TicTacToe.Game.Screens
             };
             RefreshPageButtonsState();
 
-            ReturnButton = new ReturnButton(new Position(25, 875, 100, 100), Gamestate, Gamestate.TextureAtlas.TexturesDictionary[TextureType.Icon]["back"], Gamestate.PreviousScreen);
+            ReturnButton = new ReturnButton(new Position(25, 875, 100, 100), Gamestate, TextureManager.TexturesDictionary[TextureType.Icon]["back"], Gamestate.PreviousScreen);
         }
 
-        public override void Dispose() {}
+        public override void Dispose()
+        {
+        }
 
         public override List<IRenderObject> GetRenderData()
         {
-            List<IRenderObject> renderObjects = new List<IRenderObject>(); 
+            List<IRenderObject> renderObjects = new List<IRenderObject>();
 
             CreatePlayerButton.RecalculateComponentsPositions();
             renderObjects.AddRange(CreatePlayerButton.GetRenderObjects());
@@ -60,7 +68,7 @@ namespace TicTacToe.Game.Screens
                 actor.RecalculateComponentsPositions();
                 renderObjects.AddRange(actor.GetRenderObjects());
             }
-            
+
             if (Gamestate.PreviousScreen == ScreenType.MenuScreen)
             {
                 foreach (Actor actor in DeletePlayers)
@@ -87,22 +95,22 @@ namespace TicTacToe.Game.Screens
             Players = new List<PlayerData>();
             DeletePlayers = new List<DeletePlayerButton>();
 
-            List<int> ids = Gamestate.PlayersManager.Players.Keys.ToList();
+            List<int> ids = PlayersManager.Players.Keys.ToList();
 
             int beginId = CurrentPage * 5;
             int endId = Math.Min(ids.Count, beginId + 5);
 
             for (int i = beginId; i < endId; i++)
             {
-                Players.Add(new PlayerData(new Position(25, 25 + (25 + 100) * (i - beginId + 1), Gamestate.PreviousScreen == ScreenType.MenuScreen ? 825 : 950, 100), Gamestate, ids[i]));
-                DeletePlayers.Add(new DeletePlayerButton(new Position(875, 25 + (25 + 100) * (i - beginId + 1), 100, 100), Gamestate, Gamestate.TextureAtlas.TexturesDictionary[TextureType.Icon]["delete"], ids[i]));
-                
+                Players.Add(new PlayerData(new Position(25, 25 + (25 + 100) * (i - beginId + 1), Gamestate.PreviousScreen == ScreenType.MenuScreen ? 825 : 950, 100), Gamestate, PlayersManager, StatisticsManager, ids[i]));
+                DeletePlayers.Add(new DeletePlayerButton(new Position(875, 25 + (25 + 100) * (i - beginId + 1), 100, 100), Gamestate, PlayersManager, TextureManager.TexturesDictionary[TextureType.Icon]["delete"], ids[i]));
+
                 if (ids[i] < 3)
                 {
                     DeletePlayers.Last().ButtonState = ButtonState.Inactive;
                 }
 
-                if (Gamestate.PlayersInGame.Contains(ids[i]))
+                if (PlayersManager.PlayersInGame.Contains(ids[i]))
                 {
                     Players.Last().setButtonState(ButtonState.Inactive);
                 }
@@ -113,7 +121,7 @@ namespace TicTacToe.Game.Screens
         {
             PageButtons[0].ButtonState = (CurrentPage == 0) ? ButtonState.Inactive : ButtonState.Active;
 
-            PageButtons[1].ButtonState = (CurrentPage * 5 + 5 >= Gamestate.PlayersManager.Players.Keys.ToList().Count()) ? ButtonState.Inactive : ButtonState.Active;
+            PageButtons[1].ButtonState = (CurrentPage * 5 + 5 >= PlayersManager.Players.Keys.ToList().Count()) ? ButtonState.Inactive : ButtonState.Active;
         }
 
         private void ChangePage(MouseButtonEventArgs args, bool changeToNext)
@@ -126,7 +134,7 @@ namespace TicTacToe.Game.Screens
 
         private void CheckForPageCorrectness()
         {
-            if (CurrentPage != 0 && (CurrentPage * 5 >= Gamestate.PlayersManager.Players.Keys.ToList().Count()))
+            if (CurrentPage != 0 && (CurrentPage * 5 >= PlayersManager.Players.Keys.ToList().Count()))
             {
                 ChangePage(new MouseButtonEventArgs(new MouseButtonEvent()), false);
             }

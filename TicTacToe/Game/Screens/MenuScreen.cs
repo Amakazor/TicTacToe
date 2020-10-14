@@ -12,7 +12,7 @@ namespace TicTacToe.Game.Screens
     {
         private List<TextButton> Buttons;
 
-        public MenuScreen(Gamestate gamestate) : base(gamestate, ScreenType.MenuScreen)
+        public MenuScreen(Gamestate gamestate, PlayersManager playersManager) : base(gamestate, playersManager, ScreenType.MenuScreen)
         {
             Gamestate.Clear();
 
@@ -23,7 +23,9 @@ namespace TicTacToe.Game.Screens
             Buttons.Add(new MessageButton(new Position(200, 875, 600, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Quit", MessageType.Quit));
         }
 
-        public override void Dispose() { }
+        public override void Dispose()
+        {
+        }
 
         public override List<IRenderObject> GetRenderData()
         {

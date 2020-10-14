@@ -19,7 +19,7 @@ namespace TicTacToe.Game.Actors.Buttons
             Scale = scale;
 
             Background = new RenderRoundedRectangle(new Position(), this, Color.White, new Color(120, 160, 255), CalculateScreenSpaceHeight(5), CalculateScreenSpaceHeight(20));
-            Icon = new RenderSymbol(new Position(), this, iconTexture);
+            Icon = new RenderSymbol(new Position(), this, iconTexture, Color.White);
 
             RecalculateComponentsPositions();
         }

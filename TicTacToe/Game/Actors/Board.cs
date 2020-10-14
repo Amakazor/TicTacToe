@@ -11,9 +11,10 @@ namespace TicTacToe.Game.Actors
     {
         public int Size { get; private set; }
         private List<List<Field>> Fields { get; set; }
-        private RenderRectangle BoardRectangle;
 
-        public Board(int newSize, Position position, Gamestate gamestate) : base(position, gamestate)
+        private PlayersManager PlayersManager;
+
+        public Board(int newSize, Position position, Gamestate gamestate, PlayersManager playersManager) : base(position, gamestate)
         {
             if (IntBetweenInclusive(newSize, 2, int.MaxValue))
             {
@@ -24,7 +25,7 @@ namespace TicTacToe.Game.Actors
                 throw new ArgumentException("Size of the board must be bigger than 1", "newSize");
             }
 
-            BoardRectangle = new RenderRectangle(new Position(), this);
+            PlayersManager = playersManager;
 
             Fields = new List<List<Field>>();
 
@@ -34,7 +35,7 @@ namespace TicTacToe.Game.Actors
 
                 for (int row = 0; row < Size; row++)
                 {
-                    Fields[column].Add(new Field(new Position(column * position.Width / Size + position.X, row * position.Height / Size + position.Y, position.Width / Size, position.Height / Size), Gamestate));
+                    Fields[column].Add(new Field(new Position(column * position.Width / Size + position.X, row * position.Height / Size + position.Y, position.Width / Size, position.Height / Size), Gamestate, PlayersManager));
                 }
             }
 
@@ -44,7 +45,7 @@ namespace TicTacToe.Game.Actors
         public override List<IRenderObject> GetRenderObjects()
         {
             RecalculateComponentsPositions();
-            List<IRenderObject> RenderObjects = new List<IRenderObject> { BoardRectangle };
+            List<IRenderObject> RenderObjects = new List<IRenderObject>();
 
             for (int column = 0; column < Size; column++)
             {
@@ -174,7 +175,6 @@ namespace TicTacToe.Game.Actors
 
         public override void RecalculateComponentsPositions()
         {
-            BoardRectangle.SetPosition(CalculateScreenSpacePosition(Position));
         }
     }
 }

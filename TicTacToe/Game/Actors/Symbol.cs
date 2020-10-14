@@ -19,11 +19,17 @@ namespace TicTacToe.Game.Actors
 
         private RenderSymbol SymbolSymbol;
 
-        public Symbol(SymbolData symbolData, Gamestate gamestate) : this(symbolData.texture, symbolData.color, gamestate) { }
+        public Symbol(SymbolData symbolData, Gamestate gamestate) : this(symbolData.texture, symbolData.color, gamestate)
+        {
+        }
 
-        public Symbol(SymbolData symbolData, Position position, Gamestate gamestate) : this(symbolData.texture, symbolData.color, position, gamestate) { }
+        public Symbol(SymbolData symbolData, Position position, Gamestate gamestate) : this(symbolData.texture, symbolData.color, position, gamestate)
+        {
+        }
 
-        public Symbol(Texture texture, Color color, Gamestate gamestate) : this(texture, color, new Position(0, 0, 0, 0), gamestate) { }
+        public Symbol(Texture texture, Color color, Gamestate gamestate) : this(texture, color, new Position(0, 0, 0, 0), gamestate)
+        {
+        }
 
         public Symbol(Texture texture, Color color, Position position, Gamestate gamestate) : base(position, gamestate)
         {

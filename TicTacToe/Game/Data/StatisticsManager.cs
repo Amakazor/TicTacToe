@@ -6,7 +6,9 @@ namespace TicTacToe.Game.Data
 {
     internal class StatisticsManager
     {
-        public StatisticsManager() { }
+        public StatisticsManager()
+        {
+        }
 
         public Statistic LoadPlayersStatistics(int playerID)
         {

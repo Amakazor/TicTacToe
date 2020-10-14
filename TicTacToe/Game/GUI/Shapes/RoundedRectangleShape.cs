@@ -10,7 +10,9 @@ namespace TicTacToe.Game.GUI.Shapes
         private float myRadius;
         private uint myPointCount;
 
-        public RoundedRectangleShape(Vector2f size, float radius) : this(size, radius, 10) { }
+        public RoundedRectangleShape(Vector2f size, float radius) : this(size, radius, 10)
+        {
+        }
 
         public RoundedRectangleShape(Vector2f size, float radius, uint pointCount)
         {

@@ -1,5 +1,4 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +14,19 @@ namespace TicTacToe.Game.Screens
     internal class PregameScreen : Screen
     {
         private List<TextButton> PlayerButtons { get; set; }
-        private TextBox TextBox { get; set; }
+        private Text Text { get; set; }
         private List<ActionButton> BoardSizeButtons { get; set; }
         private ScreenChangeButton StartButton { get; set; }
         private ReturnButton ReturnButton { get; set; }
 
-        public PregameScreen(Gamestate gamestate) : base(gamestate, ScreenType.Pregame)
+        public PregameScreen(Gamestate gamestate, PlayersManager playersManager, TextureManager textureManager) : base(gamestate, playersManager, ScreenType.Pregame)
         {
-            Gamestate.NewPlayer = null;
+            PlayersManager.NewPlayer = null;
 
             PlayerButtons = new List<TextButton>();
             PreparePlayerButtons();
 
-            TextBox = new TextBox(new Position(25, 150, 950, 100), Gamestate, new Vector2f(), 50, TextPosition.Middle, TextPosition.Middle, "Select board size:");
+            Text = new Text(new Position(25, 150, 950, 100), Gamestate, new Vector2f(), 50, TextPosition.Middle, TextPosition.Middle, "Select board size:");
 
             BoardSizeButtons = new List<ActionButton>();
             PrepareBoardSizeButtons();
@@ -35,7 +34,7 @@ namespace TicTacToe.Game.Screens
             StartButton = new ScreenChangeButton(new Position(25, BoardSizeButtons.Last().Position.Height + BoardSizeButtons.Last().Position.Y + 25, 950, 150), Gamestate, new Vector2f(), 60, TextPosition.Middle, TextPosition.Middle, "Start!", ScreenType.Game);
             StartButton.ButtonState = ButtonState.Inactive;
 
-            ReturnButton = new ReturnButton(new Position(25, 875, 100, 100), Gamestate, Gamestate.TextureAtlas.TexturesDictionary[TextureType.Icon]["back"], ScreenType.MenuScreen);
+            ReturnButton = new ReturnButton(new Position(25, 875, 100, 100), Gamestate, textureManager.TexturesDictionary[TextureType.Icon]["back"], ScreenType.MenuScreen);
         }
 
         public override List<IRenderObject> GetRenderData()
@@ -56,8 +55,8 @@ namespace TicTacToe.Game.Screens
                 renderObjects.AddRange(button.GetRenderObjects());
             }
 
-            TextBox.RecalculateComponentsPositions();
-            renderObjects.AddRange(TextBox.GetRenderObjects());
+            Text.RecalculateComponentsPositions();
+            renderObjects.AddRange(Text.GetRenderObjects());
 
             if (Gamestate.CanStartGame())
             {
@@ -79,7 +78,7 @@ namespace TicTacToe.Game.Screens
 
         private void PreparePlayerButtons()
         {
-            switch (Gamestate.PlayersInGame.Count)
+            switch (PlayersManager.PlayersInGame.Count)
             {
                 case 0:
                     PlayerButtons.Add(new ScreenChangeButton(new Position(25, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Select player", ScreenType.PlayerSelectionScreen));
@@ -88,13 +87,13 @@ namespace TicTacToe.Game.Screens
                     break;
 
                 case 1:
-                    PlayerButtons.Add(new ActionButton(new Position(25, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, Gamestate.GetPlayerByPlayersInGameIndex(0).Nickname, (_) => { Gamestate.RemovePlayerFromGame(0); MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.PlayerSelectionScreen }); }));
+                    PlayerButtons.Add(new ActionButton(new Position(25, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, PlayersManager.GetPlayerByPlayersInGameIndex(0).Nickname, (_) => { PlayersManager.RemovePlayerFromGame(0); MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.PlayerSelectionScreen }); }));
                     PlayerButtons.Add(new ScreenChangeButton(new Position(525, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, "Select second player", ScreenType.PlayerSelectionScreen));
                     break;
 
                 case 2:
-                    PlayerButtons.Add(new ActionButton(new Position(25, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, Gamestate.GetPlayerByPlayersInGameIndex(0).Nickname, (_) => { Gamestate.RemovePlayerFromGame(0); MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.PlayerSelectionScreen }); }));
-                    PlayerButtons.Add(new ActionButton(new Position(525, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, Gamestate.GetPlayerByPlayersInGameIndex(1).Nickname, (_) => { Gamestate.RemovePlayerFromGame(1); MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.PlayerSelectionScreen }); }));
+                    PlayerButtons.Add(new ActionButton(new Position(25, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, PlayersManager.GetPlayerByPlayersInGameIndex(0).Nickname, (_) => { PlayersManager.RemovePlayerFromGame(0); MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.PlayerSelectionScreen }); }));
+                    PlayerButtons.Add(new ActionButton(new Position(525, 25, 450, 100), Gamestate, new Vector2f(), 30, TextPosition.Middle, TextPosition.Middle, PlayersManager.GetPlayerByPlayersInGameIndex(1).Nickname, (_) => { PlayersManager.RemovePlayerFromGame(1); MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = ScreenType.PlayerSelectionScreen }); }));
                     break;
             }
         }
@@ -143,6 +142,8 @@ namespace TicTacToe.Game.Screens
             }
         }
 
-        public override void Dispose() { }
+        public override void Dispose()
+        {
+        }
     }
 }

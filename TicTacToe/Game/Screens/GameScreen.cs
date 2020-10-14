@@ -12,12 +12,12 @@ namespace TicTacToe.Game.Screens
     {
         public Board Board { get; private set; }
 
-        public GameScreen(Gamestate gamestate) : base(gamestate, ScreenType.Game)
+        public GameScreen(Gamestate gamestate, PlayersManager playersManager) : base(gamestate, playersManager, ScreenType.Game)
         {
             MessageBus.Instance.Register(MessageType.FieldChanged, OnFieldChange);
             Gamestate.boardstate = Boardstate.NotResolved;
 
-            Board = new Board(gamestate.BoardSize, new Position(25, 25, 950, 950), gamestate);
+            Board = new Board(gamestate.BoardSize, new Position(25, 25, 950, 950), gamestate, PlayersManager);
         }
 
         private void OnFieldChange(object sender, EventArgs eventArgs)
@@ -26,7 +26,7 @@ namespace TicTacToe.Game.Screens
 
             if (boardState == Boardstate.NotResolved)
             {
-                Gamestate.ChangePlayer();
+                PlayersManager.ChangePlayer();
                 MessageBus.Instance.PostEvent(MessageType.Recalculate, this, new EventArgs());
             }
             else

@@ -52,7 +52,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
 
         public void SetFontSize(int height)
         {
-            FontSize = (float)height;
+            FontSize = height;
         }
 
         public IRenderable GetActor()
@@ -62,7 +62,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
 
         public Transformable GetShape()
         {
-            Text text = new Text(Text, Font, (uint)FontSize)
+            SFML.Graphics.Text text = new SFML.Graphics.Text(Text, Font, (uint)FontSize)
             {
                 FillColor = Color,
             };
@@ -92,7 +92,7 @@ namespace TicTacToe.Game.GUI.RenderObjects
             return false;
         }
 
-        private Vector2f CalculatePosition(Text textElement)
+        private Vector2f CalculatePosition(SFML.Graphics.Text textElement)
         {
             float x = 0;
             float y = 0;

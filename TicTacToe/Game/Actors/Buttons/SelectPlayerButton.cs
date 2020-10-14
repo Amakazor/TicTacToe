@@ -1,8 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;
@@ -10,14 +8,16 @@ using TicTacToe.Utility;
 
 namespace TicTacToe.Game.Actors.Buttons
 {
-    class SelectPlayerButton : Button
+    internal class SelectPlayerButton : Button
     {
+        public PlayersManager PlayersManager;
         private int PlayerId { get; }
         private ScreenType Screen { get; }
         private RenderRoundedRectangle PlayerRectangle { get; set; }
 
-        public SelectPlayerButton(Position position, Gamestate gamestate, int playerId, ScreenType screenType) : base(position, gamestate)
+        public SelectPlayerButton(Position position, Gamestate gamestate, PlayersManager playersManager, int playerId, ScreenType screenType) : base(position, gamestate)
         {
+            PlayersManager = playersManager;
             PlayerId = playerId;
             Screen = screenType;
 
@@ -63,7 +63,7 @@ namespace TicTacToe.Game.Actors.Buttons
         {
             if (base.OnClick(args))
             {
-                Gamestate.AddPlayerToGame(PlayerId);
+                PlayersManager.AddPlayerToGame(PlayerId);
                 MessageBus.Instance.PostEvent(MessageType.ChangeScreen, this, new ChangeScreenEventArgs { Screen = Screen });
                 return true;
             }

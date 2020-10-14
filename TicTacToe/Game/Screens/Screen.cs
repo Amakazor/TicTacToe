@@ -8,13 +8,15 @@ namespace TicTacToe.Game.Screens
     internal abstract class Screen : IScreen, IDisposable
     {
         public Gamestate Gamestate { get; protected set; }
+        public PlayersManager PlayersManager { get; protected set; }
         public ScreenType EScreen { get; protected set; }
         public int ScreenWidth { get; protected set; }
         public int ScreenHeight { get; protected set; }
 
-        public Screen(Gamestate gamestate, ScreenType eScreen)
+        public Screen(Gamestate gamestate, PlayersManager playersManager, ScreenType eScreen)
         {
             Gamestate = gamestate;
+            PlayersManager = playersManager;
             EScreen = eScreen;
         }
 
