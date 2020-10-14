@@ -15,16 +15,17 @@ namespace TicTacToe.Game.Actors
         public bool IsClickable { get; private set; }
         public PlayersManager PlayersManager;
 
-        private RenderRectangle FieldRectangle;
+        private RenderSymbol FieldBackgroundSymbol;
 
-        public Field(Position position, Gamestate gamestate, PlayersManager playersManager) : base(position, gamestate)
+
+        public Field(Position position, Gamestate gamestate, PlayersManager playersManager, Texture texture) : base(position, gamestate)
         {
             PlayersManager = playersManager;
 
             PlayerID = 0;
             IsClickable = true;
 
-            FieldRectangle = new RenderRectangle(new Position(), this, new Color(), Color.Black, 2);
+            FieldBackgroundSymbol = new RenderSymbol(new Position(), this, texture, new Color(0, 0, 0, 255));
             RecalculateComponentsPositions();
         }
 
@@ -54,7 +55,7 @@ namespace TicTacToe.Game.Actors
         public override List<IRenderObject> GetRenderObjects()
         {
             RecalculateComponentsPositions();
-            List<IRenderObject> RenderObjects = new List<IRenderObject> { FieldRectangle };
+            List<IRenderObject> RenderObjects = new List<IRenderObject> { FieldBackgroundSymbol };
 
             if (PlayerID != 0)
             {
@@ -66,7 +67,7 @@ namespace TicTacToe.Game.Actors
 
         public override void RecalculateComponentsPositions()
         {
-            FieldRectangle.SetPosition(CalculateScreenSpacePosition(Position));
+            FieldBackgroundSymbol.SetPosition(CalculateScreenSpacePosition(Position));
         }
     }
 }

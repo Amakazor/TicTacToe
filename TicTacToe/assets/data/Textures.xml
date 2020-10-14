@@ -57,4 +57,50 @@
     <name>delete</name>
     <location>assets/textures/icons/delete.png</location>
   </texture>
+  
+  <texture>
+    <type>field</type>
+    <name>t</name>
+    <location>assets/textures/fields/field_t.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>b</name>
+    <location>assets/textures/fields/field_b.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>l</name>
+    <location>assets/textures/fields/field_l.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>r</name>
+    <location>assets/textures/fields/field_r.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>tr</name>
+    <location>assets/textures/fields/field_tr.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>tl</name>
+    <location>assets/textures/fields/field_tl.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>br</name>
+    <location>assets/textures/fields/field_br.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>bl</name>
+    <location>assets/textures/fields/field_bl.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>c</name>
+    <location>assets/textures/fields/field_c.png</location>
+  </texture>
 </textures>

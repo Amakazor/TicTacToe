@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFML.Graphics;
+using System;
 using System.Collections.Generic;
 using TicTacToe.Game.Data;
 using TicTacToe.Game.GUI.RenderObjects;
@@ -11,10 +12,11 @@ namespace TicTacToe.Game.Actors
     {
         public int Size { get; private set; }
         private List<List<Field>> Fields { get; set; }
+        private TextureManager TextureManager;
 
         private PlayersManager PlayersManager;
 
-        public Board(int newSize, Position position, Gamestate gamestate, PlayersManager playersManager) : base(position, gamestate)
+        public Board(int newSize, Position position, Gamestate gamestate, PlayersManager playersManager, TextureManager textureManager) : base(position, gamestate)
         {
             if (IntBetweenInclusive(newSize, 2, int.MaxValue))
             {
@@ -26,7 +28,7 @@ namespace TicTacToe.Game.Actors
             }
 
             PlayersManager = playersManager;
-
+            TextureManager = textureManager;
             Fields = new List<List<Field>>();
 
             for (int column = 0; column < Size; column++)
@@ -35,7 +37,9 @@ namespace TicTacToe.Game.Actors
 
                 for (int row = 0; row < Size; row++)
                 {
-                    Fields[column].Add(new Field(new Position(column * position.Width / Size + position.X, row * position.Height / Size + position.Y, position.Width / Size, position.Height / Size), Gamestate, PlayersManager));
+                    
+
+                    Fields[column].Add(new Field(new Position(column * position.Width / Size + position.X, row * position.Height / Size + position.Y, position.Width / Size, position.Height / Size), Gamestate, PlayersManager, getTextureForField(row, column)));
                 }
             }
 
@@ -171,6 +175,52 @@ namespace TicTacToe.Game.Actors
             }
 
             return hasEmptyField ? Boardstate.NotResolved : Boardstate.Draw;
+        }
+
+        private Texture getTextureForField(int row, int column)
+        {
+            if (row == 0)
+            {
+                if (column == 0)
+                {
+                    return TextureManager.TexturesDictionary[TextureType.Field]["tl"];
+                }
+                else if (column == Size -1)
+                {
+                    return TextureManager.TexturesDictionary[TextureType.Field]["tr"];
+                }
+                else
+                {
+                    return TextureManager.TexturesDictionary[TextureType.Field]["t"];
+                }
+            }
+            else if (row == Size - 1)
+            {
+                if (column == 0)
+                {
+                    return TextureManager.TexturesDictionary[TextureType.Field]["bl"];
+                }
+                else if (column == Size - 1)
+                {
+                    return TextureManager.TexturesDictionary[TextureType.Field]["br"];
+                }
+                else
+                {
+                    return TextureManager.TexturesDictionary[TextureType.Field]["b"];
+                }
+            }
+            else if (column == 0)
+            {
+                return TextureManager.TexturesDictionary[TextureType.Field]["l"];
+            }
+            else if (column == Size - 1)
+            {
+                return TextureManager.TexturesDictionary[TextureType.Field]["r"];
+            }
+            else
+            {
+                return TextureManager.TexturesDictionary[TextureType.Field]["c"];
+            }
         }
 
         public override void RecalculateComponentsPositions()

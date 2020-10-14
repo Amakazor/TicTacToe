@@ -12,6 +12,7 @@ namespace TicTacToe.Game.Data
         public const string Symbol = "symbol";
         public const string Background = "background";
         public const string Icon = "icon";
+        public const string Field = "field";
     }
 
     public class TextureManager

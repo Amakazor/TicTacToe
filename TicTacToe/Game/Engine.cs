@@ -117,7 +117,7 @@ namespace TicTacToe.Game
                 {
                     case ScreenType.Game:
                         PlayersManager.SetCurrentPlayerToFirstEntry();
-                        Gamestate.CurrentScreen = new GameScreen(Gamestate, PlayersManager);
+                        Gamestate.CurrentScreen = new GameScreen(Gamestate, PlayersManager, TextureManager);
                         break;
 
                     case ScreenType.Pregame:
