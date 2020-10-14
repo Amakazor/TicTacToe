@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using TicTacToe.Utility.Exceptions;
 
 namespace TicTacToe.Game.Data
 {
@@ -28,18 +29,34 @@ namespace TicTacToe.Game.Data
         {
             TexturesDictionary = new Dictionary<string, Dictionary<string, Texture>>();
 
-            XDocument textureConfig = XDocument.Load("assets/data/textures.xml");
+            XDocument textureConfig;
+
+            try
+            {
+                textureConfig = XDocument.Load("assets/data/textures.xml");
+            }
+            catch (Exception)
+            {
+                throw new FileMissingOrCorruptedException("File textures.xml couldn't be loaded");
+            }
 
             foreach (FieldInfo fieldInfo in typeof(TextureType).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
-                string textureType = fieldInfo.GetValue(null).ToString();
-                TexturesDictionary[textureType] = (from texture in textureConfig.Descendants("texture")
-                                                   where texture.Element("type").Value == textureType
-                                                   select new
-                                                   {
-                                                       symbol = texture.Element("name").Value,
-                                                       location = texture.Element("location").Value
-                                                   }).ToDictionary(o => o.symbol, o => new Texture(o.location) { Smooth = true });
+                try
+                {
+                    string textureType = fieldInfo.GetValue(null).ToString();
+                    TexturesDictionary[textureType] = (from texture in textureConfig.Descendants("texture")
+                                                       where texture.Element("type").Value == textureType
+                                                       select new
+                                                       {
+                                                           symbol = texture.Element("name").Value,
+                                                           location = texture.Element("location").Value
+                                                       }).ToDictionary(o => o.symbol, o => new Texture(o.location) { Smooth = true });
+                }
+                catch (Exception)
+                {
+                    throw new FileMissingOrCorruptedException("Texture file couldn't be loaded");
+                }
             }
         }
 
@@ -55,9 +72,9 @@ namespace TicTacToe.Game.Data
                     }
                 }
 
-                throw new Exception();
+                throw new ArgumentException("Could not find given texture", "texture");
             }
-            else throw new Exception();
+            else throw new ArgumentException("There are no textures of this type", "textureType");
         }
     }
 }

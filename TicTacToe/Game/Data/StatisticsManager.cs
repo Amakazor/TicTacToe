@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using TicTacToe.Utility.Exceptions;
 
 namespace TicTacToe.Game.Data
 {
@@ -12,25 +13,32 @@ namespace TicTacToe.Game.Data
 
         public Statistic LoadPlayersStatistics(int playerID)
         {
-            XDocument statisticsData = XDocument.Load("assets/data/Statistics.xml");
+            try
+            {
+                XDocument statisticsData = XDocument.Load("assets/data/Statistics.xml");
 
-            int total = (from match in statisticsData.Descendants("match")
-                         where int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID
-                         select match).Count();
+                int total = (from match in statisticsData.Descendants("match")
+                             where int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID
+                             select match).Count();
 
-            int won = (from match in statisticsData.Descendants("match")
-                       where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) == playerID
-                       select match).Count();
+                int won = (from match in statisticsData.Descendants("match")
+                           where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) == playerID
+                           select match).Count();
 
-            int lost = (from match in statisticsData.Descendants("match")
-                        where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) != playerID && int.Parse(match.Element("result").Value) != 0
-                        select match).Count();
+                int lost = (from match in statisticsData.Descendants("match")
+                            where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) != playerID && int.Parse(match.Element("result").Value) != 0
+                            select match).Count();
 
-            int draws = (from match in statisticsData.Descendants("match")
-                         where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) == 0
-                         select match).Count();
+                int draws = (from match in statisticsData.Descendants("match")
+                             where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) == 0
+                             select match).Count();
 
-            return new Statistic(total, won, lost, draws);
+                return new Statistic(total, won, lost, draws);
+            }
+            catch (System.Exception)
+            {
+                throw new FileMissingOrCorruptedException("File Statistics.xml couldn't be loaded");
+            }
         }
 
         public Statistic LoadPlayersStatistics(int firstPlayerID, int secondPlayerID)

@@ -35,20 +35,37 @@ namespace TicTacToe.Game.Data
 
         private void LoadPlayers()
         {
-            XDocument playersConfig = XDocument.Load("assets/data/Players.xml");
+            XDocument playersConfig;
 
-            Players = (from player in playersConfig.Descendants("player")
-                       select new
-                       {
-                           Id = int.Parse(player.Element("id").Value),
-                           Name = player.Element("name").Value,
-                           Texture = TextureManager.TexturesDictionary[TextureType.Symbol][player.Element("symbol").Value],
-                           Color = new Color(
-                               byte.Parse(player.Element("color").Element("r").Value),
-                               byte.Parse(player.Element("color").Element("g").Value),
-                               byte.Parse(player.Element("color").Element("b").Value)
-                            )
-                       }).ToDictionary(o => o.Id, o => new Player(o.Name, o.Texture, o.Color, Gamestate, TextureManager));
+            try
+            {
+                playersConfig = XDocument.Load("assets/data/Players.xml");
+            }
+            catch (Exception)
+            {
+                throw new Utility.Exceptions.FileMissingOrCorruptedException("File Players.xml couldn't be loaded");
+            }
+
+            try
+            {
+                Players = (from player in playersConfig.Descendants("player")
+                           select new
+                           {
+                               Id = int.Parse(player.Element("id").Value),
+                               Name = player.Element("name").Value,
+                               Texture = TextureManager.TexturesDictionary[TextureType.Symbol][player.Element("symbol").Value],
+                               Color = new Color(
+                                   byte.Parse(player.Element("color").Element("r").Value),
+                                   byte.Parse(player.Element("color").Element("g").Value),
+                                   byte.Parse(player.Element("color").Element("b").Value)
+                                )
+                           }).ToDictionary(o => o.Id, o => new Player(o.Name, o.Texture, o.Color, Gamestate, TextureManager));
+            }
+            catch (Exception)
+            {
+
+                throw new Utility.Exceptions.FileMissingOrCorruptedException("File Players.xml couldn't be loaded");
+            }
 
             HighestId = int.Parse(playersConfig.Descendants("highestid").First().Value);
         }

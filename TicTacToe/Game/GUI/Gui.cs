@@ -8,6 +8,7 @@ using TicTacToe.Game.Data;
 using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Utility;
+using TicTacToe.Utility.Exceptions;
 
 namespace TicTacToe.Game.GUI
 {
@@ -49,11 +50,18 @@ namespace TicTacToe.Game.GUI
 
             Time = Time + deltaTime > 320 ? Time - 320 + deltaTime : Time + deltaTime;
 
-            Shader shader = new Shader(null, null, "assets/shaders/scroll.glsl");
-            shader.SetUniform("texture", Shader.CurrentTexture);
-            shader.SetUniform("resolution", new Vec2(512, 512));
-            shader.SetUniform("time", Time);
-            Window.Draw((Drawable)Background.GetShape(), new RenderStates(shader));
+            try
+            {
+                Shader shader = new Shader(null, null, "assets/shaders/scroll.glsl");
+                shader.SetUniform("texture", Shader.CurrentTexture);
+                shader.SetUniform("resolution", new Vec2(512, 512));
+                shader.SetUniform("time", Time);
+                Window.Draw((Drawable)Background.GetShape(), new RenderStates(shader));
+            }
+            catch (Exception)
+            {
+                throw new FileMissingOrCorruptedException("File scroll.glsl couln't be loaded");
+            }
 
             Frame.RecalculateComponentsPositions();
             Frame.GetRenderObjects().ForEach(renderObject =>

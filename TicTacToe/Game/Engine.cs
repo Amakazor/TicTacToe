@@ -6,6 +6,7 @@ using TicTacToe.Game.Events;
 using TicTacToe.Game.GUI;
 using TicTacToe.Game.GUI.RenderObjects;
 using TicTacToe.Game.Screens;
+using TicTacToe.Utility.Exceptions;
 
 namespace TicTacToe.Game
 {
@@ -40,15 +41,26 @@ namespace TicTacToe.Game
             ShouldQuit = false;
             ShouldRecalculateRenderObjects = true;
 
-            TextureManager = new TextureManager();
-            PlayersManager = new PlayersManager(TextureManager, Gamestate);
-            StatisticsManager = new StatisticsManager();
+            try
+            {
+                TextureManager = new TextureManager();
+                PlayersManager = new PlayersManager(TextureManager, Gamestate);
+                StatisticsManager = new StatisticsManager();
 
-            Gamestate.PlayersManager = PlayersManager;
+                Gamestate.PlayersManager = PlayersManager;
 
-            Gamestate.CurrentScreen = new MenuScreen(Gamestate, PlayersManager);
+                Gamestate.CurrentScreen = new MenuScreen(Gamestate, PlayersManager);
 
-            Gui = new Gui(GameTitle, width, height, Gamestate, TextureManager);
+                Gui = new Gui(GameTitle, width, height, Gamestate, TextureManager);
+            }
+            catch (Exception e)
+            {
+                #if DEBUG
+                    throw e;
+                #else
+                    throw new FileMissingOrCorruptedException("One of the configuration files is missing or corrupted.");
+                #endif
+            }
 
             InputHandler = new InputHandler(Gui.Window);
             Gui.SetMouseClickHandler(InputHandler.OnClick);
@@ -79,16 +91,27 @@ namespace TicTacToe.Game
 
         public void Tick(float deltaTime)
         {
-            InputHandler.Tick();
-
-            if (ShouldRecalculateRenderObjects)
+            try
             {
-                RenderObjects = Gamestate.CurrentScreen.GetRenderData();
-                InputHandler.UpdateRenderObjects(RenderObjects);
-                ShouldRecalculateRenderObjects = false;
-            }
+                InputHandler.Tick();
 
-            Render(RenderObjects, deltaTime);
+                if (ShouldRecalculateRenderObjects)
+                {
+                    RenderObjects = Gamestate.CurrentScreen.GetRenderData();
+                    InputHandler.UpdateRenderObjects(RenderObjects);
+                    ShouldRecalculateRenderObjects = false;
+                }
+
+                Render(RenderObjects, deltaTime);
+            }
+            catch (Exception e)
+            {
+                #if DEBUG
+                    throw e;
+                #else                  
+                    throw new FileMissingOrCorruptedException("One of the configuration files is missing or corrupted.");
+                #endif
+            }
         }
 
         public void Render(List<IRenderObject> RenderObjects, float deltaTime)
@@ -145,7 +168,7 @@ namespace TicTacToe.Game
                         break;
 
                     default:
-                        throw new Exception();
+                        throw new Exception("Screen coudn't be found");
                 }
 
                 ShouldRecalculateRenderObjects = true;

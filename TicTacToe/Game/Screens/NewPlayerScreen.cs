@@ -45,7 +45,7 @@ namespace TicTacToe.Game.Screens
                     i++;
                 }
             }
-            else throw new Exception();
+            else throw new Exception("Symbols have not been loaded");
 
             CreatePlayerButton = new ActionButton(new Position(150, 875, 825, 100), Gamestate, new Vector2f(), 40, TextPosition.Middle, TextPosition.Middle, "Save Player", SaveNewPlayer);
             CreatePlayerButton.ButtonState = ButtonState.Inactive;

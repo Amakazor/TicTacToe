@@ -1,4 +1,7 @@
-﻿using TicTacToe.Game;
+﻿using System;
+using System.Diagnostics;
+using TicTacToe.Game;
+using TicTacToe.Utility.Exceptions;
 
 namespace TicTacToe
 {
@@ -6,8 +9,19 @@ namespace TicTacToe
     {
         private static void Main(string[] args)
         {
-            Engine engine = new Engine();
-            engine.Loop();
+			try
+			{
+				Engine engine = new Engine();
+				engine.Loop();
+			}
+            catch (Exception e)
+            {
+                #if DEBUG
+                    throw e;
+                #else
+                    throw new FileMissingOrCorruptedException("One or more of the game files");
+                #endif
+            }
         }
     }
 }
