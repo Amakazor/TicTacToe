@@ -54,7 +54,7 @@ namespace TicTacToe.Game.GUI
             {
                 Shader shader = new Shader(null, null, "assets/shaders/scroll.glsl");
                 shader.SetUniform("texture", Shader.CurrentTexture);
-                shader.SetUniform("resolution", new Vec2(512, 512));
+                shader.SetUniform("resolution", new Vec2(1024, 1024));
                 shader.SetUniform("time", Time);
                 Window.Draw((Drawable)Background.GetShape(), new RenderStates(shader));
             }
