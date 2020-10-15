@@ -125,54 +125,52 @@ namespace TicTacToe.Game.Actors
                 }
             }
 
-            if (Size % 2 == 1)
+            isBad = false;
+            for (int field = 0; field < Size; field++)
             {
-                isBad = false;
-                for (int field = 0; field < Size; field++)
+                if (Fields[field][field].PlayerID == 0 || Fields[0][0].PlayerID == 0)
                 {
-                    if (Fields[field][field].PlayerID == 0 || Fields[0][0].PlayerID == 0)
-                    {
-                        hasEmptyField = true;
-                        isBad = true;
-                        break;
-                    }
-
-                    if (field == 0) continue;
-
-                    if (!Fields[field][field].Equals(Fields[0][0]))
-                    {
-                        isBad = true;
-                        break;
-                    }
-                }
-                if (!isBad)
-                {
-                    return Boardstate.Won;
+                    hasEmptyField = true;
+                    isBad = true;
+                    break;
                 }
 
-                isBad = false;
-                for (int field = 0; field < Size; field++)
-                {
-                    if (Fields[field][Size - field - 1].PlayerID == 0 || Fields[0][Size - 1].PlayerID == 0)
-                    {
-                        hasEmptyField = true;
-                        isBad = true;
-                        break;
-                    }
+                if (field == 0) continue;
 
-                    if (field == 0) continue;
-
-                    if (!Fields[field][Size - field - 1].Equals(Fields[0][Size - 1]))
-                    {
-                        isBad = true;
-                        break;
-                    }
-                }
-                if (!isBad)
+                if (!Fields[field][field].Equals(Fields[0][0]))
                 {
-                    return Boardstate.Won;
+                    isBad = true;
+                    break;
                 }
             }
+            if (!isBad)
+            {
+                return Boardstate.Won;
+            }
+
+            isBad = false;
+            for (int field = 0; field < Size; field++)
+            {
+                if (Fields[field][Size - field - 1].PlayerID == 0 || Fields[0][Size - 1].PlayerID == 0)
+                {
+                    hasEmptyField = true;
+                    isBad = true;
+                    break;
+                }
+
+                if (field == 0) continue;
+
+                if (!Fields[field][Size - field - 1].Equals(Fields[0][Size - 1]))
+                {
+                    isBad = true;
+                    break;
+                }
+            }
+            if (!isBad)
+            {
+                return Boardstate.Won;
+            }
+            
 
             return hasEmptyField ? Boardstate.NotResolved : Boardstate.Draw;
         }
