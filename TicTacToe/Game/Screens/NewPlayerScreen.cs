@@ -100,7 +100,7 @@ namespace TicTacToe.Game.Screens
             {
                 PlayersManager.NewPlayer.Nickname = PlayersManager.NewPlayer.Nickname.Remove(PlayersManager.NewPlayer.Nickname.Length - 1);
             }
-            else if (textEventArgs.Unicode != "\x1B" && textEventArgs.Unicode != "\t" && (PlayersManager.NewPlayer.Nickname == null || PlayersManager.NewPlayer.Nickname.Length < 10))
+            else if (textEventArgs.Unicode != "\x1B" && textEventArgs.Unicode != "\t" && textEventArgs.Unicode != "\b" &&(PlayersManager.NewPlayer.Nickname == null || PlayersManager.NewPlayer.Nickname.Length < 10))
             {
                 PlayersManager.NewPlayer.Nickname += textEventArgs.Unicode;
             }
