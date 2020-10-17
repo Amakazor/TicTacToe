@@ -68,6 +68,9 @@ namespace TicTacToe.Game.Screens
 
             switch (PlayersManager.PlayersInGame.Count)
             {
+                case 0:
+                    DisplayStatistics(GenerateTop());
+                    break;
                 case 1:
                     statistic = StatisticsManager.LoadPlayersStatistics(PlayersManager.PlayersInGame[0]);
                     DisplayStatistics(GenerateStatisticsDisplayForOnePlayer(statistic));
@@ -115,6 +118,30 @@ namespace TicTacToe.Game.Screens
                 new List<string>{ "Win Percentage", "Win Percentage" },
                 new List<string>{ statistic.Total != 0 ? ((double)statistic.Won / statistic.Total * 100).ToString("n2") + "%" : "00.00%", statistic.Total != 0 ? ((double)statistic.Lost / statistic.Total * 100).ToString("n2") + "%" : "00.00%" }
             };
+        }
+
+        private List<List<string>> GenerateTop()
+        {
+            Dictionary<int, double> statistics = StatisticsManager.LoadPlayersStatistics(PlayersManager.Players.Keys.ToList());
+            List<List<string>> strings = new List<List<string>>
+            {
+                new List<string> {"TOP 10 PLAYERS (Win percentage)"}
+            };
+
+            int i = 0;
+            foreach (KeyValuePair<int, double> statistic in statistics.OrderBy(d => d.Value).Reverse().ToList())
+            {
+                if (i < 10 && PlayersManager.Players.ContainsKey(statistic.Key))
+                {
+                    strings.Add(new List<string>
+                    {
+                        PlayersManager.Players[statistic.Key].Nickname + " :" + (statistic.Value > 0.0D ? statistic.Value.ToString("n2") + "%" : "00.00%")
+                    });
+                }
+                i++;
+            }
+
+            return strings;
         }
 
         private void DisplayStatistics(List<List<string>> statisticsArray)

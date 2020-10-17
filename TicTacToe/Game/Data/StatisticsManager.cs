@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using TicTacToe.Utility.Exceptions;
@@ -9,6 +10,28 @@ namespace TicTacToe.Game.Data
     {
         public StatisticsManager()
         {
+        }
+
+        public Dictionary<int, double> LoadPlayersStatistics(List<int> playerIds)
+        {
+            XDocument statisticsData = XDocument.Load("assets/data/Statistics.xml");
+
+            Dictionary<int, double> statistics = new Dictionary<int, double>();
+
+            foreach (int playerID in playerIds)
+            {
+                int total = (from match in statisticsData.Descendants("match")
+                             where int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID
+                             select match).Count();
+
+                int won = (from match in statisticsData.Descendants("match")
+                           where (int.Parse(match.Element("player1").Value) == playerID || int.Parse(match.Element("player2").Value) == playerID) && int.Parse(match.Element("result").Value) == playerID
+                           select match).Count();
+
+                statistics.Add(playerID, total != 0 ? ((double)won / total * 100) : 0.0D);
+            }
+
+            return statistics;
         }
 
         public Statistic LoadPlayersStatistics(int playerID)
