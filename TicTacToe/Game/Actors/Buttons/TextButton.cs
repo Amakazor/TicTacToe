@@ -47,7 +47,7 @@ namespace TicTacToe.Game.Actors.Buttons
 
                     case ButtonState.Focused:
                         ButtonText.SetColor(Color.Black);
-                        ButtonRectangle.SetColor(new Color(200, 240, 200));
+                        ButtonRectangle.SetColor(new Color(225, 225, 255));
                         break;
                 }
             }

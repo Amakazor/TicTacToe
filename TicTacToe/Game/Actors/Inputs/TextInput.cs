@@ -44,7 +44,7 @@ namespace TicTacToe.Game.Actors.Inputs
         {
             MessageBus.Instance.PostEvent(MessageType.LoseFocus, this, args);
             HasFocus = true;
-            InputRectangle.SetColor(new Color(200, 240, 200));
+            InputRectangle.SetColor(new Color(225, 225, 255));
             return true;
         }
 
